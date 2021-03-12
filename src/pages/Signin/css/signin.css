@@ -1,0 +1,271 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Mulish", sans-serif;
+}
+
+main {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.panel-banner {
+  width: 55%;
+  height: 100%;
+}
+
+.img-banner {
+  position: relative;
+  background-color: #2b156b;
+  height: 100vh;
+  width: 55vw;
+}
+
+.logo {
+  width: 35vw;
+  height: auto;
+  left: 100px;
+  top: 200px;
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo > img {
+  width: 30vw;
+}
+
+.logo > span {
+  font-size: 3vw;
+  color: #ffffff;
+}
+
+.bg {
+  width: 55vw;
+  height: 100vh;
+  filter: opacity(40%);
+  display: block;
+  z-index: 1;
+  position: absolute;
+}
+
+.panel-login {
+  background-color: white;
+  width: 45vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0px 45px;
+}
+
+.email,
+.password {
+  padding: 22px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaaaaa;
+}
+
+h1 {
+  color: black;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.form > div {
+  margin-top: 10px;
+}
+
+div.form > div:nth-child(4) {
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+div.form > div:nth-child(4) > span {
+  color: #8692a6;
+}
+
+.signin-with {
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signin {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.signin-with > div {
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  width: 182px;
+  height: 64px;
+  border-radius: 4px;
+  justify-items: center;
+  font-size: 26px;
+}
+
+.signin-with > div:hover {
+  background: #ffffff;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  width: 182px;
+  height: 64px;
+  border-radius: 4px;
+  justify-items: center;
+  font-size: 26px;
+}
+
+.signin-with > div > a {
+  text-decoration: none;
+  color: #a0a3bd;
+}
+
+.icon {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.icon img {
+  width: 25px;
+  height: 25px;
+  margin-top: 20px;
+}
+
+.icon span {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+input {
+  background: #fcfdfe;
+  border: 1px solid #dedede;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 400px;
+  height: 50px;
+  outline: none;
+}
+
+.btn-submit {
+  background-color: #5f2eea;
+  color: #ffffff;
+}
+
+.line {
+  margin-top: 8vh;
+  text-align: -webkit-center;
+}
+
+.text-divider {
+  color: #aaaaaa;
+  display: flex;
+  width: 50%;
+  align-items: center;
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  --text-divider-gap: 1rem;
+  margin: 0px !important;
+}
+
+.text-divider::before,
+.text-divider::after {
+  content: "";
+  height: 1px;
+  background-color: silver;
+  flex-grow: 1;
+}
+.text-divider::before {
+  margin-right: var(--text-divider-gap);
+}
+.text-divider::after {
+  margin-left: var(--text-divider-gap);
+}
+.tickitz {
+  display: none;
+}
+/* Use a media query to add a breakpoint at 768px: */
+@media screen and (max-width: 768px) {
+  h1 {
+    font-family: "Inter", sans-serif;
+  }
+  main {
+    display: block;
+  }
+  .panel-banner {
+    display: none;
+  }
+  .panel-login {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+  }
+  .tickitz {
+    display: block;
+    padding: 40px 20px 20px 20px;
+  }
+  .title,
+  .form,
+  .signin-with {
+    margin-top: 10px;
+    align-items: flex-start;
+    margin-left: 20px;
+  }
+  div.title > div > p {
+    display: none;
+  }
+  .title {
+    align-items: flex-start;
+    margin-left: 20px;
+  }
+  input {
+    width: 85vw;
+  }
+  .line {
+    margin-top: 20px;
+  }
+  a > div > span {
+    display: none;
+  }
+  div.signin > div > div {
+    width: 70px;
+  }
+
+  .signin-with {
+    justify-content: center;
+    display: flex;
+    justify-content: space-evenly;
+    width: 45vw;
+  }
+
+  .signin-with > div:hover {
+    background: #ffffff;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    width: 70px;
+    height: 64px;
+    border-radius: 4px;
+    justify-items: center;
+    font-size: 26px;
+  }
+}
