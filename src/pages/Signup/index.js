@@ -1,17 +1,17 @@
 import React, { useState } from "react";
+import "./signup.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import CardLogWith from "./components/CardLogWith";
 import axios from "axios";
-import { useHistory } from "react-router";
-import { connect } from "react-redux";
-import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 require("dotenv").config();
 
-const Signin = (props) => {
-  let history = useHistory();
+const Signup = () => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState({
+    first_name: "user",
+    last_name: (Math.floor(Math.random() * 10000000) + 1).toString(),
     email: "",
     password: "",
     agree: false,
@@ -30,31 +30,24 @@ const Signin = (props) => {
     if (data.email.match(/@\w*.\w*/g)) {
       if (data.agree) {
         axios
-          .post(
-            `${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users/login`,
-            data
-          )
+          .post(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users`, data)
           .then((result) => {
-            console.log(result.data);
             if (result.data.status) {
-              Swal.fire(result.data.message);
-              props.LoginUser();
-              localStorage.setItem("logged", true);
-              history.replace("/");
+              alert(JSON.stringify(result.data.message));
             } else {
-              Swal.fire(result.data.message);
+              alert(JSON.stringify(result.data.message));
             }
           })
           .catch((err) => {
             if (err.response) {
-              Swal.fire("ERROR", err.response.data.message, "error");
+              alert(err.response.data.message);
             }
           });
       } else {
-        Swal.fire("you must agree");
+        alert("you must agree");
       }
     } else {
-      Swal.fire("nooo");
+      alert("nooo");
     }
   };
 
@@ -64,14 +57,30 @@ const Signin = (props) => {
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">
             <div className="wrap">
-              <img src="./assets/images/logo-white.png" alt="Ticketz" className="img-fluid" />
-              <h1 className="sub-text mt-5 font-weight-bold text-white">wait, watch, wow!</h1>
+              <img
+                src="./assets/images/logo-white.png"
+                alt="Ticketz"
+                className="img-fluid img-signup"
+              />
+              <h1 className="mt-5 font-weight-bold text-white">Lets build your account</h1>
+              <p className="sub-judul mt-3">
+                To be a loyal moviegoer and access all of features,
+                <br />
+                your details are required.
+              </p>
+              <ul className="step">
+                <li className="step text-white">Fill Aditional Detail</li>
+                <li className="step">Activate Your Account</li>
+                <li className="step">Done</li>
+              </ul>
             </div>
           </div>
         </div>
         <div className="col-md-5 right">
           <div className="wrap">
-            <h1 className="font-weight-bold mb-3 d-none d-md-block">Sign In</h1>
+            <h4 className="font-weight-bold mb-3 d-none d-md-block">
+              Fill your additional details
+            </h4>
             <img
               className="mb-3 d-block d-md-none"
               src="./assets/images/logo.png"
@@ -79,10 +88,7 @@ const Signin = (props) => {
               width="78"
               height="20"
             />
-            <h1 className="font-weight-bold mb-3 d-block d-md-none">Sign In</h1>
-            <p className="text-placeholder">
-              Sign in with your data that you entered during your registration
-            </p>
+            <h4 className="font-weight-bold d-block d-md-none">Sign Up</h4>
             <div className="form-group">
               <label for="email">Email</label>
               <input
@@ -126,13 +132,15 @@ const Signin = (props) => {
               </label>
             </div>
             <button className="btn btn-main btn-block mt-3" onClick={handleSubmit}>
-              Sign In
+              Join for free now
             </button>
             <p className="infor text-center mt-4">
-              Forgot your password?
-              <a href="" className="font-weight-bold link">
-                Reset now
-              </a>
+              Do you already have an account?
+              <Link to="/signin">
+                <a href="" className="font-weight-bold link">
+                  Log in
+                </a>
+              </Link>
             </p>
             <div className="divider">
               <hr />
@@ -150,14 +158,4 @@ const Signin = (props) => {
   );
 };
 
-const DispatchProps = (dispatch) => {
-  return {
-    LoginUser: () => dispatch({ type: "LOGIN_USER" }),
-  };
-};
-
-const StateProps = (state) => {
-  return state;
-};
-
-export default connect(StateProps, DispatchProps)(Signin);
+export default Signup;

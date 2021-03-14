@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Hr from "../../../../components/base/Hr";
+require("dotenv").config();
+
 export class ContainerTop extends Component {
   constructor(props) {
     super(props);
@@ -11,10 +13,12 @@ export class ContainerTop extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:6000/v1/movies/16")
+      .get(
+        `${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/movies/` +
+          this.props.id
+      )
       .then((result) => {
         this.setState({ movie: result.data.data });
-        alert(result.data.message);
       })
       .catch((err) => {
         alert(err);
@@ -42,7 +46,7 @@ export class ContainerTop extends Component {
       desc = this.state.movie[0].description;
     } else {
       title = "asdsadsa";
-      image = "./assets/images/Rectangle 119.png";
+      image = "/assets/images/Rectangle 119.png";
       genre = "kodsakdsao";
       release = "kodsa213123";
       duration = "123123";

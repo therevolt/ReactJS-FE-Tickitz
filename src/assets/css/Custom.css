@@ -1,3 +1,7 @@
+.btn-primary {
+  background-color: #5f2eea !important;
+  border-color: #5f2eea !important;
+}
 nav.navbar.navbar-expand-lg.navbar-light.bg-light {
   background-color: white !important;
 }
@@ -39,14 +43,33 @@ select#loc {
   background: transparent;
 }
 
+.img-fluid {
+  width: 40vw !important;
+  height: auto !important;
+  position: absolute !important;
+  top: 30vh !important;
+}
+
+.sub-text {
+  position: absolute;
+  top: 47vh;
+  left: 15vw;
+  font-weight: lighter;
+}
+
 .sign-up {
   width: 120px !important;
   height: 40px !important;
 }
 
+.plus-62 {
+  width: 45px !important;
+}
+
 .icon-payment {
-  width: 65px;
-  height: 25px;
+  width: 120px;
+  height: 60px;
+  justify-self: center;
 }
 
 .btn-submit-grey {
@@ -138,6 +161,203 @@ hr {
 
 .bg-none {
   background: none !important;
+}
+
+.btn-submit-solid {
+  border: none;
+  background-color: #5f2eea;
+  color: #ffffff;
+  width: 300px;
+  height: 56px;
+}
+
+.box-join {
+  background: #ffffff;
+  box-shadow: 0px 16px 32px rgba(186, 186, 186, 0.3);
+  border-radius: 8px;
+  margin: 0px auto;
+  margin-bottom: 10em;
+}
+
+.month-movies {
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.month-movies:hover {
+  overflow-x: auto;
+}
+
+.month-movies input {
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+}
+
+.text-join {
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.75px;
+  color: #6e7191;
+}
+
+.input-email {
+  border: 2px solid #dedede;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 306px;
+  height: 43px;
+  padding: 15px;
+}
+
+.btn-submit-email {
+  background: #5f2eea;
+  border-radius: 4px;
+  width: 120px;
+  height: 43px;
+  border: none;
+  color: #ffffff;
+}
+
+.nav-showing {
+  font-weight: 700;
+  font-size: 24px;
+  margin-top: 64px;
+}
+
+.color-blue {
+  color: #5f2eea;
+}
+
+.cat-movies {
+  margin-top: 0px;
+}
+
+.title-movies {
+  font-weight: 700;
+  font-size: 15px;
+  margin: 0px;
+}
+
+.cat-movies {
+  font-size: 12px;
+  font-weight: 400;
+  color: #a0a3bd;
+}
+
+.btn-detail-movies {
+  border: 1px solid #5f2eea;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #5f2eea;
+  width: 159px;
+  height: 33px;
+  margin: 32px;
+}
+
+.btn-month-movies {
+  width: 127px;
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid #5f2eea;
+  border-radius: 4px;
+}
+
+.btn-month-movies.selected {
+  box-shadow: 0px 2px 5px rgb(95 46 234 / 30%);
+  background: #5f2eea;
+  color: #ffffff;
+}
+
+.color-black {
+  color: #14142b;
+}
+
+.nav-showing > div > hr,
+.nav-showing > div > p {
+  margin: 0px;
+}
+
+.nav-showing > div > p {
+  margin-bottom: 10px;
+}
+
+.nav-showing > div > hr {
+  background-color: #5f2eea;
+  border: none;
+  width: 100px;
+  margin-left: 1.2em;
+}
+
+.nav-showing > div > a {
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.text-head {
+  font-weight: 400;
+  color: #a0a3bd;
+  font-size: 24px;
+}
+
+.findNowText {
+  font-size: 56px;
+  color: #5f2eea;
+  font-weight: 700;
+}
+
+.joinArea {
+  font-size: 48px !important;
+}
+
+.card-showing {
+  background-color: #ffffff8f;
+  border: 2px solid #ffffff;
+}
+
+.card-movies {
+  background-color: #ffffff;
+  border: 0.5px solid #dedede;
+}
+
+.card-showing > img,
+.card-movies > img {
+  padding: 22px;
+  width: 159px;
+}
+
+.bg-grey {
+  background-color: #f5f6f8;
+}
+
+.bg-none {
+  background: none !important;
+}
+
+.element-showing {
+  margin-bottom: 104px !important;
+  overflow: hidden !important;
+}
+
+.element-showing:hover {
+  overflow: auto !important;
+}
+
+.tels {
+  margin-left: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5f2eea;
+  border-radius: 5px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -358,5 +578,60 @@ hr {
 
   .sm-w-80 {
     width: 80%;
+  }
+  .cinema {
+    box-shadow: 0px 8px 16px rgba(186, 186, 186, 0.24);
+    border-radius: 24px;
+  }
+
+  .sm-display-none {
+    display: none;
+  }
+
+  .lg-display-none {
+    display: block;
+  }
+
+  .sm-shadow-bottom {
+    box-shadow: 0px 8px 16px rgba(186, 186, 186, 0.24);
+  }
+
+  .text-head {
+    font-size: 14px;
+  }
+
+  .findNowText {
+    font-size: 48px;
+  }
+
+  .sm-container {
+    margin: 0px;
+    align-items: unset;
+    width: unset;
+  }
+
+  .sm-container-1 {
+    margin: 1em;
+    align-items: unset;
+    width: unset;
+  }
+
+  .sm-overflow {
+    overflow-x: auto !important;
+    white-space: nowrap;
+  }
+
+  .box-join {
+    text-align: center;
+  }
+
+  .btn-submit-email {
+    width: 306px;
+    margin-top: 20px;
+  }
+
+  .container-head {
+    margin-left: -50px;
+    margin-bottom: 30px;
   }
 }

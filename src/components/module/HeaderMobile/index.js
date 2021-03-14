@@ -8,7 +8,7 @@ export class HeaderMobile extends Component {
           <div class="warped-menu display-flex is-vertically-centered border-gray border-rounded2 margin-y-1">
             <img
               class="margin-left-1"
-              src="assets/images/bx_bx-search.png"
+              src="/assets/images/bx_bx-search.png"
               height="20px"
               width="20px"
               alt="search"

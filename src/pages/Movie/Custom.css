@@ -23,7 +23,6 @@
 .text-divider {
   display: flex;
   align-items: center;
-  margin-left: 25vw;
 }
 
 .text-divider::before,

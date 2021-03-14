@@ -1,0 +1,188 @@
+.custom {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: "Mulish", sans-serif;
+}
+
+body {
+  counter-reset: counter;
+}
+
+.col-md-5.right {
+  z-index: 99;
+  background-color: white;
+}
+
+.row .left {
+  background-image: url("http://localhost:3000/assets/images/bg.png");
+  min-height: 100vh;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+}
+
+.row .left .overlay {
+  background: rgba(43, 21, 107, 0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.left .wrap {
+  padding: 80px 112px;
+  height: 100vh;
+}
+
+.right .wrap {
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.form-group .form-control {
+  padding: 12px 14px;
+}
+
+.input-group-append {
+  position: absolute;
+  right: 10px;
+  top: 16px;
+  z-index: 99;
+}
+
+.btn-main {
+  background-color: #5f2eea;
+  color: white;
+  padding: 15px;
+}
+
+.link {
+  color: #5f2eea;
+}
+
+.input-group-append a {
+  color: rgb(170, 170, 170);
+}
+
+ul.step,
+li.step {
+  list-style: none;
+  padding: 0;
+  overflow: visible !important;
+}
+
+li.step {
+  padding-bottom: 1.5rem;
+  border-left: 1px solid #abaaed;
+  position: relative;
+  padding-left: 20px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+li.step:not(:first-child) {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+li.step:last-child {
+  border: 0px;
+  padding-bottom: 0;
+}
+
+li.step::before {
+  counter-increment: counter;
+  content: counter(counter);
+  border: 2px solid #ffffff;
+  width: 30px;
+  height: 30px;
+  background: rgba(43, 21, 107, 0.8);
+  text-align: center;
+  overflow: none;
+  border-radius: 50%;
+  position: absolute;
+  left: -16px;
+  line-height: 23px;
+  top: 0px;
+}
+
+li.step:first-child::before {
+  background: white;
+  color: rgba(41, 3, 65, 0.5);
+}
+
+.time {
+  color: #2a2839;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.sub-judul {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: lighter;
+  line-height: 30px;
+  font-family: sans-serif;
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+.infor {
+  font-size: 16px;
+  color: #696f79;
+  font-family: sans-serif;
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+.divider {
+  display: flex;
+}
+
+.divider hr {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  margin-top: 12px;
+}
+
+.divider span {
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+}
+
+.row .sosmed {
+  min-height: 50px;
+}
+
+.basic-card {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 10px 20px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 375px) {
+  .right .wrap {
+    padding: 20px;
+  }
+
+  .basic-card {
+    width: fit-content;
+  }
+
+  .col-6:first-child .basic-card {
+    margin-right: 0;
+  }
+
+  .col-6:last-child .basic-card {
+    margin-left: 0;
+  }
+}

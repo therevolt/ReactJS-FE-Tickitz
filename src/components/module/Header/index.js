@@ -1,18 +1,27 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Hr from "../../base/Hr";
+import { connect } from "react-redux";
 
 export class HeaderNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      search: false,
     };
   }
+  handleSearch = () => {
+    this.setState({ ...this.state, search: !this.state.search });
+  };
   handleShow = () => {
-    this.setState({ show: !this.state.show });
-    console.log(this.state.show);
+    this.setState({ ...this.state, show: !this.state.show });
+  };
+  Logged = () => {
+    return localStorage.getItem("logged") || this.props.logged;
   };
   render() {
+    let log = this.Logged();
     return (
       <nav
         className={
@@ -22,9 +31,11 @@ export class HeaderNew extends Component {
         }
       >
         <div className="container">
-          <a className="navbar-brand" href="#">
-            <img src="./assets/images/Tickitz 2.png" alt="main-logo" />
-          </a>
+          <Link to="/">
+            <a className="navbar-brand" href="#">
+              <img src="/assets/images/Tickitz 2.png" alt="main-logo" />
+            </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -42,7 +53,7 @@ export class HeaderNew extends Component {
                 <div className="warped-menu display-flex is-vertically-centered border-gray border-rounded2 margin-y-1 w-50">
                   <img
                     className="margin-left-1"
-                    src="assets/images/bx_bx-search.png"
+                    src="/assets/images/bx_bx-search.png"
                     height="20px"
                     width="20px"
                     alt="search"
@@ -54,13 +65,12 @@ export class HeaderNew extends Component {
                 <Hr />
               </li>
               <li className="nav-item">
-                <a
+                <Link
+                  to="/movies"
                   className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
-                  aria-current="page"
-                  href="#"
                 >
                   Movies
-                </a>
+                </Link>
               </li>
               <li className="nav-item lg-display-none sm-margin-y-05">
                 <Hr />
@@ -99,15 +109,54 @@ export class HeaderNew extends Component {
               </select>
             </div>
             <div className="margin-right-2 font-size-5 hover-cursor-pointer sm-display-none">
-              <img src="assets/images/bx_bx-search.png" height="20px" width="20px" alt="search" />
+              {this.state.search ? (
+                <div className="warped-menu display-flex is-vertically-centered border-gray border-rounded2">
+                  <img
+                    className="margin-left-1"
+                    src="/assets/images/bx_bx-search.png"
+                    height="20px"
+                    width="20px"
+                    alt="search"
+                  />
+                  <input
+                    className="input-form no-border"
+                    type="text"
+                    placeholder="Search . . ."
+                    onBlur={this.handleSearch}
+                  />
+                </div>
+              ) : (
+                <img
+                  src="/assets/images/bx_bx-search.png"
+                  height="20px"
+                  width="20px"
+                  alt="search"
+                  onClick={this.handleSearch}
+                />
+              )}
             </div>
-            <div className="margin-right-2 font-size-6 hover-cursor-pointer sm-margin-right-0 sm-display-none">
-              <input
-                className="btn-submit-solid sign-up border-rounded2"
-                type="submit"
-                value="Sign Up"
-              />
-            </div>
+            {log ? (
+              <div class="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
+                <Link to="/profile/3">
+                  <img
+                    src="/assets/images/Ellipse 11.png"
+                    height="56px"
+                    width="56px"
+                    alt="search"
+                  />
+                </Link>
+              </div>
+            ) : (
+              <div className="margin-right-2 font-size-6 hover-cursor-pointer sm-margin-right-0 sm-display-none">
+                <Link to="/signup">
+                  <input
+                    className="btn-submit-solid sign-up border-rounded2"
+                    type="submit"
+                    value="Sign Up"
+                  />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -115,4 +164,10 @@ export class HeaderNew extends Component {
   }
 }
 
-export default HeaderNew;
+const StateProps = (state) => {
+  return {
+    logged: state.logged,
+  };
+};
+
+export default connect(StateProps)(HeaderNew);

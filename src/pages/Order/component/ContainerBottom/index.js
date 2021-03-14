@@ -11,7 +11,7 @@ export class ContainerBottom extends Component {
           <div>
             <img
               class="img-seat-mobile border-rounded2"
-              src="./assets/images/seat_mobile.PNG"
+              src="/assets/images/seat_mobile.PNG"
               alt=""
             />
           </div>

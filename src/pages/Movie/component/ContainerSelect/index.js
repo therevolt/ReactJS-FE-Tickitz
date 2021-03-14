@@ -15,11 +15,7 @@ const ContainerSelect = () => {
           >
             <div class="display-flex position-absolute">
               <div class="margin-right-05">
-                <img
-                  style={{ marginTop: "0.8em" }}
-                  src="./assets/images/calendar (1) 1.png"
-                  alt="calendar"
-                />
+                <img src="/assets/images/calendar (1) 1.png" alt="calendar" />
               </div>
               <div class="display-flex" style={{ width: "150px" }}>
                 <DatePicker
@@ -30,9 +26,9 @@ const ContainerSelect = () => {
                 />
                 <img
                   class="position-absolute z-index--1 right-auto hover-cursor-pointer"
-                  src="./assets/images/ic_round-navigate-next.png"
+                  src="/assets/images/ic_round-navigate-next.png"
                   alt="calendar"
-                  style={{ top: "15px", width: "20px", height: "20px" }}
+                  style={{ top: "5px", width: "20px", height: "20px" }}
                 />
               </div>
             </div>
@@ -41,7 +37,7 @@ const ContainerSelect = () => {
         <div class="display-flex margin-left-2 sm-margin-left-0">
           <div class="background-gray border-rounded display-flex flex-direction-row is-vertically-centered padding-x-2 padding-y-1">
             <div class="margin-right-05">
-              <img src="./assets/images/Vector.png" alt="location" />
+              <img src="/assets/images/Vector.png" alt="location" />
             </div>
             <select
               class="no-outline no-border background-gray padding-x-1"

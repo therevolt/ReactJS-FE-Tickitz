@@ -3,6 +3,7 @@ import Hr from "../../../../components/base/Hr";
 
 export class Content extends Component {
   render() {
+    console.log(this.props);
     return (
       <div class="background-grey box-shadow">
         <div class="display-flex margin-x-5 sm-flex-direction-col sm-margin-x-0 padding-bottom-3">
@@ -32,7 +33,7 @@ export class Content extends Component {
                     <p class="text-placeholder">Movie title</p>
                   </div>
                   <div>
-                    <p class="text-bold">Spider-Man: Homecoming</p>
+                    <p class="text-bold">{this.props.data.name}</p>
                   </div>
                 </div>
 
@@ -84,42 +85,42 @@ export class Content extends Component {
                 <div class="grid grid-template-columns-4 sm-grid-template-columns-3">
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/google-pay.png"
+                    src="/assets/images/google-pay.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/visa.png"
+                    src="/assets/images/visa.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/gopay.png"
+                    src="/assets/images/gopay.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/paypal.png"
+                    src="/assets/images/paypal.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/dana.png"
+                    src="/assets/images/dana.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-display-none"
-                    src="./assets/images/bca.png"
+                    src="/assets/images/bca.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-display-none"
-                    src="./assets/images/bri.png"
+                    src="/assets/images/bri.png"
                     alt=""
                   />
                   <img
                     class="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="./assets/images/ovo.png"
+                    src="/assets/images/ovo.png"
                     alt=""
                   />
                 </div>
@@ -154,18 +155,22 @@ export class Content extends Component {
               <div class="table-detail display-flex flex-direction-col margin-top-1">
                 <div class="display-flex flex-direction-col flex-content-between margin-x-2">
                   <p>Full Name</p>
-                  <input class="input-form" type="text" value="Jonas El Rodriguez" />
+                  <input
+                    class="input-form"
+                    type="text"
+                    value={`${this.props.user.first_name} ${this.props.user.last_name}`}
+                  />
                 </div>
                 <div class="display-flex flex-direction-col flex-content-between margin-x-2">
                   <p>Email</p>
-                  <input class="input-form" type="email" value="jonasrodri123@gmail.com" />
+                  <input class="input-form" type="email" value={this.props.user.email} />
                 </div>
                 <div class="display-flex flex-direction-col flex-content-between margin-x-2">
                   <p>Phone Number</p>
                   <div class="display-flex border-gray border-rounded2 w-100 tel">
                     <div class="padding-y-1 w-10 padding-x-1">
                       <input
-                        class="w-100 h-100 no-border no-bg border-right padding-right-05"
+                        class="plus-62 w-100 h-100 no-border no-bg border-right padding-right-05"
                         type="text"
                         value="+62"
                         disabled
@@ -177,7 +182,7 @@ export class Content extends Component {
               </div>
               <div class="background-warning display-flex flex-direction-row margin-x-2 is-vertically-centered flex-content-start margin-y-2 sm-w-80">
                 <div class="margin-x-2 display-flex is-vertically-centered flex-content-start">
-                  <img src="./assets/images/clarity_warning-standard-solid.png" alt="" />
+                  <img src="/assets/images/clarity_warning-standard-solid.png" alt="" />
                   <p class="margin-x-1">Fill your data correctly.</p>
                 </div>
               </div>
