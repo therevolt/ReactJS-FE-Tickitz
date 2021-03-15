@@ -7,7 +7,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 const initState = {
-  logged: false,
+  user: null,
 };
 
 const createStored = createStore;
@@ -15,8 +15,7 @@ const createStored = createStore;
 const rootReducer = (state = initState, action) => {
   if (action.type === "LOGIN_USER") {
     return {
-      ...state,
-      logged: !state.logged,
+      user: action.user,
     };
   }
   return state;

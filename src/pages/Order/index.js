@@ -14,15 +14,13 @@ const Order = () => {
   let { id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/movies/${id}`)
-      .then((result) => {
-        if (result.data.status) {
-          setData(result.data.data[0].name);
-        } else {
-          alert(result.data.message);
-        }
-      });
+    axios.get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`).then((result) => {
+      if (result.data.status) {
+        setData(result.data.data[0].name);
+      } else {
+        alert(result.data.message);
+      }
+    });
   }, []);
 
   return (

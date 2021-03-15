@@ -14,18 +14,16 @@ const Payment = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/movies/${id}`)
+      .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)
       .then((result) => {
         setData(result.data.data[0]);
       })
       .catch((err) => {
         alert(err);
       });
-    axios
-      .get(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users/3`)
-      .then((result) => {
-        setUser(result.data.data[0]);
-      });
+    axios.get(`${process.env.REACT_APP_URL_API}/v1/users/3`).then((result) => {
+      setUser(result.data.data[0]);
+    });
   }, []);
 
   return (

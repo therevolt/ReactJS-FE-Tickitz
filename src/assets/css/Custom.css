@@ -1,3 +1,15 @@
+#pills-tab {
+  margin-bottom: 0px !important;
+}
+
+.nav-pills .nav-link.active {
+  color: black !important;
+  background-color: transparent !important;
+  border-bottom: 2px solid #5f2eea !important;
+  border-radius: 0px !important;
+  margin: 0px !important;
+}
+
 .btn-primary {
   background-color: #5f2eea !important;
   border-color: #5f2eea !important;

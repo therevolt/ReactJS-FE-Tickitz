@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 require("dotenv").config();
 
 export default function Profile() {
-  let { id } = useParams();
   let history = useHistory();
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -19,20 +18,32 @@ export default function Profile() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    console.log(data);
     setData({ ...data, ...{ [id]: value } });
   };
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users/${id}`)
-      .then((result) => {
-        if (result.data.status) {
-          setData(result.data.data[0]);
-        } else {
-          alert("data null");
-        }
-      });
+    if (localStorage.getItem("user")) {
+      axios
+        .get(
+          `${process.env.REACT_APP_URL_API}/v1/users/${JSON.parse(localStorage.getItem("user")).id}`
+        )
+        .then((result) => {
+          if (result.data.status) {
+            setData({
+              first_name: result.data.data[0].first_name,
+              last_name: result.data.data[0].last_name,
+              email: result.data.data[0].email,
+            });
+          } else {
+            alert("data null");
+          }
+        })
+        .catch(() => {
+          history.push("/");
+        });
+    } else {
+      history.push("/signup");
+    }
   }, []);
 
   const handleShowPass = (e) => {
@@ -55,7 +66,7 @@ export default function Profile() {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("logged");
+        localStorage.removeItem("user");
         history.push("/");
       }
     });
@@ -63,23 +74,34 @@ export default function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .put(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users/${id}`, {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: data.password,
-      })
-      .then((result) => {
-        if (result.data.status) {
-          Swal.fire("Success", "Updated Data Successfuly", "success");
-        } else {
-          Swal.fire("ERROR!", result.data.message, "error");
-        }
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+    console.log(`${data.password} || ${data.confirmPassword}`);
+    if (data.password !== data.confirmPassword) {
+      Swal.fire("ERROR!", "confirm password does not match the new password", "warning");
+    } else {
+      axios
+        .put(
+          `${process.env.REACT_APP_URL_API}/v1/users/${
+            JSON.parse(localStorage.getItem("user")).id
+          }`,
+          {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            password: data.password,
+          }
+        )
+        .then((result) => {
+          if (result.data.status) {
+            Swal.fire("Success", "Updated Data Successfuly", "success");
+            setData({ ...data, password: "", confirmPassword: "" });
+          } else {
+            Swal.fire("ERROR!", result.data.message, "error");
+          }
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
+    }
   };
 
   return (
@@ -234,6 +256,7 @@ export default function Profile() {
                                 placeholder="Write your password"
                                 className="form-control input-form"
                                 onChange={handleChange}
+                                value={data.password}
                               />
                               <div className="input-group-append">
                                 <a href="#" onClick={handleShowPass}>
@@ -246,12 +269,13 @@ export default function Profile() {
                             <label htmlFor="last_name">Confirm Password</label>
                             <div className="input-group" id="show_hide_password">
                               <input
-                                id="password"
+                                id="confirmPassword"
                                 type={show2 ? "text" : "password"}
                                 name="password"
                                 placeholder="Write your password"
                                 className="form-control input-form"
                                 onChange={handleChange}
+                                value={data.confirmPassword}
                               />
                               <div className="input-group-append">
                                 <a href="#" onClick={handleShowPass2}>

@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import CardLogWith from "./components/CardLogWith";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 require("dotenv").config();
 
 const Signup = () => {
@@ -16,6 +17,7 @@ const Signup = () => {
     password: "",
     agree: false,
   });
+  let history = useHistory();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -30,24 +32,25 @@ const Signup = () => {
     if (data.email.match(/@\w*.\w*/g)) {
       if (data.agree) {
         axios
-          .post(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users`, data)
+          .post(`${process.env.REACT_APP_URL_API}/v1/users`, data)
           .then((result) => {
             if (result.data.status) {
-              alert(JSON.stringify(result.data.message));
+              Swal.fire("SUCCESS", result.data.message, "success");
+              history.push("/signin");
             } else {
-              alert(JSON.stringify(result.data.message));
+              Swal.fire("SOMETHING WRONG!", result.data.message, "warning");
             }
           })
           .catch((err) => {
             if (err.response) {
-              alert(err.response.data.message);
+              Swal.fire("ERROR", err.response.data.message, "error");
             }
           });
       } else {
-        alert("you must agree");
+        Swal.fire("HEY!", "you must agree", "warning");
       }
     } else {
-      alert("nooo");
+      Swal.fire("HEY!", "user & pass cannot be empty", "info");
     }
   };
 

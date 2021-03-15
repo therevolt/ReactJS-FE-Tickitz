@@ -2,19 +2,20 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
+import Swal from "sweetalert2";
 
 export class CardMovie extends Component {
   handleDelete = (setData) => {
-    axios.delete(`http://localhost:6000/v1/movies/${this.props.id}`).then((result) => {
+    axios.delete(`${process.env.REACT_APP_URL_API}/v1/movies/${this.props.id}`).then((result) => {
       if (result.data.status) {
-        alert(result.data.message);
+        Swal.fire("SUCCESS", result.data.message, "success");
         setData(null);
       }
     });
   };
 
   Logged = () => {
-    return localStorage.getItem("logged") || this.props.logged;
+    return localStorage.getItem("user") || this.props.user;
   };
 
   render() {

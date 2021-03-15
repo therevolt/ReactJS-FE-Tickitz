@@ -3,7 +3,6 @@ import Hr from "../../../../components/base/Hr";
 
 export class Content extends Component {
   render() {
-    console.log(this.props);
     return (
       <div class="background-grey box-shadow">
         <div class="display-flex margin-x-5 sm-flex-direction-col sm-margin-x-0 padding-bottom-3">

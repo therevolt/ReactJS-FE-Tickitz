@@ -13,10 +13,7 @@ export class ContainerTop extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        `${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/movies/` +
-          this.props.id
-      )
+      .get(`${process.env.REACT_APP_URL_API}/v1/movies/` + this.props.id)
       .then((result) => {
         this.setState({ movie: result.data.data });
       })

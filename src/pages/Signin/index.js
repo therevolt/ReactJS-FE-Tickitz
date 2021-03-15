@@ -6,6 +6,7 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 require("dotenv").config();
 
 const Signin = (props) => {
@@ -30,19 +31,16 @@ const Signin = (props) => {
     if (data.email.match(/@\w*.\w*/g)) {
       if (data.agree) {
         axios
-          .post(
-            `${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/users/login`,
-            data
-          )
+          .post(`${process.env.REACT_APP_URL_API}/v1/users/login`, data)
           .then((result) => {
-            console.log(result.data);
+            console.log(result.data.data[0]);
             if (result.data.status) {
-              Swal.fire(result.data.message);
-              props.LoginUser();
-              localStorage.setItem("logged", true);
+              Swal.fire("GREAT!", result.data.message, "success");
+              props.LoginUser(result.data.data[0]);
+              localStorage.setItem("user", JSON.stringify(result.data.data[0]));
               history.replace("/");
             } else {
-              Swal.fire(result.data.message);
+              Swal.fire("HMMMMM...", result.data.message, "warning");
             }
           })
           .catch((err) => {
@@ -51,10 +49,10 @@ const Signin = (props) => {
             }
           });
       } else {
-        Swal.fire("you must agree");
+        Swal.fire("HEY!", "you must agree", "info");
       }
     } else {
-      Swal.fire("nooo");
+      Swal.fire("HEY!", "user & pass cannot be empty", "info");
     }
   };
 
@@ -132,7 +130,11 @@ const Signin = (props) => {
               Forgot your password?
               <a href="" className="font-weight-bold link">
                 Reset now
-              </a>
+              </a>{" "}
+              | Not Have Account?
+              <Link to="/signup" className="font-weight-bold link">
+                Register Now
+              </Link>
             </p>
             <div className="divider">
               <hr />
@@ -152,7 +154,7 @@ const Signin = (props) => {
 
 const DispatchProps = (dispatch) => {
   return {
-    LoginUser: () => dispatch({ type: "LOGIN_USER" }),
+    LoginUser: (state) => dispatch({ type: "LOGIN_USER", user: state }),
   };
 };
 

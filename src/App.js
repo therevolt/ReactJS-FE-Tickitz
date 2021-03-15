@@ -6,7 +6,7 @@ import Signup from "./pages/Signup";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
-import DeleteMovie from "./pages/Admin/DeleteMovies";
+import DeleteMovie from "./pages/Admin/PageMovie";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         </Route>
         <Route path="/movie/:id" children={<Movie />} />
         <Route path="/order/:id" children={<Order />} />
-        <Route path="/profile/:id" children={<Profile />} />
+        <Route path="/profile" children={<Profile />} />
         <Route path="/movies" children={<DeleteMovie />} />
         <Route path="/payment/:id" children={<Payment />} />
       </Switch>

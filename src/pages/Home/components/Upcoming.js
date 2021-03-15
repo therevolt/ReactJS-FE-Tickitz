@@ -12,14 +12,16 @@ export class Upcoming extends Component {
   }
 
   componentDidMount() {
+    console.log(process.env);
     axios
-      .get(`${process.env.REACT_APP_URL_API}:${process.env.REACT_APP_PORT_API}/v1/movies`)
+      .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
       .then((result) => {
         if (result.data.status) {
           this.setState({ ...this.state, movie: result.data.data });
         }
       })
       .catch((err) => {
+        console.log(err);
         alert(err.response.data.message);
       });
   }
