@@ -8,9 +8,10 @@ import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useHistory, useParams } from "react-router";
 import Swal from "sweetalert2";
+import { connect } from "react-redux";
 require("dotenv").config();
 
-export default function Profile() {
+const Profile = (props) => {
   let history = useHistory();
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -22,11 +23,9 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (props.user) {
       axios
-        .get(
-          `${process.env.REACT_APP_URL_API}/v1/users/${JSON.parse(localStorage.getItem("user")).id}`
-        )
+        .get(`${process.env.REACT_APP_URL_API}/v1/users/${props.user.id}`)
         .then((result) => {
           if (result.data.status) {
             setData({
@@ -314,4 +313,12 @@ export default function Profile() {
       </div>
     </>
   );
-}
+};
+
+const StateProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(StateProps)(Profile);
