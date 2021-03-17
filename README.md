@@ -25,3 +25,19 @@ cd ReactJS-FE-Tickitz
 ```
 - Open Command/Terminal
 - Type ``` npm start ``` To Start The Script
+
+## 🔎 Preview Design <a name = "preview"></a>
+- <b>Sign In Page</b>
+![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/signin.PNG)
+- <b>Home Page</b>
+![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/home.PNG)
+- <b>Movie Detail Page</b>
+![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/movies.PNG)
+- <b>Order Page</b>
+![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/order.PNG)
+- <b>Payment Page</b>
+![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/payment.PNG)
+
+## 💻 Live Demo <a name = "live_demo"></a>
+
+[Netlify](https://react-tickitz.netlify.app)
