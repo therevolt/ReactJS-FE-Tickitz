@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../components/module/Header";
-import HeaderMobile from "../../components/module/HeaderMobile";
 import Footer from "../../components/module/Footer";
 import "../../assets/css/Main.css";
 import "./Custom.css";
@@ -15,13 +14,12 @@ const Payment = () => {
   return (
     <>
       <Header />
-      <HeaderMobile />
-      <div class="absolute-container">
+      <div className="absolute-container">
         <ContainerTop id={id} />
         <ContainerSelect />
         <ContainerContent id={id} />
         <ViewMore />
-        <div class="margin-y-3 sm-container">
+        <div className="margin-y-3 sm-container">
           <Footer />
         </div>
       </div>

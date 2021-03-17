@@ -11,7 +11,7 @@ export class NowShowing extends Component {
               <hr size="5" />
             </div>
             <div>
-              <a href="#">view all</a>
+              <span>view all</span>
             </div>
           </div>
           <div className="element-showing display-flex margin-y-3 flex-content-between sm-overflow">

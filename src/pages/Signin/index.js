@@ -106,9 +106,9 @@ const Signin = (props) => {
                   value={data.password}
                 />
                 <div className="input-group-append">
-                  <a href="#" onClick={handleShowPass}>
+                  <span onClick={handleShowPass}>
                     <FontAwesomeIcon icon={show ? faEye : faEyeSlash} />
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -128,10 +128,7 @@ const Signin = (props) => {
             </button>
             <p className="infor text-center mt-4">
               Forgot your password?
-              <a href="" className="font-weight-bold link">
-                Reset now
-              </a>{" "}
-              | Not Have Account?
+              <span className="font-weight-bold link">Reset now</span> | Not Have Account?
               <Link to="/signup" className="font-weight-bold link">
                 Register Now
               </Link>

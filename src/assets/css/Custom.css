@@ -2,6 +2,15 @@
   margin-bottom: 0px !important;
 }
 
+.card.history {
+  width: 52vw;
+  margin-top: 30px;
+}
+
+.show-details {
+  width: 115px;
+}
+
 .nav-pills .nav-link.active {
   color: black !important;
   background-color: transparent !important;
@@ -251,6 +260,7 @@ hr {
   font-weight: 700;
   font-size: 15px;
   margin: 0px;
+  max-width: 120px;
 }
 
 .cat-movies {
@@ -304,9 +314,10 @@ hr {
   margin-left: 1.2em;
 }
 
-.nav-showing > div > a {
+.nav-showing > div > span {
   text-decoration: none;
   font-size: 16px;
+  color: #5f2eea;
 }
 
 .text-head {
@@ -338,7 +349,9 @@ hr {
 .card-showing > img,
 .card-movies > img {
   padding: 22px;
-  width: 159px;
+  width: auto;
+  max-width: 200px;
+  border-radius: 30px;
 }
 
 .bg-grey {
@@ -370,6 +383,37 @@ hr {
 ::-webkit-scrollbar-thumb {
   background: #5f2eea;
   border-radius: 5px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input#minutes {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  margin-left: 15px;
+  text-align: center;
+}
+
+.input-form.datepicker {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.label-edit {
+  margin: 15px 0px;
+}
+textarea {
+  overflow: hidden;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+textarea:hover {
+  overflow: auto;
 }
 
 @media only screen and (max-width: 768px) {
@@ -645,5 +689,13 @@ hr {
   .container-head {
     margin-left: -50px;
     margin-bottom: 30px;
+  }
+
+  .btn-order {
+    max-width: 350px;
+    width: 85vw !important;
+  }
+  h5.card-title {
+    max-width: 155px;
   }
 }

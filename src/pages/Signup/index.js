@@ -117,9 +117,9 @@ const Signup = () => {
                   value={data.password}
                 />
                 <div className="input-group-append">
-                  <a href="#" onClick={handleShowPass}>
+                  <span onClick={handleShowPass}>
                     <FontAwesomeIcon icon={show ? faEye : faEyeSlash} />
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -140,9 +140,7 @@ const Signup = () => {
             <p className="infor text-center mt-4">
               Do you already have an account?
               <Link to="/signin">
-                <a href="" className="font-weight-bold link">
-                  Log in
-                </a>
+                <span className="font-weight-bold link">Log in</span>
               </Link>
             </p>
             <div className="divider">

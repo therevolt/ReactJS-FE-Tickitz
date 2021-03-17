@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/module/Header";
-import HeaderMobile from "../../components/module/HeaderMobile";
 import Footer from "../../components/module/Footer";
 import "../../assets/css/Main.css";
 import Content from "./components/Content";
@@ -13,26 +12,27 @@ const Payment = () => {
   let { id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)
-      .then((result) => {
-        setData(result.data.data[0]);
-      })
-      .catch((err) => {
-        alert(err);
+    if (!data) {
+      axios
+        .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)
+        .then((result) => {
+          setData(result.data.data[0]);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+      axios.get(`${process.env.REACT_APP_URL_API}/v1/users/3`).then((result) => {
+        setUser(result.data.data[0]);
       });
-    axios.get(`${process.env.REACT_APP_URL_API}/v1/users/3`).then((result) => {
-      setUser(result.data.data[0]);
-    });
-  }, []);
+    }
+  });
 
   return (
     <>
       <Header />
-      <HeaderMobile />
-      <div class="absolute-container">
+      <div className="absolute-container">
         {user && <Content data={data} user={user} />}
-        <div class="margin-y-3 sm-container">
+        <div className="margin-y-3 sm-container">
           <Footer />
         </div>
       </div>

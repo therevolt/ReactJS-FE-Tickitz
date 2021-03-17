@@ -4,7 +4,7 @@ import CardCinemas from "../CardCinemas";
 export class ContainerContent extends Component {
   render() {
     return (
-      <div class="grid margin-x-3 grid-template-columns-3 margin-bottom-05 sm-grid-template-columns-1 sm-margin-x-05">
+      <div className="grid margin-x-3 grid-template-columns-3 margin-bottom-05 sm-grid-template-columns-1 sm-margin-x-05">
         <CardCinemas
           cinema="ebv.id"
           location="Whatever street No.12, South Purwokerto"

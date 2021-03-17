@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/module/Header";
-import HeaderMobile from "../../components/module/HeaderMobile";
 import Footer from "../../components/module/Footer";
 import "../../assets/css/Main.css";
 import ContainerTop from "./component/ContainerTop/index.js";
@@ -14,22 +13,24 @@ const Order = () => {
   let { id } = useParams();
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`).then((result) => {
-      if (result.data.status) {
-        setData(result.data.data[0].name);
-      } else {
-        alert(result.data.message);
-      }
-    });
-  }, []);
+    if (!data) {
+      axios.get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`).then((result) => {
+        if (result.data.status) {
+          setData(result.data.data[0].name);
+        } else {
+          alert(result.data.message);
+        }
+      });
+    }
+  });
 
   return (
     <>
       <Header />
-      <div class="absolute-container">
+      <div className="absolute-container">
         {data && <ContainerTop title={data.replace(/\(\d*\)/gi, "")} id={id} />}
-        <ContainerBottom />
-        <div class="margin-y-3 sm-container">
+        {data && <ContainerBottom id={id} />}
+        <div className="margin-y-3 sm-container">
           <Footer />
         </div>
       </div>

@@ -21,24 +21,26 @@ export class CardMovie extends Component {
   render() {
     let log = this.Logged();
     return (
-      <div class="col">
-        <div class="card" style={{ maxHeight: "300px" }}>
+      <div className="col">
+        <div className="card" style={{ maxHeight: "300px" }}>
           <img
             src={this.props.img}
-            class="card-img-top"
+            className="card-img-top"
             alt="..."
             style={{ maxHeight: "200px", padding: "20px 50px" }}
           />
           {log ? (
-            <div class="card-body d-flex flex-column align-items-center">
-              <span class="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
-                <h5 class="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
+            <div className="card-body d-flex flex-column align-items-center">
+              <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
+                <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
               </span>
-              <p class="card-text">
+              <p className="card-text">
                 <Link to={`/movie/${this.props.id}`}>
                   <button className="btn btn-primary me-2">View</button>
                 </Link>
-                <button className="btn btn-primary me-2">Edit</button>
+                <Link to={`/movie/edit/${this.props.id}`}>
+                  <button className="btn btn-primary me-2">Edit</button>
+                </Link>
                 <button
                   id={this.props.id}
                   className="btn btn-danger"
@@ -49,9 +51,9 @@ export class CardMovie extends Component {
               </p>
             </div>
           ) : (
-            <div class="card-body d-flex flex-column align-items-center">
-              <span class="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
-                <h5 class="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
+            <div className="card-body d-flex flex-column align-items-center">
+              <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
+                <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
               </span>
               <Link to={`/movie/${this.props.id}`}>
                 <input

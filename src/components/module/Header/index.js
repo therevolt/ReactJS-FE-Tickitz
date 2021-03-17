@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Hr from "../../base/Hr";
 import { connect } from "react-redux";
@@ -9,6 +9,21 @@ const HeaderNew = (props) => {
     search: false,
     title: "",
   });
+
+  useEffect(() => {
+    if (data.title === "" && data.search) {
+      console.log("in");
+      if (props.fireEvent) {
+        history.push("/movies");
+        props.fireEvent(null);
+      }
+    } else if (props.fireEvent && data.search) {
+      props.fireEvent(null);
+      history.push(`/movies?title=${data.title}`);
+    }
+    // eslint-disable-next-line
+  }, [data]);
+
   let history = useHistory();
   const handleSearch = () => {
     setData({ ...data, search: !data.search });
@@ -22,11 +37,10 @@ const HeaderNew = (props) => {
 
   const handleChangeSearch = (e) => {
     e.preventDefault();
-    setData({ ...data, title: e.target.value });
+    setData((prev) => ({ ...prev, title: e.target.value }));
   };
 
   const handleSearchMovie = (e) => {
-    console.log(e.key);
     if (e.key === "Enter") {
       history.push(`/movies?title=${data.title}`);
     }
@@ -43,9 +57,9 @@ const HeaderNew = (props) => {
     >
       <div className="container">
         <Link to="/">
-          <a className="navbar-brand" href="#">
+          <span className="navbar-brand">
             <img src="/assets/images/Tickitz 2.png" alt="main-logo" />
-          </a>
+          </span>
         </Link>
         <button
           className="navbar-toggler"
@@ -87,17 +101,17 @@ const HeaderNew = (props) => {
               <Hr />
             </li>
             <li className="nav-item">
-              <a className="nav-link sm-text-center sm-margin-y-05 text-bold text-title" href="#">
+              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
                 Cinemas
-              </a>
+              </span>
             </li>
             <li className="nav-item lg-display-none sm-margin-y-05">
               <Hr />
             </li>
             <li className="nav-item">
-              <a className="nav-link sm-text-center sm-margin-y-05 text-bold text-title" href="#">
+              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
                 Buy Ticket
-              </a>
+              </span>
             </li>
             <li className="nav-item lg-display-none sm-margin-y-05">
               <Hr />
@@ -135,6 +149,7 @@ const HeaderNew = (props) => {
                   placeholder="Search . . ."
                   onBlur={handleSearch}
                   onChange={handleChangeSearch}
+                  autoFocus={true}
                   onKeyPress={handleSearchMovie}
                 />
               </div>
@@ -149,7 +164,7 @@ const HeaderNew = (props) => {
             )}
           </div>
           {log ? (
-            <div class="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
+            <div className="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
               <Link to="/profile">
                 <img src="/assets/images/Ellipse 11.png" height="56px" width="56px" alt="search" />
               </Link>

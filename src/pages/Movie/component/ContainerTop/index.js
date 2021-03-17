@@ -39,49 +39,48 @@ export class ContainerTop extends Component {
       duration = this.state.movie[0].duration;
       director = this.state.movie[0].director;
       casts = JSON.parse(this.state.movie[0].casts).join(", ");
-      console.log(casts);
       desc = this.state.movie[0].description;
     } else {
-      title = "asdsadsa";
+      title = "";
       image = "/assets/images/Rectangle 119.png";
-      genre = "kodsakdsao";
-      release = "kodsa213123";
-      duration = "123123";
-      director = "sadoqw sda";
-      casts = "asdasdsa. dsasad ,dsa as";
-      desc = "saokdosakdosakdosakdoakdosaksa";
+      genre = "";
+      release = "";
+      duration = "";
+      director = "";
+      casts = "";
+      desc = "";
     }
 
     return (
-      <div class="display-flex margin-x-3 margin-y-5 sm-margin-x-05 flex-direction-row sm-flex-direction-col">
-        <div class="display-flex-30 padding-x-2 sm-margin-bottom-1">
-          <div class="w-100 h-100 border-gray border-rounded display-flex flex-direction-col flex-content-center is-vertically-centered padding-1">
+      <div className="display-flex margin-x-3 margin-y-5 sm-margin-x-05 flex-direction-row sm-flex-direction-col">
+        <div className="display-flex-30 padding-x-2 sm-margin-bottom-1">
+          <div className="w-100 h-100 border-gray border-rounded display-flex flex-direction-col flex-content-center is-vertically-centered padding-1">
             <img src={image} alt="movie" />
           </div>
         </div>
-        <div class="display-flex-70 flex-direction-col margin-bottom-2">
-          <div class="margin-bottom-3 sm-text-center">
-            <h4 class="font-size-4 margin-bottom-05 text-title">{title}</h4>
+        <div className="display-flex-70 flex-direction-col margin-bottom-2">
+          <div className="margin-bottom-3 sm-text-center">
+            <h4 className="font-size-4 margin-bottom-05 text-title">{title}</h4>
             <span>{genre}</span>
           </div>
-          <div class="display-flex">
-            <div class="display-flex-30 flex-direction-col sm-display-flex-50">
-              <div class="margin-bottom-2">
-                <h5 class="text-title font-size-5 margin-bottom-05">Release date</h5>
+          <div className="display-flex">
+            <div className="display-flex-30 flex-direction-col sm-display-flex-50">
+              <div className="margin-bottom-2">
+                <h5 className="text-title font-size-5 margin-bottom-05">Release date</h5>
                 <span>{release}</span>
               </div>
-              <div class="margin-bottom-1">
-                <h5 class="text-title font-size-5 margin-bottom-05">Duration</h5>
+              <div className="margin-bottom-1">
+                <h5 className="text-title font-size-5 margin-bottom-05">Duration</h5>
                 <span>{duration}</span>
               </div>
             </div>
-            <div class="display-flex-70 flex-direction-col sm-display-flex-50">
-              <div class="margin-bottom-2">
-                <h5 class="text-title font-size-5 margin-bottom-05">Directed by</h5>
+            <div className="display-flex-70 flex-direction-col sm-display-flex-50">
+              <div className="margin-bottom-2">
+                <h5 className="text-title font-size-5 margin-bottom-05">Directed by</h5>
                 <span>{director}</span>
               </div>
-              <div class="margin-bottom-1">
-                <h5 class="text-title font-size-5 margin-bottom-05">Casts</h5>
+              <div className="margin-bottom-1">
+                <h5 className="text-title font-size-5 margin-bottom-05">Casts</h5>
                 <span
                   className="d-inline-block text-truncate"
                   data-bs-toggle="tooltip"
@@ -95,10 +94,10 @@ export class ContainerTop extends Component {
             </div>
           </div>
           <Hr children="margin-y-2" />
-          {/* <hr class="hr w-100 margin-y-2" /> */}
+          {/* <hr className="hr w-100 margin-y-2" /> */}
           <div>
-            <h5 class="text-title font-size-5 margin-bottom-05">Synopsis</h5>
-            <p class="synopsys">{desc}</p>
+            <h5 className="text-title font-size-5 margin-bottom-05">Synopsis</h5>
+            <p className="synopsys">{desc}</p>
           </div>
         </div>
       </div>

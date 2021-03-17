@@ -12,7 +12,6 @@ export class Upcoming extends Component {
   }
 
   componentDidMount() {
-    console.log(process.env);
     axios
       .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
       .then((result) => {
@@ -21,7 +20,6 @@ export class Upcoming extends Component {
         }
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response.data.message);
       });
   }
@@ -34,7 +32,7 @@ export class Upcoming extends Component {
             <p className="color-black">Upcoming Movies</p>
           </div>
           <div>
-            <a href="#">view all</a>
+            <span>view all</span>
           </div>
         </div>
         <div className="month-movies margin-top-2 sm-overflow">
@@ -53,13 +51,14 @@ export class Upcoming extends Component {
         </div>
         <div className="element-showing display-flex flex-direction-row margin-y-3 flex-content-between sm-overflow">
           {this.state.movie !== "" &&
-            this.state.movie.map((item) => {
+            this.state.movie.map((item, i) => {
               return (
                 <CardMovieUpcoming
                   title={item.name.replace(/\(\d*\)/gi, "")}
                   genre={item.genre}
                   image={item.image}
                   id={item.id}
+                  key={i}
                 />
               );
             })}

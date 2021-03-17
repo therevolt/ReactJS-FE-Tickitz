@@ -6,13 +6,14 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { connect } from "react-redux";
 require("dotenv").config();
 
 const Profile = (props) => {
   let history = useHistory();
+  const user = props.user ? props.user.id : JSON.parse(localStorage.getItem("user")).id;
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [data, setData] = useState(null);
@@ -23,9 +24,9 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
-    if (props.user) {
+    if (user) {
       axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/users/${props.user.id}`)
+        .get(`${process.env.REACT_APP_URL_API}/v1/users/${user}`)
         .then((result) => {
           if (result.data.status) {
             setData({
@@ -37,13 +38,14 @@ const Profile = (props) => {
             alert("data null");
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           history.push("/");
         });
     } else {
       history.push("/signup");
     }
-  }, []);
+  });
 
   const handleShowPass = (e) => {
     e.preventDefault();
@@ -73,22 +75,16 @@ const Profile = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`${data.password} || ${data.confirmPassword}`);
     if (data.password !== data.confirmPassword) {
-      Swal.fire("ERROR!", "confirm password does not match the new password", "warning");
+      Swal.fire("ERROR!", "Passwords Do Not Match", "warning");
     } else {
       axios
-        .put(
-          `${process.env.REACT_APP_URL_API}/v1/users/${
-            JSON.parse(localStorage.getItem("user")).id
-          }`,
-          {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            email: data.email,
-            password: data.password,
-          }
-        )
+        .put(`${process.env.REACT_APP_URL_API}/v1/users/${user}`, {
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          password: data.password,
+        })
         .then((result) => {
           if (result.data.status) {
             Swal.fire("Success", "Updated Data Successfuly", "success");
@@ -106,11 +102,11 @@ const Profile = (props) => {
   return (
     <>
       <HeaderNew />
-      <div class="absolute-container bg-grey">
+      <div className="absolute-container bg-grey">
         {data && (
           <div className="container mb-3">
-            <div class="row pt-5 d-flex">
-              <div class="col-lg-3 d-flex flex-column bg-white me-5 border-rounded2">
+            <div className="row pt-5 d-flex">
+              <div className="col-lg-3 d-flex flex-column bg-white me-5 border-rounded2">
                 <div className="d-flex px-4 justify-content-between pt-4">
                   <span className="fs-4">Info</span>
                   <span className="fs-4 fw-bold" style={{ color: "#5F2EEA" }}>
@@ -118,7 +114,7 @@ const Profile = (props) => {
                   </span>
                 </div>
                 <div className="d-flex flex-column align-items-center">
-                  <img src="/assets/images/profile.png" className="py-4" />
+                  <img src="/assets/images/profile.png" className="py-4" alt="" />
                   <p className="fw-bold" style={{ marginBottom: "0px" }}>
                     {data ? `${data.first_name} ${data.last_name}` : "Users2021"}
                   </p>
@@ -146,12 +142,12 @@ const Profile = (props) => {
                 </div>
               </div>
 
-              <div class="col-8 bg-white border-rounded2">
+              <div className="col-8 bg-white border-rounded2">
                 <div className="py-4">
-                  <ul class="nav nav-pills mb-3 px-4" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
+                  <ul className="nav nav-pills mb-3 px-4" id="pills-tab" role="tablist">
+                    <li className="nav-item" role="presentation">
                       <button
-                        class="nav-link active"
+                        className="nav-link active"
                         id="pills-home-tab"
                         data-bs-toggle="pill"
                         data-bs-target="#pills-home"
@@ -163,9 +159,9 @@ const Profile = (props) => {
                         Account Settings
                       </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li className="nav-item" role="presentation">
                       <button
-                        class="nav-link"
+                        className="nav-link"
                         id="pills-profile-tab"
                         data-bs-toggle="pill"
                         data-bs-target="#pills-profile"
@@ -179,9 +175,9 @@ const Profile = (props) => {
                     </li>
                   </ul>
                   <Hr />
-                  <div class="tab-content pt-3 px-4 d-flex" id="pills-tabContent">
+                  <div className="tab-content pt-3 px-4 d-flex" id="pills-tabContent">
                     <div
-                      class="tab-pane fade show active"
+                      className="tab-pane fade show active"
                       id="pills-home"
                       role="tabpanel"
                       aria-labelledby="pills-home-tab"
@@ -222,17 +218,17 @@ const Profile = (props) => {
                           </div>
                           <div className="col-6 d-flex flex-column pt-4">
                             <label htmlFor="last_name">Phone Number</label>
-                            <div class="display-flex border-gray border-rounded2 w-100 tel">
-                              <div class="padding-y-1 w-10 padding-x-1">
+                            <div className="display-flex border-gray border-rounded2 w-100 tel">
+                              <div className="padding-y-1 w-10 padding-x-1">
                                 <input
-                                  class="plus-62 w-100 h-100 no-border no-bg border-right padding-right-05"
+                                  className="plus-62 w-100 h-100 no-border no-bg border-right padding-right-05"
                                   type="text"
                                   value="+62"
                                   disabled
                                 />
                               </div>
                               <input
-                                class="input-form no-border tels"
+                                className="input-form no-border tels"
                                 type="tel"
                                 value="81445687121"
                               />
@@ -258,9 +254,9 @@ const Profile = (props) => {
                                 value={data.password}
                               />
                               <div className="input-group-append">
-                                <a href="#" onClick={handleShowPass}>
+                                <span onClick={handleShowPass}>
                                   <FontAwesomeIcon icon={show ? faEye : faEyeSlash} />
-                                </a>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -277,9 +273,9 @@ const Profile = (props) => {
                                 value={data.confirmPassword}
                               />
                               <div className="input-group-append">
-                                <a href="#" onClick={handleShowPass2}>
+                                <span onClick={handleShowPass2}>
                                   <FontAwesomeIcon icon={show2 ? faEye : faEyeSlash} />
-                                </a>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -293,12 +289,58 @@ const Profile = (props) => {
                       </div>
                     </div>
                     <div
-                      class="tab-pane fade"
+                      className="tab-pane fade"
                       id="pills-profile"
                       role="tabpanel"
                       aria-labelledby="pills-profile-tab"
                     >
-                      ...
+                      <div className="card history border-rounded2">
+                        <div className="d-flex py-4 px-4 justify-content-between">
+                          <div className="d-flex flex-column">
+                            <p className="text-placeholder mb-0">Tuesday, 07 July 2020 - 04:30pm</p>
+                            <p className="text-bold fs-3">Spiderman</p>
+                          </div>
+                          <img src="/assets/images/CineOne21.png" alt="" />
+                        </div>
+                        <Hr />
+                        <div className="card-body">
+                          <div className="d-flex justify-content-between px-2">
+                            <span
+                              className="btn btn-success"
+                              style={{ backgroundColor: "#00BA88", border: "none" }}
+                            >
+                              Ticket in active
+                            </span>
+                            <div className="d-flex flex-nowrap align-self-center">
+                              <span className="text-placeholder flex-nowrap show-details">
+                                Show Details
+                              </span>
+                              <img src="/assets/images/ic_round-navigate-next.png" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card history border-rounded2">
+                        <div className="d-flex py-4 px-4 justify-content-between">
+                          <div className="d-flex flex-column">
+                            <p className="text-placeholder mb-0">Tuesday, 07 July 2020 - 04:30pm</p>
+                            <p className="text-bold fs-3">Spiderman</p>
+                          </div>
+                          <img src="/assets/images/ebv.id.png" alt="" />
+                        </div>
+                        <Hr />
+                        <div className="card-body">
+                          <div className="d-flex justify-content-between px-2">
+                            <span className="btn btn-secondary">Ticket used</span>
+                            <div className="d-flex flex-nowrap align-self-center">
+                              <span className="text-placeholder flex-nowrap show-details">
+                                Show Details
+                              </span>
+                              <img src="/assets/images/ic_round-navigate-next.png" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -307,7 +349,7 @@ const Profile = (props) => {
           </div>
         )}
 
-        <div class="margin-y-3 sm-container bg-white">
+        <div className="margin-y-3 sm-container bg-white">
           <Footer />
         </div>
       </div>

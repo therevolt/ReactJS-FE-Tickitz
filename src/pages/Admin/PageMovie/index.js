@@ -16,6 +16,7 @@ export default function DeleteMovie() {
   useEffect(() => {
     if (!data) {
       if (query.get("title")) {
+        console.log(query.get("title"));
         axios
           .get(`${process.env.REACT_APP_URL_API}/v1/movies/search?title=${query.get("title")}`)
           .then((result) => {
@@ -35,15 +36,16 @@ export default function DeleteMovie() {
         });
       }
     }
+    // eslint-disable-next-line
   }, [data]);
 
   return (
     <>
-      <HeaderNew />
+      <HeaderNew fireEvent={setData} />
       <div className="bg-grey">
         <div className="border-rounded2">
-          <div className="px-5 py-5 mx-5">
-            <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div className="px-md-5 py-md-5 mx-md-5 px-3 py-3 mx-0">
+            <div className="row row-cols-2 row-cols-md-4 g-4">
               {data &&
                 data.map((item) => {
                   return (
@@ -54,7 +56,7 @@ export default function DeleteMovie() {
           </div>
         </div>
       </div>
-      <div class="margin-y-3 sm-container bg-white">
+      <div className="margin-y-3 sm-container bg-white">
         <Footer />
       </div>
     </>
