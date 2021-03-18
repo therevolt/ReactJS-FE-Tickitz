@@ -18,31 +18,29 @@ export default function DeleteMovie() {
 
   useEffect(() => {
     if (!data) {
-      if (query.get("title")) {
-        console.log(query.get("title"));
-        axios
-          .get(`${process.env.REACT_APP_URL_API}/v1/movies/search?title=${query.get("title")}`)
-          .then((result) => {
-            if (result.data.status) {
-              setData(result.data.data);
-              setDataAPI(result.data.data);
+      axios.get(`${process.env.REACT_APP_URL_API}/v1/movies`).then((result) => {
+        if (result.data.status) {
+          if (query.get("title")) {
+            const filteredData = result.data.data.filter((item) =>
+              item.name.toLowerCase().includes(query.get("title").toLowerCase())
+            );
+            if (filteredData.length === 0) {
+              Swal.fire("Data Not Found", "Try With Other Genre");
             } else {
-              alert(result.data.message);
+              setData(filteredData);
+              setDataAPI(result.data.data);
             }
-          });
-      } else {
-        axios.get(`${process.env.REACT_APP_URL_API}/v1/movies`).then((result) => {
-          if (result.data.status) {
+          } else {
             setData(result.data.data);
             setDataAPI(result.data.data);
-          } else {
-            alert(result.data.message);
           }
-        });
-      }
+        } else {
+          alert(result.data.message);
+        }
+      });
     }
     // eslint-disable-next-line
-  }, [data]);
+  }, []);
 
   const handleRefreshData = () => setData(dataAPI);
 
@@ -61,13 +59,30 @@ export default function DeleteMovie() {
     }
   };
 
+  const handleSearchTitle = (value) => {
+    const filteredData = data.filter((item) =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
+    if (filteredData.length === 0) {
+      console.log(value);
+      setGenre(null);
+      Swal.fire("Data Not Found", "Try With Other Title");
+      setData(dataAPI);
+    } else {
+      setData(filteredData);
+      setGenre(null);
+    }
+  };
+
   const handleSearchInput = (e) => {
     if (e.code === "Enter" && genre) {
       const filteredData = data.filter((item) =>
         item.genre.toLowerCase().includes(genre.toLowerCase())
       );
       if (filteredData.length === 0) {
+        setGenre(null);
         Swal.fire("Data Not Found", "Try With Other Genre");
+        setData(dataAPI);
       } else {
         setData(filteredData);
         setGenre(null);
@@ -81,7 +96,7 @@ export default function DeleteMovie() {
 
   return (
     <>
-      <HeaderNew fireEvent={setData} />
+      <HeaderNew fireEvent={[setData, dataAPI, handleSearchTitle]} />
       <div className="bg-grey sm-transform-content">
         <div className="border-rounded2">
           <div className="px-md-5 py-md-5 mx-md-5 px-3 py-3 mx-0">
@@ -136,7 +151,7 @@ export default function DeleteMovie() {
             </div>
             <div className="row row-cols-2 row-cols-md-4 g-4">
               {data &&
-                data.map((item) => {
+                data.map((item, i) => {
                   return (
                     <CardMovie
                       title={item.name}
@@ -144,6 +159,7 @@ export default function DeleteMovie() {
                       img={item.image}
                       id={item.id}
                       setData={setData}
+                      key={i}
                     />
                   );
                 })}

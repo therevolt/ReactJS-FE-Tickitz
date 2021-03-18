@@ -12,21 +12,20 @@ const HeaderNew = (props) => {
 
   useEffect(() => {
     if (data.title === "" && data.search) {
-      console.log("in");
       if (props.fireEvent) {
         history.push("/movies");
-        props.fireEvent(null);
+        props.fireEvent[0](props.fireEvent[1]);
       }
     } else if (props.fireEvent && data.search) {
-      props.fireEvent(null);
-      history.push(`/movies?title=${data.title}`);
+      props.fireEvent[2](data.title);
+      // history.push(`/movies?title=${data.title}`);
     }
     // eslint-disable-next-line
   }, [data]);
 
   let history = useHistory();
   const handleSearch = () => {
-    setData({ ...data, search: !data.search });
+    setData({ ...data, search: !data.search, title: "" });
   };
   const handleShow = () => {
     setData({ ...data, show: !data.show });
@@ -42,7 +41,11 @@ const HeaderNew = (props) => {
 
   const handleSearchMovie = (e) => {
     if (e.key === "Enter") {
-      history.push(`/movies?title=${data.title}`);
+      if (props.fireEvent) {
+        props.fireEvent[2](data.title);
+      } else {
+        history.push(`/movies?title=${data.title}`);
+      }
     }
   };
 
