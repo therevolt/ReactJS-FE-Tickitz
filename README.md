@@ -2,7 +2,11 @@
   <a href="" rel="noopener">
  <img width=400px height=200px src="https://dev-to-uploads.s3.amazonaws.com/i/v4y43jjfj7u5r8to8qdu.png" alt="logo"></a>
 </p>
+<div align="center">
+  
+[![Status](https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Ftickitz-web.netlify.app)](https://tickitz-web.netlify.app)
 
+</div>
 <h3 align="center">FrontEnd Tickitz - Arkademy</h3>
 
 ---
@@ -40,4 +44,4 @@ cd ReactJS-FE-Tickitz
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 
-[Netlify](https://react-tickitz.netlify.app)
+[Netlify](https://tickitz-web.netlify.app)
