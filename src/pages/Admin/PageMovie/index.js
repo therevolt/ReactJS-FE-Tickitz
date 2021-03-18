@@ -64,7 +64,6 @@ export default function DeleteMovie() {
       item.name.toLowerCase().includes(value.toLowerCase())
     );
     if (filteredData.length === 0) {
-      console.log(value);
       setGenre(null);
       Swal.fire("Data Not Found", "Try With Other Title");
       setData(dataAPI);
