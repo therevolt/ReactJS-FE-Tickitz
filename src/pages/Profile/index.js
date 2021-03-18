@@ -45,7 +45,8 @@ const Profile = (props) => {
     } else {
       history.push("/signup");
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   const handleShowPass = (e) => {
     e.preventDefault();

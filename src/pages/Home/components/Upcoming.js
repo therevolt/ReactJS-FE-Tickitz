@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CardMovieUpcoming from "./CardMovieUpcoming";
 import axios from "axios";
+import { Link } from "react-router-dom";
 require("dotenv").config();
 
 export class Upcoming extends Component {
@@ -32,7 +33,9 @@ export class Upcoming extends Component {
             <p className="color-black">Upcoming Movies</p>
           </div>
           <div>
-            <span>view all</span>
+            <Link to="/movies">
+              <span>view all</span>
+            </Link>
           </div>
         </div>
         <div className="month-movies margin-top-2 sm-overflow">

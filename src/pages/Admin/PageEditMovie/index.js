@@ -59,6 +59,7 @@ export default function PageEditMovie() {
           history.push("/movies");
         });
     }
+    // eslint-disable-next-line
   }, [data]);
 
   const handleUpdate = (e) => {

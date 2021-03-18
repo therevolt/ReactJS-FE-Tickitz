@@ -22,7 +22,7 @@ export class CardMovie extends Component {
     let log = this.Logged();
     return (
       <div className="col">
-        <div className="card" style={{ maxHeight: "300px" }}>
+        <div className="card" style={{ maxHeight: "330px" }}>
           <img
             src={this.props.img}
             className="card-img-top"
@@ -34,6 +34,7 @@ export class CardMovie extends Component {
               <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
                 <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
               </span>
+              <span className="text-placeholder">{this.props.genre}</span>
               <p className="card-text">
                 <Link to={`/movie/${this.props.id}`}>
                   <button className="btn btn-primary me-2">View</button>
