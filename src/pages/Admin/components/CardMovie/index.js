@@ -56,6 +56,7 @@ export class CardMovie extends Component {
               <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
                 <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
               </span>
+              <span className="text-placeholder">{this.props.genre}</span>
               <Link to={`/movie/${this.props.id}`}>
                 <input
                   className="btn btn-primary"
