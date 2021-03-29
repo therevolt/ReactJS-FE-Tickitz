@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Hr from "../../base/Hr";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const HeaderNew = (props) => {
   const [data, setData] = useState({
@@ -9,8 +11,32 @@ const HeaderNew = (props) => {
     search: false,
     title: "",
   });
+  const [log, setLog] = useState(null);
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
+    if (user) {
+      setLog(user);
+    } else if (localStorage.getItem("user")) {
+      const dataLocal = JSON.parse(localStorage.getItem("user"));
+      const getData = axios.get(`${process.env.REACT_APP_URL_API}/v1/users/${dataLocal.id}`, {
+        headers: { Authorization: `Bearer ${dataLocal.token}` },
+      });
+      getData
+        .then((result) => {
+          if (result.data.status) {
+            setLog(result.data.data[0]);
+          } else {
+            if (result.data.message === "Token Expired") {
+              Swal.fire("TOKEN EXPIRED!", "Please Login Again!", "warning");
+            }
+          }
+        })
+        .catch(() => {
+          Swal.fire("TOKEN EXPIRED", "Please Login Again", "info");
+        });
+    }
+
     if (data.title === "" && data.search) {
       if (props.fireEvent) {
         history.push("/movies");
@@ -18,7 +44,6 @@ const HeaderNew = (props) => {
       }
     } else if (props.fireEvent && data.search) {
       props.fireEvent[2](data.title);
-      // history.push(`/movies?title=${data.title}`);
     }
     // eslint-disable-next-line
   }, [data]);
@@ -29,9 +54,6 @@ const HeaderNew = (props) => {
   };
   const handleShow = () => {
     setData({ ...data, show: !data.show });
-  };
-  const Logged = () => {
-    return localStorage.getItem("user") || props.user;
   };
 
   const handleChangeSearch = (e) => {
@@ -49,7 +71,6 @@ const HeaderNew = (props) => {
     }
   };
 
-  let log = Logged();
   return (
     <nav
       className={
@@ -169,7 +190,13 @@ const HeaderNew = (props) => {
           {log ? (
             <div className="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
               <Link to="/profile">
-                <img src="/assets/images/Ellipse 11.png" height="56px" width="56px" alt="search" />
+                <img
+                  src={log.avatar}
+                  style={{ borderRadius: "50%" }}
+                  height="56px"
+                  width="56px"
+                  alt="Profile"
+                />
               </Link>
             </div>
           ) : (

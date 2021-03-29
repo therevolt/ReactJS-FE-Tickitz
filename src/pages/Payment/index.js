@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 
 const Payment = () => {
   const [data, setData] = useState(null);
-  const [user, setUser] = useState(null);
+  const user = localStorage.getItem("user");
   let { id } = useParams();
 
   useEffect(() => {
@@ -21,17 +21,15 @@ const Payment = () => {
         .catch((err) => {
           alert(err);
         });
-      axios.get(`${process.env.REACT_APP_URL_API}/v1/users/3`).then((result) => {
-        setUser(result.data.data[0]);
-      });
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
       <Header />
       <div className="absolute-container">
-        {user && <Content data={data} user={user} />}
+        {user && data && <Content data={data} user={JSON.parse(user)} />}
         <div className="margin-y-3 sm-container">
           <Footer />
         </div>

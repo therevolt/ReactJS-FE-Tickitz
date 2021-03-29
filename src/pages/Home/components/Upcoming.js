@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import CardMovieUpcoming from "./CardMovieUpcoming";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { connect } from "react-redux";
 require("dotenv").config();
 
 export class Upcoming extends Component {
@@ -12,17 +14,22 @@ export class Upcoming extends Component {
     };
   }
 
-  componentDidMount() {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
-      .then((result) => {
-        if (result.data.status) {
-          this.setState({ ...this.state, movie: result.data.data });
-        }
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+  async componentDidMount() {
+    if (this.state.movie === "") {
+      this.props.setLoad(true);
+      await axios
+        .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
+        .then((result) => {
+          if (result.data.status) {
+            this.setState({ ...this.state, movie: result.data.data });
+            this.props.getMovie(result.data.data);
+            this.props.setLoad(false);
+          }
+        })
+        .catch(() => {
+          Swal.fire("Something Error!", "Please Refresh This Page", "warning");
+        });
+    }
   }
 
   render() {
@@ -71,4 +78,18 @@ export class Upcoming extends Component {
   }
 }
 
-export default Upcoming;
+const mapStateToProps = (state) => {
+  return {
+    movie: state.movie,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getMovie: (value) => {
+    dispatch({ type: "GET_MOVIE", payload: value });
+  },
+  setLoad: (value) => {
+    dispatch({ type: "SET_LOAD_MOVIE", payload: value });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Upcoming);

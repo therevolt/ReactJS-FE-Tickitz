@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Hr from "../../../../components/base/Hr";
+import getMonth from "../../../../helper/getMonth";
 require("dotenv").config();
 
 export class ContainerTop extends Component {
@@ -27,7 +28,8 @@ export class ContainerTop extends Component {
     let image;
     let genre;
     let release;
-    let duration;
+    let hours;
+    let minutes;
     let director;
     let casts;
     let desc;
@@ -35,8 +37,11 @@ export class ContainerTop extends Component {
       title = this.state.movie[0].name;
       image = this.state.movie[0].image;
       genre = this.state.movie[0].genre;
-      release = this.state.movie[0].release_date;
-      duration = this.state.movie[0].duration;
+      release = `${new Date(this.state.movie[0].release_date).getDate()} ${getMonth.getMonth(
+        new Date(this.state.movie[0].release_date).getMonth()
+      )} ${new Date(this.state.movie[0].release_date).getFullYear()}`;
+      hours = this.state.movie[0].duration_hours;
+      minutes = this.state.movie[0].duration_minutes;
       director = this.state.movie[0].director;
       casts = JSON.parse(this.state.movie[0].casts).join(", ");
       desc = this.state.movie[0].description;
@@ -45,7 +50,8 @@ export class ContainerTop extends Component {
       image = "/assets/images/Rectangle 119.png";
       genre = "";
       release = "";
-      duration = "";
+      hours = "";
+      minutes = "";
       director = "";
       casts = "";
       desc = "";
@@ -71,7 +77,7 @@ export class ContainerTop extends Component {
               </div>
               <div className="margin-bottom-1">
                 <h5 className="text-title font-size-5 margin-bottom-05">Duration</h5>
-                <span>{duration}</span>
+                <span>{`${hours} hours ${minutes} minutes`}</span>
               </div>
             </div>
             <div className="display-flex-70 flex-direction-col sm-display-flex-50">
@@ -94,7 +100,6 @@ export class ContainerTop extends Component {
             </div>
           </div>
           <Hr children="margin-y-2" />
-          {/* <hr className="hr w-100 margin-y-2" /> */}
           <div>
             <h5 className="text-title font-size-5 margin-bottom-05">Synopsis</h5>
             <p className="synopsys">{desc}</p>

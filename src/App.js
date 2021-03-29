@@ -6,8 +6,10 @@ import Signup from "./pages/Signup";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
-import DeleteMovie from "./pages/Admin/PageMovie";
+import PageMovie from "./pages/Admin/PageMovie";
 import PageEditMovie from "./pages/Admin/PageEditMovie";
+import { PrivateRoute } from "./helper/privateRoute";
+import Verify from "./pages/Verify";
 
 function App() {
   return (
@@ -22,12 +24,13 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
+        <Route path="/verify" component={Verify} />
         <Route exact path="/movie/:id" children={<Movie />} />
-        <Route path="/movie/edit/:id" children={<PageEditMovie />} />
-        <Route path="/order/:id" children={<Order />} />
-        <Route path="/profile" children={<Profile />} />
-        <Route path="/movies" children={<DeleteMovie />} />
-        <Route path="/payment/:id" children={<Payment />} />
+        <Route path="/movies" children={<PageMovie />} />
+        <PrivateRoute path="/profile" component={Profile} />
+        <PrivateRoute path="/movie/edit/:id" component={PageEditMovie} />
+        <PrivateRoute path="/order/:id" component={Order} />
+        <PrivateRoute path="/payment/:id" component={Payment} />
       </Switch>
     </Router>
   );

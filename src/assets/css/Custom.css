@@ -88,9 +88,13 @@ select#loc {
 }
 
 .icon-payment {
-  width: 120px;
-  height: 60px;
+  width: fit-content;
+  height: auto;
   justify-self: center;
+}
+
+.ps-4-5 {
+  padding-left: 2.2rem !important;
 }
 
 .btn-submit-grey {
@@ -115,6 +119,10 @@ select#loc {
   color: #ffffff;
   width: 300px;
   height: 56px;
+}
+
+.hover-movies {
+  bottom: -110px;
 }
 
 .detail-order {
@@ -248,12 +256,21 @@ hr {
   margin-top: 64px;
 }
 
-.color-blue {
-  color: #5f2eea;
+.color-blue,
+.blue {
+  color: #5f2eea !important;
 }
 
 .cat-movies {
   margin-top: 0px;
+}
+
+.btn-cinema {
+  box-shadow: 0px 8px 16px rgb(186 186 186 / 70%);
+}
+
+.btn-cinema:hover {
+  background-color: #9570fe;
 }
 
 .title-movies {
@@ -340,6 +357,13 @@ hr {
 .card-showing {
   background-color: #ffffff8f;
   border: 2px solid #ffffff;
+  height: 290px;
+}
+
+.h-auto {
+  height: auto !important;
+  background-color: white;
+  box-shadow: 0px 8px 30px rgba(186, 186, 186, 0.25);
 }
 
 .card-movies {
@@ -552,6 +576,82 @@ textarea:hover {
   top: auto;
   bottom: 100%;
   margin-bottom: 2px;
+}
+
+.min-height-cinemas {
+  min-height: 90px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.card-loyalty {
+  background-image: url("../images/card_r.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pz-4 {
+  padding: 1rem 10rem 3rem 2rem !important;
+}
+
+.card-cinema {
+  min-height: 9rem !important;
+}
+
+.img-profile {
+  width: 200px;
+  height: 250px;
+  border-radius: 50%;
+}
+
+/* .img-profile:hover,
+.imgMovie:hover {
+  filter: grayscale(100%);
+} */
+
+.imgMovie {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: #5f2eea;
+}
+
+.wraper-image:hover .middle {
+  opacity: 80%;
+}
+
+.text {
+  color: white;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  cursor: pointer;
+}
+
+#show_time {
+  display: none;
 }
 
 @media only screen and (max-width: 768px) {

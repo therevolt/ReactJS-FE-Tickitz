@@ -17,6 +17,7 @@ const Signup = () => {
     password: "",
     agree: false,
   });
+  const [load, setLoad] = useState(false);
   let history = useHistory();
 
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ const Signup = () => {
   const handleSubmit = () => {
     if (data.email.match(/@\w*.\w*/g)) {
       if (data.agree) {
+        setLoad(true);
         axios
           .post(`${process.env.REACT_APP_URL_API}/v1/users`, data)
           .then((result) => {
@@ -40,11 +42,13 @@ const Signup = () => {
             } else {
               Swal.fire("SOMETHING WRONG!", result.data.message, "warning");
             }
+            setLoad(false);
           })
           .catch((err) => {
             if (err.response) {
               Swal.fire("ERROR", err.response.data.message, "error");
             }
+            setLoad(false);
           });
       } else {
         Swal.fire("HEY!", "you must agree", "warning");
@@ -102,6 +106,7 @@ const Signup = () => {
                 className="form-control"
                 onChange={handleChange}
                 value={data.email}
+                disabled={load}
               />
             </div>
             <div className="form-group">
@@ -115,6 +120,7 @@ const Signup = () => {
                   className="form-control"
                   onChange={handleChange}
                   value={data.password}
+                  disabled={load}
                 />
                 <div className="input-group-append">
                   <span onClick={handleShowPass}>
@@ -129,13 +135,20 @@ const Signup = () => {
                 className="form-check-input"
                 id="aggre"
                 onClick={() => setData({ ...data, agree: !data.agree })}
+                disabled={load}
               />
               <label className="form-check-label" for="aggre">
                 I agree to terms & conditions
               </label>
             </div>
-            <button className="btn btn-main btn-block mt-3" onClick={handleSubmit}>
-              Join for free now
+            <button className="btn btn-main btn-block mt-3" onClick={handleSubmit} disabled={load}>
+              {load ? (
+                <div class="spinner-grow" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              ) : (
+                "Join for free now"
+              )}
             </button>
             <p className="infor text-center mt-4">
               Do you already have an account?
@@ -143,7 +156,7 @@ const Signup = () => {
                 <span className="font-weight-bold link">Log in</span>
               </Link>
             </p>
-            <div className="divider">
+            <div className="divider-sign">
               <hr />
               <span>Or</span>
               <hr />

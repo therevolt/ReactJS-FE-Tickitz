@@ -146,18 +146,18 @@ li.step:first-child::before {
   margin-top: 0.4rem;
 }
 
-.divider {
+.divider-sign {
   display: flex;
 }
 
-.divider hr {
+.divider-sign hr {
   display: inline-block;
   width: 100%;
   margin: 0;
   margin-top: 12px;
 }
 
-.divider span {
+.divider-sign span {
   display: inline-block;
   width: 150px;
   text-align: center;

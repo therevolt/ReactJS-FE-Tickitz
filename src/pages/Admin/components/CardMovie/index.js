@@ -5,6 +5,12 @@ import { connect } from "react-redux";
 import Swal from "sweetalert2";
 
 export class CardMovie extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: "",
+    };
+  }
   handleDelete = (setData) => {
     axios.delete(`${process.env.REACT_APP_URL_API}/v1/movies/${this.props.id}`).then((result) => {
       if (result.data.status) {
@@ -14,12 +20,18 @@ export class CardMovie extends Component {
     });
   };
 
-  Logged = () => {
-    return localStorage.getItem("user") || this.props.user;
-  };
+  componentDidMount() {
+    console.log(JSON.parse(localStorage.getItem("user")).role);
+    this.setState({
+      user: this.props.user
+        ? this.setState({ user: this.props.user.role })
+        : localStorage.getItem("user")
+        ? this.setState({ user: JSON.parse(localStorage.getItem("user")).role })
+        : null,
+    });
+  }
 
   render() {
-    let log = this.Logged();
     return (
       <div className="col">
         <div className="card" style={{ maxHeight: "330px" }}>
@@ -29,7 +41,7 @@ export class CardMovie extends Component {
             alt="..."
             style={{ maxHeight: "200px", padding: "20px 50px" }}
           />
-          {log ? (
+          {JSON.parse(localStorage.getItem("user")).role === "admin" ? (
             <div className="card-body d-flex flex-column align-items-center">
               <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
                 <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>
@@ -75,7 +87,7 @@ export class CardMovie extends Component {
 
 const StateProps = (state) => {
   return {
-    logged: state.logged,
+    user: state.user.user,
   };
 };
 

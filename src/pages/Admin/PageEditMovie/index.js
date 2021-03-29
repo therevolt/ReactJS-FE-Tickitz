@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../../components/module/Footer";
 import Header from "../../../components/module/Header";
 import DatePicker from "react-datepicker";
@@ -6,44 +6,46 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router";
 import axios from "axios";
+import moment from "moment";
 import Swal from "sweetalert2";
+import FormData from "form-data";
+import { setHours, setMinutes } from "date-fns";
 
 export default function PageEditMovie() {
   const [startDate, setStartDate] = useState(new Date());
   const [data, setData] = useState(null);
+  const [profileTemp, setProfileTemp] = useState(null);
+  const [showTime, setShowTime] = useState(setHours(setMinutes(new Date(), 30), 16));
+  const [listShowTime, setListsShowTime] = useState([]);
+  const imgRef = useRef(null);
+  const dateRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();
+  const form = new FormData();
 
-  // const monthConvert = (month) => {
-  //   const arr = [
-  //     "January",
-  //     "February",
-  //     "March",
-  //     "April",
-  //     "May",
-  //     "June",
-  //     "July",
-  //     "August",
-  //     "September",
-  //     "October",
-  //     "November",
-  //     "December",
-  //   ];
-  //   return parseInt(arr.indexOf(month)) + 1;
-  // };
+  const changeDates = (value) => {
+    return moment(value).format("DD/MM/YYYY");
+  };
 
   const handleChange = (e) => {
     if (e.target) {
       const { id, value } = e.target;
-      setData({ ...data, ...{ [id]: value } });
+      if (id === "image") {
+        let file = e.target.files[0];
+        setData({ ...data, image: URL.createObjectURL(file) });
+        setProfileTemp(file);
+      } else {
+        setData({ ...data, ...{ [id]: value } });
+      }
     }
-    // } else {
-    //   const date = new Date(e);
-    //   setData({
-    //     ...data,
-    //     release_date: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
-    //   });
-    // }
+  };
+
+  const handleChangeImg = () => {
+    imgRef.current.click();
+  };
+
+  const handleDate = () => {
+    dateRef.current.handleFocus();
   };
 
   useEffect(() => {
@@ -52,7 +54,9 @@ export default function PageEditMovie() {
         .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)
         .then((result) => {
           if (result.data.status) {
-            setData(result.data.data[0]);
+            let data = result.data.data[0];
+            data.casts = JSON.parse(data.casts).join(", ");
+            setData(data);
           }
         })
         .catch(() => {
@@ -64,8 +68,24 @@ export default function PageEditMovie() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
+    let tempData = data;
+    tempData.casts = JSON.stringify(tempData.casts.split(", "));
+    // eslint-disable-next-line
+    Object.keys(tempData).map((keys) => {
+      if (keys !== "image") {
+        form.append(keys, data[keys]);
+      } else {
+        if (profileTemp) {
+          form.append("image", profileTemp, profileTemp.name);
+        }
+      }
+    });
     axios
-      .put(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`, data)
+      .put(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`, tempData, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+        },
+      })
       .then((result) => {
         if (result.data.status) {
           Swal.fire("SUCCESS", result.data.message, "success");
@@ -101,8 +121,27 @@ export default function PageEditMovie() {
                 <div className="bg-white border-rounded2 py-5">
                   <div className="row px-4">
                     <div className="col-md-5 padding-x-1 sm-margin-bottom-1">
-                      <div className="w-100 h-100 border-gray border-rounded display-flex flex-direction-col flex-content-center is-vertically-centered padding-1">
-                        <img src={data.image} alt="movie" />
+                      <div className="wraper-image w-100 h-100 border-gray border-rounded display-flex flex-direction-col flex-content-center is-vertically-centered padding-1 position-relative">
+                        <input
+                          type="file"
+                          name=""
+                          id="image"
+                          onChange={handleChange}
+                          ref={imgRef}
+                          hidden
+                        />
+                        <img
+                          className="imgMovie"
+                          src={data.image}
+                          alt="movie"
+                          onClick={handleChangeImg}
+                          data-toggle="tooltip"
+                          data-placement="right"
+                          title="Click To Change Image Movie"
+                        />
+                        <div class="middle" onClick={handleChangeImg}>
+                          <div class="text">Click To Change</div>
+                        </div>
                       </div>
                     </div>
                     <div className="col-md-7 d-flex flex-column">
@@ -137,12 +176,14 @@ export default function PageEditMovie() {
                           </label>
                           <DatePicker
                             selected={startDate}
-                            onChange={(date) => setStartDate(date)}
+                            onChange={(date) => {
+                              setStartDate(date);
+                              setData({ ...data, release_date: moment(date).toISOString() });
+                            }}
                             id="release_date"
                             dateFormat={"dd/mm/yyyy"}
                             className="input-form datepicker background-gray no-outline right-auto z-index-2 hover-cursor-pointer"
-                            value={data.release_date}
-                            disabled
+                            value={changeDates(data.release_date)}
                           />
                         </div>
                         <div className="col-7 d-flex flex-column">
@@ -154,19 +195,17 @@ export default function PageEditMovie() {
                               className="input-form duration"
                               type="number"
                               name="hours"
-                              id="hours"
-                              value={data.hours}
+                              id="duration_hours"
+                              value={data.duration_hours}
                               onChange={handleChange}
-                              disabled
                             />
                             <input
                               className="input-form duration"
                               type="number"
                               name="minutes"
-                              id="minutes"
-                              value={data.minutes}
+                              id="duration_minutes"
+                              value={data.duration_minutes}
                               onChange={handleChange}
-                              disabled
                             />
                           </div>
                         </div>
@@ -194,8 +233,8 @@ export default function PageEditMovie() {
                         className="input-form"
                         type="text"
                         id="casts"
-                        value={JSON.parse(data.casts).join(", ")}
-                        disabled
+                        value={data.casts}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -212,6 +251,7 @@ export default function PageEditMovie() {
                         rows="10"
                         value={data.description}
                         onChange={handleChange}
+                        style={{ height: "10rem" }}
                       ></textarea>
                     </div>
                   </div>
@@ -279,14 +319,38 @@ export default function PageEditMovie() {
                         className="form-select no-border no-outline bg-grey"
                         aria-labelledby="Default select example"
                         defaultValue="0"
+                        onClick={handleDate}
                       >
                         <option value="0" selected>
-                          Select a date
+                          {showTime.toString().split(" GMT")[0]}
                         </option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
                       </select>
+                    </div>
+                    <DatePicker
+                      onChange={(date) => setShowTime(date)}
+                      id="show_time"
+                      showTimeSelect
+                      excludeTimes={[
+                        setHours(setMinutes(new Date(), 0), 17),
+                        setHours(setMinutes(new Date(), 30), 18),
+                        setHours(setMinutes(new Date(), 30), 19),
+                        setHours(setMinutes(new Date(), 30), 17),
+                      ]}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      ref={dateRef}
+                    />
+                    <button
+                      className="btn-submit-transparent w-auto h-auto border-rounded2 px-3 fs-2 mt-2"
+                      style={{ lineHeight: "2rem" }}
+                      onClick={() => setListsShowTime([...listShowTime, showTime.toString()])}
+                    >
+                      +
+                    </button>
+                    <div className="d-flex flex-column">
+                      {listShowTime.length > 0 &&
+                        listShowTime.map((item) => {
+                          return <span>{item.split(" GMT")[0]}</span>;
+                        })}
                     </div>
                   </div>
                 </div>

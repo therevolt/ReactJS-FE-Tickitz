@@ -3,25 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
+import createStored from "./configs/redux/store";
 
-const initState = {
-  user: null,
-};
-
-const createStored = createStore;
-
-const rootReducer = (state = initState, action) => {
-  if (action.type === "LOGIN_USER") {
-    return {
-      user: action.user,
-    };
-  }
-  return state;
-};
-
-const store = createStored(rootReducer);
+const store = createStored;
 
 ReactDOM.render(
   <React.StrictMode>

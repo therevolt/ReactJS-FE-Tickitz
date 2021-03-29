@@ -4,18 +4,18 @@ import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import CardLogWith from "./components/CardLogWith";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 require("dotenv").config();
 
-const Signin = (props) => {
+const Signin = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
-    agree: false,
   });
 
   const handleChange = (e) => {
@@ -29,28 +29,31 @@ const Signin = (props) => {
 
   const handleSubmit = () => {
     if (data.email.match(/@\w*.\w*/g)) {
-      if (data.agree) {
-        axios
-          .post(`${process.env.REACT_APP_URL_API}/v1/users/login`, data)
-          .then((result) => {
-            console.log(result.data.data[0]);
-            if (result.data.status) {
-              Swal.fire("GREAT!", result.data.message, "success");
-              props.LoginUser(result.data.data[0]);
-              localStorage.setItem("user", JSON.stringify(result.data.data[0]));
-              history.replace("/");
-            } else {
-              Swal.fire("HMMMMM...", result.data.message, "warning");
-            }
-          })
-          .catch((err) => {
-            if (err.response) {
-              Swal.fire("ERROR", err.response.data.message, "error");
-            }
-          });
-      } else {
-        Swal.fire("HEY!", "you must agree", "info");
-      }
+      axios
+        .post(`${process.env.REACT_APP_URL_API}/v1/users/login`, data)
+        .then((result) => {
+          if (result.data.status) {
+            Swal.fire("GREAT!", result.data.message, "success");
+            dispatch({ type: "LOGIN_USER", payload: result.data.data[0] });
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                id: result.data.data[0].id,
+                role: result.data.data[0].role,
+                token: result.data.data[0].token,
+                refreshToken: result.data.data[0].refreshToken,
+              })
+            );
+            history.replace("/");
+          } else {
+            Swal.fire("HMMMMM...", result.data.message, "warning");
+          }
+        })
+        .catch((err) => {
+          if (err.response) {
+            Swal.fire("ERROR", err.response.data.message, "error");
+          }
+        });
     } else {
       Swal.fire("HEY!", "user & pass cannot be empty", "info");
     }
@@ -112,28 +115,20 @@ const Signin = (props) => {
                 </div>
               </div>
             </div>
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="aggre"
-                onClick={() => setData({ ...data, agree: !data.agree })}
-              />
-              <label className="form-check-label" for="aggre">
-                I agree to terms & conditions
-              </label>
-            </div>
             <button className="btn btn-main btn-block mt-3" onClick={handleSubmit}>
               Sign In
             </button>
             <p className="infor text-center mt-4">
               Forgot your password?
-              <span className="font-weight-bold link">Reset now</span> | Not Have Account?
-              <Link to="/signup" className="font-weight-bold link">
+              <span className="font-weight-bold link"> Reset now</span>
+              <br />
+              Not Have Account?
+              <Link to="/signup" className="font-weight-bold link text-decoration-none">
+                {" "}
                 Register Now
               </Link>
             </p>
-            <div className="divider">
+            <div className="divider-sign">
               <hr />
               <span>Or</span>
               <hr />
@@ -149,14 +144,4 @@ const Signin = (props) => {
   );
 };
 
-const DispatchProps = (dispatch) => {
-  return {
-    LoginUser: (state) => dispatch({ type: "LOGIN_USER", user: state }),
-  };
-};
-
-const StateProps = (state) => {
-  return state;
-};
-
-export default connect(StateProps, DispatchProps)(Signin);
+export default Signin;

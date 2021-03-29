@@ -1,10 +1,26 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Hr from "../../../../components/base/Hr";
+import { useHistory } from "react-router";
+import { connect } from "react-redux";
+import Swal from "sweetalert2";
 
-export class Content extends Component {
-  render() {
-    return (
-      <div className="background-grey box-shadow">
+const Content = (props) => {
+  const [data, setData] = useState(null);
+  const history = useHistory();
+  // eslint-disable-next-line
+  useEffect(async () => {
+    if (!data) {
+      setData(props.redux.order);
+    } else {
+      Swal.fire("YUHU!", "Select Movie First!", "warning");
+      history.push("/");
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <div className="background-grey box-shadow">
+      {data && (
         <div className="display-flex margin-x-5 sm-flex-direction-col sm-margin-x-0 padding-bottom-3">
           <div className="main-panel display-flex flex-direction-col margin-top-3 sm-margin-top-0">
             <div>
@@ -19,7 +35,7 @@ export class Content extends Component {
                     <p className="text-placeholder">Date & time</p>
                   </div>
                   <div>
-                    <p className="text-bold">Tuesday, 07 July 2020 at 02:00pm</p>
+                    <p className="text-bold">{data.playing_time}</p>
                   </div>
                 </div>
 
@@ -32,7 +48,7 @@ export class Content extends Component {
                     <p className="text-placeholder">Movie title</p>
                   </div>
                   <div>
-                    <p className="text-bold">{this.props.data.name}</p>
+                    <p className="text-bold">{data.movie}</p>
                   </div>
                 </div>
 
@@ -44,9 +60,7 @@ export class Content extends Component {
                   <div>
                     <p className="text-placeholder">Cinema name</p>
                   </div>
-                  <div>
-                    <p className="text-bold">CineOne21 Cinema</p>
-                  </div>
+                  <div>{data && <p className="text-bold">{data.cinema}</p>}</div>
                 </div>
 
                 <div className="margin-x-2 display-flex flex-content-between is-vertically-centered flex-direction-row sm-display-none">
@@ -58,7 +72,7 @@ export class Content extends Component {
                     <p className="text-placeholder">Number of tickets</p>
                   </div>
                   <div>
-                    <p className="text-bold">3 pieces</p>
+                    <p className="text-bold">{data.seat_choosed.length} pieces</p>
                   </div>
                 </div>
 
@@ -71,7 +85,7 @@ export class Content extends Component {
                     <p className="text-placeholder">Total payment</p>
                   </div>
                   <div>
-                    <p className="text-bold font-size-5">$30,00</p>
+                    <p className="text-bold font-size-5">${data.seat_choosed.length * 10},00</p>
                   </div>
                 </div>
               </div>
@@ -82,46 +96,54 @@ export class Content extends Component {
             <div className="background-white border-rounded2 w-95 margin-x-1 sm-margin-x-05">
               <div className="margin-y-2 display-flex flex-direction-col flex-content-center is-vertically-centered">
                 <div className="grid grid-template-columns-4 sm-grid-template-columns-3">
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/google-pay.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/visa.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/gopay.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/paypal.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/dana.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-display-none"
-                    src="/assets/images/bca.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-display-none"
-                    src="/assets/images/bri.png"
-                    alt=""
-                  />
-                  <img
-                    className="icon-payment border-gray border-rounded2 padding-x-2 padding-y-1 margin-y-1 sm-padding-x-05"
-                    src="/assets/images/ovo.png"
-                    alt=""
-                  />
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 padding-x-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/google-pay.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 padding-x-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/visa.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 ps-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/gopay.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 px-5 pt-2 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/paypal.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 ps-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/dana.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 padding-x-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/bca.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 ps-4-5 pt-2 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/bri.png" alt="" />
+                  </div>
+                  <div
+                    style={{ width: "120px", height: "60px" }}
+                    className="border-gray border-rounded2 padding-x-1 padding-y-1 sm-padding-x-05 mx-4 mt-3"
+                  >
+                    <img className="icon-payment" src="/assets/images/ovo.png" alt="" />
+                  </div>
                 </div>
               </div>
               <div className="line margin-x-2">
@@ -157,12 +179,12 @@ export class Content extends Component {
                   <input
                     className="input-form"
                     type="text"
-                    value={`${this.props.user.first_name} ${this.props.user.last_name}`}
+                    value={`${props.user.first_name} ${props.user.last_name}`}
                   />
                 </div>
                 <div className="display-flex flex-direction-col flex-content-between margin-x-2">
                   <p>Email</p>
-                  <input className="input-form" type="email" value={this.props.user.email} />
+                  <input className="input-form" type="email" value={props.user.email} />
                 </div>
                 <div className="display-flex flex-direction-col flex-content-between margin-x-2">
                   <p>Phone Number</p>
@@ -195,9 +217,19 @@ export class Content extends Component {
             />
           </div>
         </div>
-      </div>
-    );
-  }
-}
+      )}
+    </div>
+  );
+};
 
-export default Content;
+const DispatchProps = (dispatch) => {
+  return {
+    OrderState: (state) => dispatch({ type: "SET_ORDER", order: state }),
+  };
+};
+
+const StateProps = (state) => {
+  return { redux: state };
+};
+
+export default connect(StateProps, DispatchProps)(Content);

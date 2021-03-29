@@ -22,7 +22,8 @@ const Order = () => {
         }
       });
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>

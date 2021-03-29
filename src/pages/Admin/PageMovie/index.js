@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Footer from "../../../components/module/Footer";
 import HeaderNew from "../../../components/module/Header";
@@ -13,34 +14,53 @@ export default function DeleteMovie() {
   }
   const [data, setData] = useState(null);
   const [dataAPI, setDataAPI] = useState(null);
+  const [page, setPage] = useState(1);
   const [genre, setGenre] = useState(null);
+  const [menu, setMenu] = useState(null);
   let query = useQuery();
 
   useEffect(() => {
     if (!data) {
-      axios.get(`${process.env.REACT_APP_URL_API}/v1/movies`).then((result) => {
-        if (result.data.status) {
-          if (query.get("title")) {
-            const filteredData = result.data.data.filter((item) =>
-              item.name.toLowerCase().includes(query.get("title").toLowerCase())
-            );
-            if (filteredData.length === 0) {
-              Swal.fire("Data Not Found", "Try With Other Genre");
+      window.scrollTo(0, 0);
+      axios
+        .get(`${process.env.REACT_APP_URL_API}/v1/movies?page=${page}&limit=12`)
+        .then((result) => {
+          if (result.data.status) {
+            if (query.get("title")) {
+              const filteredData = result.data.data.result.filter((item) =>
+                item.name.toLowerCase().includes(query.get("title").toLowerCase())
+              );
+              if (filteredData.length === 0) {
+                Swal.fire("Data Not Found", "Try With Other Genre");
+              } else {
+                let i = result.data.data.max_page;
+                let arrMenu = [];
+                while (i >= 0) {
+                  arrMenu.push(i);
+                  i--;
+                }
+                setMenu(arrMenu);
+                setData(filteredData);
+                setDataAPI(result.data.data.result);
+              }
             } else {
-              setData(filteredData);
-              setDataAPI(result.data.data);
+              let i = 1;
+              let arrMenu = [];
+              while (i <= result.data.data.max_page) {
+                arrMenu.push(i);
+                i++;
+              }
+              setMenu(arrMenu);
+              setData(result.data.data.result);
+              setDataAPI(result.data.data.result);
             }
           } else {
-            setData(result.data.data);
-            setDataAPI(result.data.data);
+            alert(result.data.message);
           }
-        } else {
-          alert(result.data.message);
-        }
-      });
+        });
     }
     // eslint-disable-next-line
-  }, []);
+  }, [page]);
 
   const handleRefreshData = () => setData(dataAPI);
 
@@ -91,6 +111,11 @@ export default function DeleteMovie() {
 
   const handleChange = (e) => {
     setGenre(e.target.value);
+  };
+
+  const handlePagination = (e) => {
+    setPage(e.target.id);
+    setData(null);
   };
 
   return (
@@ -163,6 +188,44 @@ export default function DeleteMovie() {
                   );
                 })}
             </div>
+            <nav aria-label="Page navigation">
+              <ul className="pagination justify-content-center my-4">
+                <li className={page > 1 ? "page-item" : "page-item disabled"}>
+                  <Link
+                    className="page-link"
+                    onClick={() => {
+                      page > 1 && setPage(page - 1);
+                      setData(null);
+                    }}
+                  >
+                    Previous
+                  </Link>
+                </li>
+                {menu &&
+                  menu.map((item) => {
+                    return (
+                      <li className={page === item ? "page-item active" : "page-item"}>
+                        <Link className="page-link" id={item} onClick={handlePagination}>
+                          {item}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                {menu && (
+                  <li className={page < menu.length ? "page-item" : "page-item disabled"}>
+                    <Link
+                      className="page-link"
+                      onClick={() => {
+                        page < menu.length && setPage(page + 1);
+                        setData(null);
+                      }}
+                    >
+                      Next
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

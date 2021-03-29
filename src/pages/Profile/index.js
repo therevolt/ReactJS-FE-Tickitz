@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HeaderNew from "../../components/module/Header";
 import Footer from "../../components/module/Footer";
 import Hr from "../../components/base/Hr";
@@ -8,42 +8,51 @@ import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import FormData from "form-data";
 require("dotenv").config();
 
-const Profile = (props) => {
+const Profile = () => {
   let history = useHistory();
-  const user = props.user ? props.user.id : JSON.parse(localStorage.getItem("user")).id;
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [data, setData] = useState(null);
+  const [profile, setProfile] = useState(true);
+  const [profileTemp, setProfileTemp] = useState(null);
+  const inputImg = useRef(null);
+  const state = useSelector((state) => state.user.user);
+  const form = new FormData();
+  const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { id, value } = e.target;
-    setData({ ...data, ...{ [id]: value } });
+    if (id === "avatar") {
+      let file = e.target.files[0];
+      setData({ ...data, avatar: URL.createObjectURL(file) });
+      setProfileTemp(file);
+    } else {
+      setData({ ...data, ...{ [id]: value } });
+    }
   };
 
   useEffect(() => {
-    if (user) {
-      axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/users/${user}`)
-        .then((result) => {
-          if (result.data.status) {
-            setData({
-              first_name: result.data.data[0].first_name,
-              last_name: result.data.data[0].last_name,
-              email: result.data.data[0].email,
-            });
-          } else {
-            alert("data null");
+    const user = state ? state : null;
+    if (!user) {
+      const dataLocal = JSON.parse(localStorage.getItem("user"));
+      const getData = axios.get(`${process.env.REACT_APP_URL_API}/v1/users/${dataLocal.id}`, {
+        headers: { Authorization: `Bearer ${dataLocal.token}` },
+      });
+      getData.then((result) => {
+        if (result.data.status) {
+          setData(result.data.data[0]);
+        } else {
+          if (result.data.message === "Token Expired") {
+            Swal.fire("TOKEN EXPIRED!", "Please Login Again!", "warning");
           }
-        })
-        .catch((err) => {
-          console.log(err);
-          history.push("/");
-        });
+        }
+      });
     } else {
-      history.push("/signup");
+      setData(user);
     }
     // eslint-disable-next-line
   }, []);
@@ -69,7 +78,10 @@ const Profile = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("user");
+        dispatch({ type: "LOGIN_USER", payload: null });
         history.push("/");
+        history.go(0);
+        window.scrollTo(0, 0);
       }
     });
   };
@@ -79,25 +91,48 @@ const Profile = (props) => {
     if (data.password !== data.confirmPassword) {
       Swal.fire("ERROR!", "Passwords Do Not Match", "warning");
     } else {
+      const dataLocal = JSON.parse(localStorage.getItem("user"));
+      delete data.token;
+      delete data.refreshToken;
+      delete data.created_at;
+      delete data.updated_at;
+      // eslint-disable-next-line
+      Object.keys(data).map((keys) => {
+        if (keys !== "avatar") {
+          form.append(keys, data[keys]);
+        } else {
+          if (profileTemp) {
+            form.append("avatar", profileTemp, profileTemp.name);
+          }
+        }
+      });
       axios
-        .put(`${process.env.REACT_APP_URL_API}/v1/users/${user}`, {
-          first_name: data.first_name,
-          last_name: data.last_name,
-          email: data.email,
-          password: data.password,
+        .put(`${process.env.REACT_APP_URL_API}/v1/users/${data.id}`, form, {
+          headers: { Authorization: `Bearer ${dataLocal.token}` },
         })
         .then((result) => {
+          console.log(result);
           if (result.data.status) {
             Swal.fire("Success", "Updated Data Successfuly", "success");
+            dispatch({ type: "LOGIN_USER", payload: result.data.data[0] });
             setData({ ...data, password: "", confirmPassword: "" });
+            window.location.reload();
           } else {
             Swal.fire("ERROR!", result.data.message, "error");
           }
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          alert(err.response.message);
         });
     }
+  };
+
+  const handleHideInfo = () => {
+    setProfile(!profile);
+  };
+
+  const onClickAvatar = () => {
+    inputImg.current.click();
   };
 
   return (
@@ -107,39 +142,68 @@ const Profile = (props) => {
         {data && (
           <div className="container mb-3">
             <div className="row pt-5 d-flex">
-              <div className="col-lg-3 d-flex flex-column bg-white me-5 border-rounded2">
+              <div
+                className="col-lg-3 d-flex flex-column bg-white me-5 border-rounded2"
+                style={{ height: profile ? "fit-content" : "5rem" }}
+              >
                 <div className="d-flex px-4 justify-content-between pt-4">
                   <span className="fs-4">Info</span>
-                  <span className="fs-4 fw-bold" style={{ color: "#5F2EEA" }}>
+                  <span
+                    className="fs-4 fw-bold"
+                    style={{ color: "#5F2EEA", cursor: "pointer" }}
+                    onClick={handleHideInfo}
+                  >
                     ...
                   </span>
                 </div>
-                <div className="d-flex flex-column align-items-center">
-                  <img src="/assets/images/profile.png" className="py-4" alt="" />
-                  <p className="fw-bold" style={{ marginBottom: "0px" }}>
-                    {data ? `${data.first_name} ${data.last_name}` : "Users2021"}
+                <div style={{ display: profile ? "block" : "none" }}>
+                  <div className="d-flex flex-column align-items-center">
+                    <input type="file" id="avatar" onChange={handleChange} ref={inputImg} hidden />
+                    <img
+                      src={data.avatar}
+                      className="py-4 img-profile"
+                      alt=""
+                      onClick={onClickAvatar}
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Click To Change Avatar"
+                    />
+                    <p className="fw-bold" style={{ marginBottom: "0px" }}>
+                      {data ? `${data.first_name} ${data.last_name}` : ""}
+                    </p>
+                    <p>{data.role === "user" ? "Moviegoers" : "Admin/Developers"}</p>
+                  </div>
+                  <Hr />
+                  <p className="text-secondary" style={{ marginTop: "20px", marginLeft: "15px" }}>
+                    Loyalty Points
                   </p>
-                  <p>JavaScript Enthusiast</p>
-                </div>
-                <Hr />
-                <p className="text-secondary" style={{ marginTop: "20px", marginLeft: "15px" }}>
-                  Loyalty Points
-                </p>
-                <div className="d-flex flex-column align-items-center pb-5">
-                  <img
-                    src="/assets/images/card_r.png"
-                    alt=""
-                    style={{ width: "270px", paddingTop: "10px" }}
-                  />
-                  <p>213 Point To Master</p>
-                  <ProgressBar completed={60} width="200px" bgcolor="#5F2EEA" />
-                  <button
-                    className="btn btn-danger"
-                    style={{ width: "120px", marginTop: "30px" }}
-                    onClick={handleLogout}
-                  >
-                    LOG OUT
-                  </button>
+                  <div className="d-flex flex-column align-items-center pb-5">
+                    <div className="d-flex flex-column card-loyalty pz-4 position-relative">
+                      <div className="d-flex">
+                        <span className="pt-2 text-bold text-white fs-6">
+                          {data.role === "user" ? "Moviegoers" : "Developers."}
+                        </span>
+                        <img
+                          className="position-absolute top-0 end-0 me-4 pe-2 mt-2"
+                          src="/assets/images/star.png"
+                          alt=""
+                        />
+                      </div>
+                      <span className="pt-4 text-white fw-lighter">
+                        <span className="fs-3 fw-bold">{data.role === "user" ? "320" : "∞"}</span>{" "}
+                        Point
+                      </span>
+                    </div>
+                    <p>213 Point To Master</p>
+                    <ProgressBar completed={60} width="200px" bgcolor="#5F2EEA" />
+                    <button
+                      className="btn btn-danger"
+                      style={{ width: "120px", marginTop: "30px" }}
+                      onClick={handleLogout}
+                    >
+                      LOG OUT
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -230,8 +294,10 @@ const Profile = (props) => {
                               </div>
                               <input
                                 className="input-form no-border tels"
+                                id="phone_number"
                                 type="tel"
-                                value="81445687121"
+                                value={data.phone_number}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -358,10 +424,4 @@ const Profile = (props) => {
   );
 };
 
-const StateProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
-
-export default connect(StateProps)(Profile);
+export default Profile;
