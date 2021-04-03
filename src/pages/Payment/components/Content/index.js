@@ -1,22 +1,109 @@
 import React, { useEffect, useState } from "react";
 import Hr from "../../../../components/base/Hr";
 import { useHistory } from "react-router";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import axios from "axios";
 
-const Content = (props) => {
+const Content = () => {
   const [data, setData] = useState(null);
+  const [profile, setProfile] = useState(null);
   const history = useHistory();
+  const { order } = useSelector((state) => state.order);
   // eslint-disable-next-line
   useEffect(async () => {
     if (!data) {
-      setData(props.redux.order);
+      setData(order);
+      axios
+        .get(
+          `${process.env.REACT_APP_URL_API}/v1/users/${
+            JSON.parse(localStorage.getItem("user")).id
+          }`,
+          { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}` } }
+        )
+        .then((result) => {
+          if (result.data.status) {
+            setProfile(result.data.data[0]);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       Swal.fire("YUHU!", "Select Movie First!", "warning");
       history.push("/");
     }
     // eslint-disable-next-line
   }, []);
+
+  const handlePay = () => {
+    const data = {
+      total_price: order.seat_choosed.length * 10,
+      user_id: JSON.parse(localStorage.getItem("user")).id,
+      status: "Paid",
+      playlist_id: order.playlist_id,
+    };
+    axios
+      .post(`${process.env.REACT_APP_URL_API}/v1/trx`, data, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+        },
+      })
+      .then((result) => {
+        if (result.data.status) {
+          const newData = order.seat_choosed.map((item) => item.split(/\D/)[1]);
+          const newData2 = order.seat_choosed.map((item) => item.split(/\d/)[0]);
+          const data2 = newData2.map((item, i) => {
+            return [item, newData[i]];
+          });
+          data2.map(async (item) => {
+            const dataOrder = {
+              playlist_id: data.playlist_id,
+              transaction_id: result.data.data[0].id,
+              cinema_id: order.cinema_id,
+              seat_row: item[0],
+              seat_col: item[1],
+            };
+            axios
+              .post(`${process.env.REACT_APP_URL_API}/v1/order`, dataOrder, {
+                headers: {
+                  Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+                },
+              })
+              .then((results) => {
+                if (results.data.status) {
+                  const dataTicket = {
+                    user_id: data.user_id,
+                    transactions_id: result.data.data[0].id,
+                    ordered_seat_id: results.data.data[0].id,
+                  };
+                  axios
+                    .post(`${process.env.REACT_APP_URL_API}/v1/tickets`, dataTicket, {
+                      headers: {
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+                      },
+                    })
+                    .then((resTicket) => {
+                      if (resTicket.data.status) {
+                        Swal.fire("SUCCESS!", "Success Pay Ticket", "success");
+                        history.push("/ticket", { transactions_id: result.data.data[0].id });
+                      }
+                    })
+                    .catch((err2) => {
+                      Swal.fire("ERROR!", err2.response, "error");
+                    });
+                }
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
   return (
     <div className="background-grey box-shadow">
@@ -165,6 +252,7 @@ const Content = (props) => {
                 className="btn-submit-solid border-rounded2 text-bold margin-left-2"
                 type="submit"
                 value="Checkout now"
+                onClick={handlePay}
               />
             </div>
           </div>
@@ -173,34 +261,40 @@ const Content = (props) => {
               <p className="font-size-4 text-title text-bold w-40">Personal Info</p>
             </div>
             <div className="detail-order display-flex flex-direction-col background-white border-rounded2 w-30em sm-w-100">
-              <div className="table-detail display-flex flex-direction-col margin-top-1">
-                <div className="display-flex flex-direction-col flex-content-between margin-x-2">
-                  <p>Full Name</p>
-                  <input
-                    className="input-form"
-                    type="text"
-                    value={`${props.user.first_name} ${props.user.last_name}`}
-                  />
-                </div>
-                <div className="display-flex flex-direction-col flex-content-between margin-x-2">
-                  <p>Email</p>
-                  <input className="input-form" type="email" value={props.user.email} />
-                </div>
-                <div className="display-flex flex-direction-col flex-content-between margin-x-2">
-                  <p>Phone Number</p>
-                  <div className="display-flex border-gray border-rounded2 w-100 tel">
-                    <div className="padding-y-1 w-10 padding-x-1">
+              {profile && (
+                <div className="table-detail display-flex flex-direction-col margin-top-1">
+                  <div className="display-flex flex-direction-col flex-content-between margin-x-2">
+                    <p>Full Name</p>
+                    <input
+                      className="input-form"
+                      type="text"
+                      value={`${profile.first_name} ${profile.last_name}`}
+                    />
+                  </div>
+                  <div className="display-flex flex-direction-col flex-content-between margin-x-2">
+                    <p>Email</p>
+                    <input className="input-form" type="email" value={profile.email} />
+                  </div>
+                  <div className="display-flex flex-direction-col flex-content-between margin-x-2">
+                    <p>Phone Number</p>
+                    <div className="display-flex border-gray border-rounded2 w-100 tel">
+                      <div className="padding-y-1 w-10 padding-x-1">
+                        <input
+                          className="plus-62 w-100 h-100 no-border no-bg border-right padding-right-05"
+                          type="text"
+                          value="+62"
+                          disabled
+                        />
+                      </div>
                       <input
-                        className="plus-62 w-100 h-100 no-border no-bg border-right padding-right-05"
-                        type="text"
-                        value="+62"
-                        disabled
+                        className="input-form no-border"
+                        type="tel"
+                        value={profile.phone_number}
                       />
                     </div>
-                    <input className="input-form no-border" type="tel" value="81445687121" />
                   </div>
                 </div>
-              </div>
+              )}
               <div className="background-warning display-flex flex-direction-row margin-x-2 is-vertically-centered flex-content-start margin-y-2 sm-w-80">
                 <div className="margin-x-2 display-flex is-vertically-centered flex-content-start py-3">
                   <img src="/assets/images/clarity_warning-standard-solid.png" alt="" />
@@ -214,6 +308,7 @@ const Content = (props) => {
               type="submit"
               className="btn-submit-solid lg-display-none text-bold border-rounded2 margin-x-1"
               value="Pay your order"
+              onClick={handlePay}
             />
           </div>
         </div>
@@ -222,14 +317,4 @@ const Content = (props) => {
   );
 };
 
-const DispatchProps = (dispatch) => {
-  return {
-    OrderState: (state) => dispatch({ type: "SET_ORDER", order: state }),
-  };
-};
-
-const StateProps = (state) => {
-  return { redux: state };
-};
-
-export default connect(StateProps, DispatchProps)(Content);
+export default Content;

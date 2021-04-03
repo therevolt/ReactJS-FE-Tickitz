@@ -15,6 +15,7 @@
     "dotenv": "^8.2.0",
     "env-cmd": "^10.1.0",
     "form-data": "^4.0.0",
+    "jsbarcode": "^3.11.3",
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-datepicker": "^3.6.0",
@@ -25,6 +26,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "sweetalert2": "^10.15.5",
     "web-vitals": "^1.1.0"
   },

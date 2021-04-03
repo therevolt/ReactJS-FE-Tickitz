@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const ContainerSelect = () => {
+const ContainerSelect = (props) => {
   const [startDate, setStartDate] = useState(new Date());
+  const iconCal = useRef(null);
+
+  useEffect(() => {
+    props.fireState(startDate); // eslint-disable-next-line
+  }, [startDate]);
+
+  const handleClickIcon = () => {
+    iconCal.current.setFocus();
+  };
+
   return (
     <div className="display-flex padding-x-3 is-vertically-centered flex-content-center flex-direction-col margin-bottom-5">
       <h4 className="font-size-4 margin-bottom-2 text-title sm-text-center">
@@ -25,12 +35,14 @@ const ContainerSelect = () => {
                   onChange={(date) => setStartDate(date)}
                   dateFormat={"dd/MM/yy"}
                   className="input-date datepicker bg-transparent no-border no-outline right-auto z-index-2 hover-cursor-pointer"
+                  ref={iconCal}
                 />
                 <img
                   className="position-absolute z-index-2 right-auto hover-cursor-pointer"
                   src="/assets/images/ic_round-navigate-next.png"
                   alt="calendar"
                   style={{ top: "5px", width: "20px", height: "20px" }}
+                  onClick={handleClickIcon}
                 />
               </div>
             </div>

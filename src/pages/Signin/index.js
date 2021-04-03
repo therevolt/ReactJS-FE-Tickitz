@@ -39,7 +39,6 @@ const Signin = () => {
               "user",
               JSON.stringify({
                 id: result.data.data[0].id,
-                role: result.data.data[0].role,
                 token: result.data.data[0].token,
                 refreshToken: result.data.data[0].refreshToken,
               })
@@ -120,7 +119,10 @@ const Signin = () => {
             </button>
             <p className="infor text-center mt-4">
               Forgot your password?
-              <span className="font-weight-bold link"> Reset now</span>
+              <Link to="/reset" className="font-weight-bold link text-decoration-none">
+                {" "}
+                Reset now
+              </Link>
               <br />
               Not Have Account?
               <Link to="/signup" className="font-weight-bold link text-decoration-none">

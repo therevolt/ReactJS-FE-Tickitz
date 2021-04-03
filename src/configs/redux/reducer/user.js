@@ -5,13 +5,19 @@ const initState = {
 };
 
 const userReducer = (state = initState, action) => {
-  if (action.type === "LOGIN_USER") {
-    return {
-      ...state,
-      user: action.payload,
-    };
-  } else {
-    return state;
+  switch (action.type) {
+    case "LOGIN_USER":
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "LOAD_USER":
+      return {
+        ...state,
+        loading: !state.loading,
+      };
+    default:
+      return state;
   }
 };
 

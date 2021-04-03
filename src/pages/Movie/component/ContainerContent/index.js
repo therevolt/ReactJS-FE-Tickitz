@@ -1,28 +1,34 @@
 import React, { Component } from "react";
 import CardCinemas from "../CardCinemas";
 import axios from "axios";
-
+import { connect } from "react-redux";
 export class ContainerContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       cinema: [],
+      playing_time: [],
     };
   }
 
   async componentDidMount() {
-    const resDataPlaylist = await axios.get(
-      `http://localhost:6000/v1/cinemas/playlist/${this.props.id}`
-    );
-    if (resDataPlaylist.data.data.length >= 1) {
-      let cinema = resDataPlaylist.data.data.map((item) => item.cinema_id);
-
-      [...new Set(cinema)].forEach(async (item) => {
-        const getData = await axios.get(`http://localhost:6000/v1/cinemas/${item}`);
-        const resultGetData = await getData.data.data[0];
-        this.setState({ ...this.state, data: [...this.state.data, resultGetData] });
-      });
+    if (this.props.movie.movie[parseInt(this.props.id) - 1].showing.toString() === "1") {
+      const resDataPlaylist = await axios.get(
+        `http://localhost:6000/v1/cinemas/playlist/${this.props.id}`
+      );
+      if (resDataPlaylist.data.data.length >= 1) {
+        this.setState({
+          ...this.state,
+          playing_time: resDataPlaylist.data.data.map((item) => item.playing_time),
+        });
+        let cinema = resDataPlaylist.data.data.map((item) => item.cinema_id);
+        [...new Set(cinema)].forEach(async (item) => {
+          const getData = await axios.get(`http://localhost:6000/v1/cinemas/${item}`);
+          const resultGetData = await getData.data.data[0];
+          this.setState({ ...this.state, data: [...this.state.data, resultGetData] });
+        });
+      }
     }
   }
 
@@ -36,9 +42,9 @@ export class ContainerContent extends Component {
                 cinema={item.name}
                 location={item.address}
                 image={item.logo}
-                playing_times={item.playlists}
                 cinema_id={item.id}
                 id={this.props.id}
+                fireState={this.props.fireState}
                 key={i}
               />
             );
@@ -48,4 +54,18 @@ export class ContainerContent extends Component {
   }
 }
 
-export default ContainerContent;
+const mapStateToProps = (state) => {
+  return {
+    movie: state.movie,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getMovie: (value) => {
+    dispatch({ type: "GET_MOVIE", payload: value });
+  },
+  setLoad: (value) => {
+    dispatch({ type: "SET_LOAD_MOVIE", payload: value });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContainerContent);

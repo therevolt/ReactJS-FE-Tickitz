@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Hr from "../../base/Hr";
-import { connect, useSelector } from "react-redux";
-import axios from "axios";
+import { connect, useSelector, useDispatch } from "react-redux";
+import Skeleton from "react-loading-skeleton";
 import Swal from "sweetalert2";
 
 const HeaderNew = (props) => {
@@ -13,28 +13,13 @@ const HeaderNew = (props) => {
   });
   const [log, setLog] = useState(null);
   const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.user.loading);
+  const dispatch = useDispatch();
+  let history = useHistory();
 
   useEffect(() => {
     if (user) {
       setLog(user);
-    } else if (localStorage.getItem("user")) {
-      const dataLocal = JSON.parse(localStorage.getItem("user"));
-      const getData = axios.get(`${process.env.REACT_APP_URL_API}/v1/users/${dataLocal.id}`, {
-        headers: { Authorization: `Bearer ${dataLocal.token}` },
-      });
-      getData
-        .then((result) => {
-          if (result.data.status) {
-            setLog(result.data.data[0]);
-          } else {
-            if (result.data.message === "Token Expired") {
-              Swal.fire("TOKEN EXPIRED!", "Please Login Again!", "warning");
-            }
-          }
-        })
-        .catch(() => {
-          Swal.fire("TOKEN EXPIRED", "Please Login Again", "info");
-        });
     }
 
     if (data.title === "" && data.search) {
@@ -48,7 +33,6 @@ const HeaderNew = (props) => {
     // eslint-disable-next-line
   }, [data]);
 
-  let history = useHistory();
   const handleSearch = () => {
     setData({ ...data, search: !data.search, title: "" });
   };
@@ -69,6 +53,24 @@ const HeaderNew = (props) => {
         history.push(`/movies?title=${data.title}`);
       }
     }
+  };
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to log out?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("user");
+        dispatch({ type: "LOGIN_USER", payload: null });
+        history.push("/");
+        window.scrollTo(0, 0);
+      }
+    });
   };
 
   return (
@@ -187,18 +189,39 @@ const HeaderNew = (props) => {
               />
             )}
           </div>
+
           {log ? (
-            <div className="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
-              <Link to="/profile">
-                <img
-                  src={log.avatar}
-                  style={{ borderRadius: "50%" }}
-                  height="56px"
-                  width="56px"
-                  alt="Profile"
-                />
-              </Link>
-            </div>
+            <button className="nav-item dropdown no-bg no-border">
+              <span
+                className="nav-link"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style={{ padding: 0 }}
+              >
+                <div className="margin-right-2 font-size-5 hover-cursor-pointer sm-margin-right-0 sm-display-none">
+                  <img
+                    src={log.avatar}
+                    style={{ borderRadius: "50%" }}
+                    height="56px"
+                    width="56px"
+                    alt="Profile"
+                  />
+                </div>
+              </span>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <Link to="/profile" className="dropdown-item">
+                  Profile
+                </Link>
+                <span className="dropdown-item bg-danger text-white py-2" onClick={handleLogout}>
+                  Log Out
+                </span>
+              </div>
+            </button>
+          ) : loading ? (
+            <Skeleton />
           ) : (
             <div className="margin-right-2 font-size-6 hover-cursor-pointer sm-margin-right-0 sm-display-none">
               <Link to="/signup">

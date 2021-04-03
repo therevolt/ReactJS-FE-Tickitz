@@ -5,11 +5,13 @@ import Hr from "../../components/base/Hr";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import FormData from "form-data";
+import axiosApiInstance from "../../helper/axiosInstance";
+import moment from "moment";
+import Skeleton from "react-loading-skeleton";
 require("dotenv").config();
 
 const Profile = () => {
@@ -19,6 +21,8 @@ const Profile = () => {
   const [data, setData] = useState(null);
   const [profile, setProfile] = useState(true);
   const [profileTemp, setProfileTemp] = useState(null);
+  const [ticket, setTicket] = useState(null);
+  const [load, setLoad] = useState(false);
   const inputImg = useRef(null);
   const state = useSelector((state) => state.user.user);
   const form = new FormData();
@@ -36,24 +40,21 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const user = state ? state : null;
-    if (!user) {
-      const dataLocal = JSON.parse(localStorage.getItem("user"));
-      const getData = axios.get(`${process.env.REACT_APP_URL_API}/v1/users/${dataLocal.id}`, {
-        headers: { Authorization: `Bearer ${dataLocal.token}` },
-      });
-      getData.then((result) => {
-        if (result.data.status) {
-          setData(result.data.data[0]);
-        } else {
-          if (result.data.message === "Token Expired") {
-            Swal.fire("TOKEN EXPIRED!", "Please Login Again!", "warning");
-          }
-        }
-      });
-    } else {
-      setData(user);
+    setLoad(true);
+    if (!data) {
+      setData(state);
     }
+
+    if (!ticket) {
+      axiosApiInstance.get(`${process.env.REACT_APP_URL_API}/v1/tickets`).then((result) => {
+        const sortData = result.data.data.sort((a, b) => {
+          return new Date(b.playing_time) - new Date(a.playing_time);
+        });
+        setTicket(sortData);
+        setLoad(false);
+      });
+    }
+
     // eslint-disable-next-line
   }, []);
 
@@ -80,7 +81,6 @@ const Profile = () => {
         localStorage.removeItem("user");
         dispatch({ type: "LOGIN_USER", payload: null });
         history.push("/");
-        history.go(0);
         window.scrollTo(0, 0);
       }
     });
@@ -91,7 +91,6 @@ const Profile = () => {
     if (data.password !== data.confirmPassword) {
       Swal.fire("ERROR!", "Passwords Do Not Match", "warning");
     } else {
-      const dataLocal = JSON.parse(localStorage.getItem("user"));
       delete data.token;
       delete data.refreshToken;
       delete data.created_at;
@@ -106,12 +105,9 @@ const Profile = () => {
           }
         }
       });
-      axios
-        .put(`${process.env.REACT_APP_URL_API}/v1/users/${data.id}`, form, {
-          headers: { Authorization: `Bearer ${dataLocal.token}` },
-        })
+      axiosApiInstance
+        .put(`${process.env.REACT_APP_URL_API}/v1/users/${data.id}`, form)
         .then((result) => {
-          console.log(result);
           if (result.data.status) {
             Swal.fire("Success", "Updated Data Successfuly", "success");
             dispatch({ type: "LOGIN_USER", payload: result.data.data[0] });
@@ -122,7 +118,7 @@ const Profile = () => {
           }
         })
         .catch((err) => {
-          alert(err.response.message);
+          Swal.fire("ERROR!", err, "error");
         });
     }
   };
@@ -158,16 +154,27 @@ const Profile = () => {
                 </div>
                 <div style={{ display: profile ? "block" : "none" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <input type="file" id="avatar" onChange={handleChange} ref={inputImg} hidden />
-                    <img
-                      src={data.avatar}
-                      className="py-4 img-profile"
-                      alt=""
-                      onClick={onClickAvatar}
-                      data-toggle="tooltip"
-                      data-placement="right"
-                      title="Click To Change Avatar"
-                    />
+                    <div className="wraper-image position-relative">
+                      <input
+                        type="file"
+                        id="avatar"
+                        onChange={handleChange}
+                        ref={inputImg}
+                        hidden
+                      />
+                      <img
+                        src={data.avatar}
+                        className="py-4 img-profile"
+                        alt=""
+                        onClick={onClickAvatar}
+                        data-toggle="tooltip"
+                        data-placement="right"
+                        title="Click To Change Avatar"
+                      />
+                      <div class="middle-profile br-50 py-4" onClick={onClickAvatar}>
+                        <div class="text">Click To Change</div>
+                      </div>
+                    </div>
                     <p className="fw-bold" style={{ marginBottom: "0px" }}>
                       {data ? `${data.first_name} ${data.last_name}` : ""}
                     </p>
@@ -356,58 +363,62 @@ const Profile = () => {
                       </div>
                     </div>
                     <div
-                      className="tab-pane fade"
+                      className="tab-pane fade position-relative"
                       id="pills-profile"
                       role="tabpanel"
                       aria-labelledby="pills-profile-tab"
                     >
-                      <div className="card history border-rounded2">
-                        <div className="d-flex py-4 px-4 justify-content-between">
-                          <div className="d-flex flex-column">
-                            <p className="text-placeholder mb-0">Tuesday, 07 July 2020 - 04:30pm</p>
-                            <p className="text-bold fs-3">Spiderman</p>
-                          </div>
-                          <img src="/assets/images/CineOne21.png" alt="" />
+                      {load ? (
+                        <Skeleton height={300} width={700} />
+                      ) : (
+                        <div className="ticket-page mt-5">
+                          {ticket &&
+                            ticket.map((item, i) => {
+                              return (
+                                <div
+                                  className={
+                                    i !== 0
+                                      ? "card history border-rounded2 mt-4"
+                                      : "card history border-rounded2"
+                                  }
+                                >
+                                  <div className="d-flex py-4 px-4 justify-content-between">
+                                    <div className="d-flex flex-column">
+                                      <p className="text-placeholder mb-0">
+                                        {moment(item.playing_time).format("LLLL")} <br />
+                                        {moment(item.playing_time).fromNow()}
+                                      </p>
+                                      <p className="text-bold fs-3">{item.movies}</p>
+                                    </div>
+                                    <img src={item.cinemas} alt="cinema" width="100px" />
+                                  </div>
+                                  <Hr />
+                                  <div className="card-body">
+                                    <div className="d-flex justify-content-between px-2">
+                                      <span
+                                        className="btn btn-success"
+                                        style={{ backgroundColor: "#00BA88", border: "none" }}
+                                      >
+                                        {item.status === "active"
+                                          ? "Ticket in active"
+                                          : "Ticket used"}
+                                      </span>
+                                      <div className="d-flex flex-nowrap align-self-center">
+                                        <span className="text-placeholder flex-nowrap show-details">
+                                          Show Details
+                                        </span>
+                                        <img
+                                          src="/assets/images/ic_round-navigate-next.png"
+                                          alt=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
                         </div>
-                        <Hr />
-                        <div className="card-body">
-                          <div className="d-flex justify-content-between px-2">
-                            <span
-                              className="btn btn-success"
-                              style={{ backgroundColor: "#00BA88", border: "none" }}
-                            >
-                              Ticket in active
-                            </span>
-                            <div className="d-flex flex-nowrap align-self-center">
-                              <span className="text-placeholder flex-nowrap show-details">
-                                Show Details
-                              </span>
-                              <img src="/assets/images/ic_round-navigate-next.png" alt="" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="card history border-rounded2">
-                        <div className="d-flex py-4 px-4 justify-content-between">
-                          <div className="d-flex flex-column">
-                            <p className="text-placeholder mb-0">Tuesday, 07 July 2020 - 04:30pm</p>
-                            <p className="text-bold fs-3">Spiderman</p>
-                          </div>
-                          <img src="/assets/images/ebv.id.png" alt="" />
-                        </div>
-                        <Hr />
-                        <div className="card-body">
-                          <div className="d-flex justify-content-between px-2">
-                            <span className="btn btn-secondary">Ticket used</span>
-                            <div className="d-flex flex-nowrap align-self-center">
-                              <span className="text-placeholder flex-nowrap show-details">
-                                Show Details
-                              </span>
-                              <img src="/assets/images/ic_round-navigate-next.png" alt="" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>

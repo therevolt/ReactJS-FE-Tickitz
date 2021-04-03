@@ -20,17 +20,6 @@ export class CardMovie extends Component {
     });
   };
 
-  componentDidMount() {
-    console.log(JSON.parse(localStorage.getItem("user")).role);
-    this.setState({
-      user: this.props.user
-        ? this.setState({ user: this.props.user.role })
-        : localStorage.getItem("user")
-        ? this.setState({ user: JSON.parse(localStorage.getItem("user")).role })
-        : null,
-    });
-  }
-
   render() {
     return (
       <div className="col">
@@ -41,7 +30,7 @@ export class CardMovie extends Component {
             alt="..."
             style={{ maxHeight: "200px", padding: "20px 50px" }}
           />
-          {JSON.parse(localStorage.getItem("user")).role === "admin" ? (
+          {this.props.user.role === "admin" ? (
             <div className="card-body d-flex flex-column align-items-center">
               <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }}>
                 <h5 className="card-title">{this.props.title.replace(/\(\d*\)/gi, "")}</h5>

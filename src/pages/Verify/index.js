@@ -19,7 +19,7 @@ const Verify = () => {
       })
       .catch((err) => {
         Swal.fire("OUH!", err.response.data.message, "error");
-      });
+      }); // eslint-disable-next-line
   }, []);
   return <></>;
 };

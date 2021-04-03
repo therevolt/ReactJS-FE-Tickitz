@@ -4,12 +4,14 @@ import { useLocation, useHistory } from "react-router";
 import moment from "moment";
 import axios from "axios";
 import SeatDesktop from "../SeatDesktop";
-import { connect } from "react-redux";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
 
 const ContainerTop = (props) => {
   const [dataCinema, setDataCinema] = useState(null);
   const [seat, setSeat] = useState(null);
+  const dispatch = useDispatch();
+  const { order } = useSelector((state) => state.order);
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
@@ -32,11 +34,16 @@ const ContainerTop = (props) => {
     if (!seat) {
       Swal.fire("HEY!", "Select a Seat First", "warning");
     } else {
-      props.OrderState({
-        cinema: dataCinema.name,
-        movie: props.title,
-        playing_time: `${day}, ${dates} ${time}`,
-        seat_choosed: seat,
+      dispatch({
+        type: "SET_ORDER",
+        payload: {
+          cinema_id: order.cinema_id,
+          cinema: dataCinema.name,
+          movie: props.title,
+          playlist_id: order.playlist_id,
+          playing_time: `${day}, ${dates} ${time}`,
+          seat_choosed: seat,
+        },
       });
       history.push(`/payment/${props.id}`);
     }
@@ -128,14 +135,4 @@ const ContainerTop = (props) => {
   );
 };
 
-const DispatchProps = (dispatch) => {
-  return {
-    OrderState: (state) => dispatch({ type: "SET_ORDER", order: state }),
-  };
-};
-
-const StateProps = (state) => {
-  return { order: state };
-};
-
-export default connect(StateProps, DispatchProps)(ContainerTop);
+export default ContainerTop;

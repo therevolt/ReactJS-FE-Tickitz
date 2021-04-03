@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { connect } from "react-redux";
 
 export class CardCinemas extends Component {
   constructor() {
@@ -16,7 +17,10 @@ export class CardCinemas extends Component {
 
   componentDidMount() {
     axios.get(`http://localhost:6000/v1/cinemas/playlist/${this.props.id}`).then((result) => {
-      this.setState({ ...this.state, playing_times: result.data.data });
+      this.setState({
+        ...this.state,
+        playing_times: result.data.data.filter((item) => item.cinema_id === this.props.cinema_id),
+      });
     });
   }
 
@@ -31,12 +35,24 @@ export class CardCinemas extends Component {
   }
 
   render() {
-    const handleClickTimes = (i, time) => {
+    const handleClickTimes = (i, time, id) => {
       this.setState({
         ...this.state,
         clicked: this.state.clicked === i ? false : i,
         time,
+        playlist_id: id,
       });
+    };
+
+    const handleOrder = () => {
+      let data = {
+        cinema_id: this.props.cinema_id,
+        playlist_id: this.state.playlist_id,
+        cinema: this.props.cinema,
+        image: this.props.image,
+        time: this.state.time,
+      };
+      this.props.setOrder(data);
     };
 
     return (
@@ -55,20 +71,29 @@ export class CardCinemas extends Component {
         <hr className="hr margin-y-2 margin-x-1" />
         <div className="min-height-cinemas">
           <div className="grid grid-template-columns-4 margin-x-1">
-            {this.state.playing_times.length > 0 &&
+            {this.state.playing_times.length > 0 && // eslint-disable-next-line
               this.state.playing_times.map((item, i) => {
-                return (
-                  <button
-                    id={i}
-                    className={
-                      this.state.clicked === i ? `${this.state.style} blue` : this.state.style
-                    }
-                    key={i}
-                    onClick={() => handleClickTimes(i, item.playing_time)}
-                  >
-                    {this.getTimes(item.playing_time)}
-                  </button>
-                );
+                if (
+                  `${new Date(item.playing_time).getDate()}/${new Date(
+                    item.playing_time
+                  ).getMonth()}` ===
+                  `${new Date(this.props.fireState).getDate()}/${new Date(
+                    this.props.fireState
+                  ).getMonth()}`
+                ) {
+                  return (
+                    <button
+                      id={i}
+                      className={
+                        this.state.clicked === i ? `${this.state.style} blue` : this.state.style
+                      }
+                      key={i}
+                      onClick={() => handleClickTimes(i, item.playing_time, item.id)}
+                    >
+                      {this.getTimes(item.playing_time)}
+                    </button>
+                  );
+                }
               })}
           </div>
         </div>
@@ -90,7 +115,10 @@ export class CardCinemas extends Component {
                   : `/order/${this.props.id}?time=${this.state.time}&cinema=${this.props.cinema_id}`
               }
             >
-              <button className="btn-cinema background-primary text-white padding-1 border-rounded2 text-bold font-size-6 no-border hover-cursor-pointer no-outline">
+              <button
+                className="btn-cinema background-primary text-white padding-1 border-rounded2 text-bold font-size-6 no-border hover-cursor-pointer no-outline"
+                onClick={handleOrder}
+              >
                 Book Now
               </button>
             </Link>
@@ -108,4 +136,15 @@ export class CardCinemas extends Component {
   }
 }
 
-export default CardCinemas;
+const mapStateToProps = (state) => {
+  return {
+    order: state.order,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  setOrder: (value) => {
+    dispatch({ type: "SET_ORDER", payload: value });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardCinemas);

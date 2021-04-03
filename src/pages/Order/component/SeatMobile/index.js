@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 
 const SeatMobile = () => {
-  const [selectedSeat, setSelectedSeat] = useState(["A1", "B2", "F2"]);
+  const [selectedSeat, setSelectedSeat] = useState(["A1", "B2", "F2"]); // eslint-disable-next-line
   const [ordered, setOrdered] = useState(["F1", "A2", "B3", "F13"]);
   const rows = ["A", "B", "C", "D", "E", "F", "G"];
 

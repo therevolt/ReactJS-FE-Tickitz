@@ -3,30 +3,30 @@ import Order from "./pages/Order";
 import Payment from "./pages/Payment";
 import Movie from "./pages/Movie";
 import Signup from "./pages/Signup";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
 import PageMovie from "./pages/Admin/PageMovie";
 import PageEditMovie from "./pages/Admin/PageEditMovie";
-import { PrivateRoute } from "./helper/privateRoute";
+import { PrivateRoute, PublicRoute } from "./helper/CustomRoute";
 import Verify from "./pages/Verify";
+import Ticket from "./pages/Ticket";
+import ResetPassword from "./pages/ResetPassword";
+import ConfirmReset from "./pages/ConfirmReset";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/signup">
-          <Signup />
-        </Route>
-        <Route path="/signin">
-          <Signin />
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/verify" component={Verify} />
-        <Route exact path="/movie/:id" children={<Movie />} />
-        <Route path="/movies" children={<PageMovie />} />
+        <PublicRoute restricted={true} path="/signup" component={Signup} />
+        <PublicRoute restricted={true} path="/signin" component={Signin} />
+        <PublicRoute restricted={true} path="/reset" component={ResetPassword} />
+        <PublicRoute restricted={true} path="/confirmReset" component={ConfirmReset} />
+        <PublicRoute restricted={false} exact path="/" component={Home} />
+        <PublicRoute restricted={false} path="/verify" component={Verify} />
+        <PublicRoute restricted={false} exact path="/movie/:id" component={Movie} />
+        <PublicRoute restricted={false} path="/movies" component={PageMovie} />
+        <PublicRoute restricted={false} path="/ticket" component={Ticket} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/movie/edit/:id" component={PageEditMovie} />
         <PrivateRoute path="/order/:id" component={Order} />

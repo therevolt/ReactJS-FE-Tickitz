@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import CardMovieUpcoming from "./CardMovieUpcoming";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import { connect } from "react-redux";
 require("dotenv").config();
 
@@ -10,25 +8,17 @@ export class Upcoming extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movie: "",
+      movie: null,
     };
   }
 
-  async componentDidMount() {
-    if (this.state.movie === "") {
-      this.props.setLoad(true);
-      await axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
-        .then((result) => {
-          if (result.data.status) {
-            this.setState({ ...this.state, movie: result.data.data });
-            this.props.getMovie(result.data.data);
-            this.props.setLoad(false);
-          }
-        })
-        .catch(() => {
-          Swal.fire("Something Error!", "Please Refresh This Page", "warning");
-        });
+  componentDidMount() {
+    if (this.props.movie) {
+      this.setState({
+        movie: this.props.movie.movie.filter((item) => {
+          return !item.showing;
+        }),
+      });
     }
   }
 
@@ -60,7 +50,7 @@ export class Upcoming extends Component {
           <input type="submit" className="btn-month-movies" value="Agust" />
         </div>
         <div className="element-showing display-flex flex-direction-row margin-y-3 flex-content-between sm-overflow">
-          {this.state.movie !== "" &&
+          {this.state.movie &&
             this.state.movie.map((item, i) => {
               return (
                 <CardMovieUpcoming

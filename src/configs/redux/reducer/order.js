@@ -5,13 +5,14 @@ const initState = {
 };
 
 const orderReducer = (state = initState, action) => {
-  if (action.type === "SET_ORDER") {
-    return {
-      ...state,
-      user: action.payload,
-    };
-  } else {
-    return state;
+  switch (action.type) {
+    case "SET_ORDER":
+      return {
+        ...state,
+        order: action.payload,
+      };
+    default:
+      return state;
   }
 };
 

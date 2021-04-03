@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Footer from "../../../components/module/Footer";
 import HeaderNew from "../../../components/module/Header";
@@ -14,17 +14,21 @@ export default function DeleteMovie() {
   }
   const [data, setData] = useState(null);
   const [dataAPI, setDataAPI] = useState(null);
-  const [page, setPage] = useState(1);
-  const [genre, setGenre] = useState(null);
+  const [page, setPage] = useState({ num: 1, limit: 12 });
+  const [genre, setGenre] = useState("");
   const [menu, setMenu] = useState(null);
+  const [load, setLoad] = useState(false);
   let query = useQuery();
 
   useEffect(() => {
     if (!data) {
+      setLoad(true);
+      setPage({ ...page, limit: query.get("limit") ? query.get("limit") : 12 });
       window.scrollTo(0, 0);
       axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/movies?page=${page}&limit=12`)
+        .get(`${process.env.REACT_APP_URL_API}/v1/movies?page=${page.num}&limit=${page.limit}`)
         .then((result) => {
+          setLoad(false);
           if (result.data.status) {
             if (query.get("title")) {
               const filteredData = result.data.data.result.filter((item) =>
@@ -173,55 +177,73 @@ export default function DeleteMovie() {
                 </li>
               </ul>
             </div>
-            <div className="row row-cols-2 row-cols-md-4 g-4">
-              {data &&
-                data.map((item, i) => {
-                  return (
-                    <CardMovie
-                      title={item.name}
-                      genre={item.genre}
-                      img={item.image}
-                      id={item.id}
-                      setData={setData}
-                      key={i}
-                    />
-                  );
-                })}
-            </div>
+            {load ? (
+              <Skeleton height={200} count={4} />
+            ) : (
+              <div className="row row-cols-2 row-cols-md-4 g-4">
+                {data &&
+                  data.map((item, i) => {
+                    return (
+                      <CardMovie
+                        title={item.name}
+                        genre={item.genre}
+                        img={
+                          item.image
+                            ? item.image
+                            : "https://img.freepik.com/free-vector/vintage-movie-poster_23-2147593880.jpg"
+                        }
+                        id={item.id}
+                        setData={setData}
+                        key={i}
+                      />
+                    );
+                  })}
+              </div>
+            )}
             <nav aria-label="Page navigation">
               <ul className="pagination justify-content-center my-4">
-                <li className={page > 1 ? "page-item" : "page-item disabled"}>
-                  <Link
+                <li className={page.num > 1 ? "page-item" : "page-item disabled"}>
+                  <span
                     className="page-link"
-                    onClick={() => {
-                      page > 1 && setPage(page - 1);
+                    onClick={(e) => {
+                      e.preventDefault();
+                      page.num > 1 &&
+                        setPage({
+                          num: page.num - 1,
+                          limit: query.get("limit") ? query.get("limit") : 12,
+                        });
                       setData(null);
                     }}
                   >
                     Previous
-                  </Link>
+                  </span>
                 </li>
                 {menu &&
-                  menu.map((item) => {
+                  menu.map((item, i) => {
                     return (
-                      <li className={page === item ? "page-item active" : "page-item"}>
-                        <Link className="page-link" id={item} onClick={handlePagination}>
+                      <li className={page.num === item ? "page-item active" : "page-item"} key={i}>
+                        <span className="page-link" id={item} onClick={handlePagination}>
                           {item}
-                        </Link>
+                        </span>
                       </li>
                     );
                   })}
                 {menu && (
-                  <li className={page < menu.length ? "page-item" : "page-item disabled"}>
-                    <Link
+                  <li className={page.num < menu.length ? "page-item" : "page-item disabled"}>
+                    <span
                       className="page-link"
-                      onClick={() => {
-                        page < menu.length && setPage(page + 1);
+                      onClick={(e) => {
+                        e.preventDefault();
+                        page.num < menu.length &&
+                          setPage({
+                            num: page.num + 1,
+                            limit: query.get("limit") ? query.get("limit") : 12,
+                          });
                         setData(null);
                       }}
                     >
                       Next
-                    </Link>
+                    </span>
                   </li>
                 )}
               </ul>

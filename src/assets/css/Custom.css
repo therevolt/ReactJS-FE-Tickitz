@@ -2,9 +2,19 @@
   margin-bottom: 0px !important;
 }
 
+.ticket-page {
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.btn-filter-ticket {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
 .card.history {
-  width: 52vw;
-  margin-top: 30px;
+  width: 49vw;
 }
 
 .show-details {
@@ -601,9 +611,13 @@ textarea:hover {
 }
 
 .img-profile {
+  opacity: 1;
+  display: block;
   width: 200px;
   height: 250px;
   border-radius: 50%;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
 }
 
 /* .img-profile:hover,
@@ -620,20 +634,37 @@ textarea:hover {
   backface-visibility: hidden;
 }
 
+.middle-profile {
+  position: absolute;
+  top: 1.6rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  width: auto;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: #5f2eea;
+}
+
 .middle {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100%;
-  width: 100%;
+  height: auto;
+  width: auto;
   opacity: 0;
   transition: 0.5s ease;
   background-color: #5f2eea;
 }
 
 .wraper-image:hover .middle {
+  opacity: 80%;
+}
+
+.wraper-image:hover .middle-profile {
   opacity: 80%;
 }
 
@@ -652,6 +683,10 @@ textarea:hover {
 
 #show_time {
   display: none;
+}
+
+.br-50 {
+  border-radius: 50%;
 }
 
 @media only screen and (max-width: 768px) {
