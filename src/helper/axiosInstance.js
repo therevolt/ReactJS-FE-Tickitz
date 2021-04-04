@@ -20,11 +20,13 @@ axiosApiInstance.interceptors.response.use(
     return response;
   },
   async function (error) {
-    if (error) {
-      Swal.fire("Token Expired", `Pelase Login Again! ${process.env.REACT_APP_URL_API}`, "info");
+    if (error.message === "Token Expired") {
+      Swal.fire("Token Expired", "Please Login Again", "info");
+      localStorage.removeItem("user");
+    } else {
       localStorage.removeItem("user");
     }
-    return Promise.reject(error);
+    return Promise.reject(new Error("Token Expired").message);
   }
 );
 

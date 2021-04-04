@@ -13,6 +13,7 @@ const Signin = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [load, setLoad] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -29,6 +30,7 @@ const Signin = () => {
 
   const handleSubmit = () => {
     if (data.email.match(/@\w*.\w*/g)) {
+      setLoad(true);
       axios
         .post(`${process.env.REACT_APP_URL_API}/v1/users/login`, data)
         .then((result) => {
@@ -47,11 +49,13 @@ const Signin = () => {
           } else {
             Swal.fire("HMMMMM...", result.data.message, "warning");
           }
+          setLoad(false);
         })
         .catch((err) => {
           if (err.response) {
             Swal.fire("ERROR", err.response.data.message, "error");
           }
+          setLoad(false);
         });
     } else {
       Swal.fire("HEY!", "user & pass cannot be empty", "info");
@@ -114,8 +118,14 @@ const Signin = () => {
                 </div>
               </div>
             </div>
-            <button className="btn btn-main btn-block mt-3" onClick={handleSubmit}>
-              Sign In
+            <button className="btn btn-main btn-block mt-3" onClick={handleSubmit} disabled={load}>
+              {load ? (
+                <div class="spinner-grow" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              ) : (
+                "Sign In"
+              )}
             </button>
             <p className="infor text-center mt-4">
               Forgot your password?

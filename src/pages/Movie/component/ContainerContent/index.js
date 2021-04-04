@@ -13,21 +13,23 @@ export class ContainerContent extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.movie.movie[parseInt(this.props.id) - 1].showing.toString() === "1") {
-      const resDataPlaylist = await axios.get(
-        `${process.env.REACT_APP_URL_API}/v1/cinemas/playlist/${this.props.id}`
-      );
-      if (resDataPlaylist.data.data.length >= 1) {
-        this.setState({
-          ...this.state,
-          playing_time: resDataPlaylist.data.data.map((item) => item.playing_time),
-        });
-        let cinema = resDataPlaylist.data.data.map((item) => item.cinema_id);
-        [...new Set(cinema)].forEach(async (item) => {
-          const getData = await axios.get(`${process.env.REACT_APP_URL_API}/v1/cinemas/${item}`);
-          const resultGetData = await getData.data.data[0];
-          this.setState({ ...this.state, data: [...this.state.data, resultGetData] });
-        });
+    if (this.props.movie.movie[parseInt(this.props.id) - 1]) {
+      if (this.props.movie.movie[parseInt(this.props.id) - 1].showing.toString() === "1") {
+        const resDataPlaylist = await axios.get(
+          `${process.env.REACT_APP_URL_API}/v1/cinemas/playlist/${this.props.id}`
+        );
+        if (resDataPlaylist.data.data.length >= 1) {
+          this.setState({
+            ...this.state,
+            playing_time: resDataPlaylist.data.data.map((item) => item.playing_time),
+          });
+          let cinema = resDataPlaylist.data.data.map((item) => item.cinema_id);
+          [...new Set(cinema)].forEach(async (item) => {
+            const getData = await axios.get(`${process.env.REACT_APP_URL_API}/v1/cinemas/${item}`);
+            const resultGetData = await getData.data.data[0];
+            this.setState({ ...this.state, data: [...this.state.data, resultGetData] });
+          });
+        }
       }
     }
   }

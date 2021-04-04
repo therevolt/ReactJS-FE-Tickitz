@@ -8,10 +8,11 @@ import Footer from "../../components/module/Footer";
 import { connect } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import "../../assets/css/Main.css";
-import { getMovies } from "../../configs/redux/action/movies";
+import { getMovies, getMoviesHome } from "../../configs/redux/action/movies";
 
 class Home extends Component {
   componentDidMount() {
+    this.props.getMoviesHome();
     this.props.getMovies();
   }
 
@@ -29,7 +30,7 @@ class Home extends Component {
             </>
           )}
           <div className="margin-y-3 sm-container">
-            {this.props.movies && <Upcoming />}
+            {this.props.movies_home && <Upcoming />}
             <FormMail />
             <Footer />
           </div>
@@ -42,11 +43,15 @@ class Home extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movie.movie,
+    movies_home: state.movie.movie_home,
     load: state.movie.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  getMoviesHome: () => {
+    dispatch(getMoviesHome());
+  },
   getMovies: () => {
     dispatch(getMovies());
   },

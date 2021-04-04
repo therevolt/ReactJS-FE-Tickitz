@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.tiket-wrapper {
+  background-color: #f5f6f8;
+}
+
 .header .side-left {
   display: flex;
   justify-content: space-between;

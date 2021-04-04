@@ -15,7 +15,7 @@ export class Upcoming extends Component {
   componentDidMount() {
     if (this.props.movie) {
       this.setState({
-        movie: this.props.movie.movie.filter((item) => {
+        movie: this.props.movie.movie_home.filter((item) => {
           return !item.showing;
         }),
       });

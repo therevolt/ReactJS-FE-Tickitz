@@ -79,7 +79,7 @@ const Profile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("user");
-        dispatch({ type: "LOGIN_USER", payload: null });
+        dispatch({ type: "LOGIN_USER", payload: "" });
         history.push("/");
         window.scrollTo(0, 0);
       }

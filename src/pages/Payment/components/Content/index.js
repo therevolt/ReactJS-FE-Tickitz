@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const Content = () => {
+const Content = (props) => {
   const [data, setData] = useState(null);
   const [profile, setProfile] = useState(null);
   const history = useHistory();
@@ -15,13 +15,11 @@ const Content = () => {
     if (!data) {
       setData(order);
       axios
-        .get(
-          `${process.env.REACT_APP_URL_API}/v1/users/${
-            JSON.parse(localStorage.getItem("user")).id
-          }`,
-          { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}` } }
-        )
+        .get(`${process.env.REACT_APP_URL_API}/v1/users/profile`, {
+          headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}` },
+        })
         .then((result) => {
+          console.log(result);
           if (result.data.status) {
             setProfile(result.data.data[0]);
           }

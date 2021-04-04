@@ -1,5 +1,6 @@
 const initState = {
   movie: null,
+  movie_home: null,
   loading: false,
   error: null,
 };
@@ -10,6 +11,11 @@ const movieReducer = (state = initState, action) => {
       return {
         ...state,
         movie: action.payload,
+      };
+    case "GET_MOVIE_HOME":
+      return {
+        ...state,
+        movie_home: action.payload,
       };
     case "SET_LOAD_MOVIE":
       return {

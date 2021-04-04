@@ -2,6 +2,10 @@
   margin-bottom: 0px !important;
 }
 
+.img-detail {
+  max-width: 300px;
+}
+
 .ticket-page {
   max-height: 100vh;
   overflow-y: auto;

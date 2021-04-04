@@ -61,7 +61,7 @@ export class ContainerTop extends Component {
       <div className="display-flex margin-x-3 margin-y-5 sm-margin-x-05 flex-direction-row sm-flex-direction-col">
         <div className="display-flex-30 padding-x-2 sm-margin-bottom-1">
           <div className="w-100 h-100 border-gray border-rounded display-flex flex-direction-col flex-content-center is-vertically-centered padding-1">
-            <img src={image} alt="movie" />
+            <img className="img-detail" src={image} alt="movie" />
           </div>
         </div>
         <div className="display-flex-70 flex-direction-col margin-bottom-2">
