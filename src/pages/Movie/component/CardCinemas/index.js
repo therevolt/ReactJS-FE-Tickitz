@@ -16,12 +16,14 @@ export class CardCinemas extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:6000/v1/cinemas/playlist/${this.props.id}`).then((result) => {
-      this.setState({
-        ...this.state,
-        playing_times: result.data.data.filter((item) => item.cinema_id === this.props.cinema_id),
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/v1/cinemas/playlist/${this.props.id}`)
+      .then((result) => {
+        this.setState({
+          ...this.state,
+          playing_times: result.data.data.filter((item) => item.cinema_id === this.props.cinema_id),
+        });
       });
-    });
   }
 
   getTimes(value) {

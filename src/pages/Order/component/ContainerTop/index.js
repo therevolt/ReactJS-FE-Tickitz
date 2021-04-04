@@ -25,7 +25,7 @@ const ContainerTop = (props) => {
 
   // eslint-disable-next-line
   useEffect(async () => {
-    const getData = await axios.get(`http://localhost:6000/v1/cinemas/${cinema}`);
+    const getData = await axios.get(`${process.env.REACT_APP_URL_API}/v1/cinemas/${cinema}`);
     setDataCinema(getData.data.data[0]);
     // eslint-disable-next-line
   }, []);

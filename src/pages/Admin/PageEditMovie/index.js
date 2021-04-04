@@ -116,7 +116,7 @@ export default function PageEditMovie() {
         }
       })
       .catch((err) => {
-        Swal.fire("ERROR!", err.response.data.message, "error");
+        Swal.fire("ERROR!", err, "error");
       });
     if (dataPlaylist && listShowTime.length > 0) {
       listShowTime.map(async (item) => {
