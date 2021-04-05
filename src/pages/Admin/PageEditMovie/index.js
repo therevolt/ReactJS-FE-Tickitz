@@ -168,7 +168,7 @@ export default function PageEditMovie() {
   };
 
   return (
-    <>
+    <div className="showInAnimation">
       <Header />
       <div className="bg-grey">
         <div className="container py-5">
@@ -443,6 +443,6 @@ export default function PageEditMovie() {
       <div className="margin-y-3 sm-container bg-white">
         <Footer />
       </div>
-    </>
+    </div>
   );
 }

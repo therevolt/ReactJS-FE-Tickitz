@@ -46,13 +46,22 @@ const Profile = () => {
     }
 
     if (!ticket) {
-      axiosApiInstance.get(`${process.env.REACT_APP_URL_API}/v1/tickets`).then((result) => {
-        const sortData = result.data.data.sort((a, b) => {
-          return new Date(b.playing_time) - new Date(a.playing_time);
+      axiosApiInstance
+        .get(`${process.env.REACT_APP_URL_API}/v1/tickets`)
+        .then((result) => {
+          const sortData = result.data.data.sort((a, b) => {
+            return new Date(b.playing_time) - new Date(a.playing_time);
+          });
+          setTicket(sortData);
+          setLoad(false);
+        })
+        .catch(() => {
+          localStorage.removeItem("user");
+          dispatch({ type: "LOGIN_USER", payload: "" });
+          history.push("/signin");
+          window.scrollTo(0, 0);
+          Swal.fire("Token Expired", "Please Login Again!", "warning");
         });
-        setTicket(sortData);
-        setLoad(false);
-      });
     }
 
     // eslint-disable-next-line
@@ -132,7 +141,7 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <div className="showInAnimation">
       <HeaderNew />
       <div className="absolute-container bg-grey">
         {data && (
@@ -431,7 +440,7 @@ const Profile = () => {
           <Footer />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

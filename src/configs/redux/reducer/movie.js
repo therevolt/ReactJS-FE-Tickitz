@@ -1,7 +1,7 @@
 const initState = {
   movie: null,
   movie_home: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

@@ -47,7 +47,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="custom">
+    <div className="custom showInAnimation">
       <div className="row">
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">

@@ -123,7 +123,7 @@ export default function DeleteMovie() {
   };
 
   return (
-    <>
+    <div className="showInAnimation">
       <HeaderNew fireEvent={[setData, dataAPI, handleSearchTitle]} />
       <div className="bg-grey sm-transform-content">
         <div className="border-rounded2">
@@ -254,6 +254,6 @@ export default function DeleteMovie() {
       <div className="margin-y-3 sm-container bg-white sm-transform-footer">
         <Footer />
       </div>
-    </>
+    </div>
   );
 }

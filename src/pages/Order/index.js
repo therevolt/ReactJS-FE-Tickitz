@@ -26,7 +26,7 @@ const Order = () => {
   }, []);
 
   return (
-    <>
+    <div className="showInAnimation">
       <Header />
       <div className="absolute-container">
         {data && <ContainerTop title={data.replace(/\(\d*\)/gi, "")} id={id} />}
@@ -35,7 +35,7 @@ const Order = () => {
           <Footer />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

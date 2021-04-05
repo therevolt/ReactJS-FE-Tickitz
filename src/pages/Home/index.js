@@ -12,13 +12,13 @@ import { getMovies, getMoviesHome } from "../../configs/redux/action/movies";
 
 class Home extends Component {
   componentDidMount() {
-    this.props.getMoviesHome();
     this.props.getMovies();
+    this.props.getMoviesHome();
   }
 
   render() {
     return (
-      <>
+      <div className="showInAnimation">
         <Header />
         <div className="absolute-container">
           {this.props.load ? (
@@ -35,7 +35,7 @@ class Home extends Component {
             <Footer />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

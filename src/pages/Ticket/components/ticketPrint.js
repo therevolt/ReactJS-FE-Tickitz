@@ -1,6 +1,5 @@
 import React from "react";
 import Barcode from "react-barcode";
-import { connect } from "react-redux";
 
 class ComponentToPrint extends React.PureComponent {
   constructor(props) {
@@ -190,10 +189,4 @@ class ComponentToPrint extends React.PureComponent {
   }
 }
 
-const StateProps = (state) => {
-  return {
-    user: state.user.user,
-  };
-};
-
-export default connect(StateProps)(ComponentToPrint);
+export default ComponentToPrint;

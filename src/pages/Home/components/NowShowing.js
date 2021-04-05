@@ -3,17 +3,19 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 export class NowShowing extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      show: false,
       movie: null,
+      show: "",
     };
   }
 
   componentDidMount() {
-    if (this.props.movie) {
+    console.log(this.props);
+    if (this.props.movie.movie) {
       this.setState({
+        ...this.state,
         movie: this.props.movie.movie.filter((item) => {
           return item.showing;
         }),

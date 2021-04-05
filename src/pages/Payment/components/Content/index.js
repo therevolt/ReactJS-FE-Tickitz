@@ -99,7 +99,10 @@ const Content = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        if (err.message.match(/400/)) {
+          localStorage.removeItem("user");
+          history.push("/signin");
+        }
       });
   };
 

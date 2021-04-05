@@ -9,6 +9,7 @@ import { getMonth } from "../../helper/getMonth";
 import ComponentToPrint from "./components/ticketPrint";
 import "./style.css";
 import { exportComponentAsJPEG } from "react-component-export-image";
+import { connect } from "react-redux";
 
 const ComponentToSave = React.forwardRef((props, ref) => (
   <ComponentToPrint data={props.data} ref={ref} />
@@ -56,12 +57,12 @@ const Ticket = (props) => {
   }, []);
 
   return (
-    <>
+    <div className="showInAnimation">
       <Header />
       <div className="bg-primary px-5 py-5">
         <div className="bg-grey px-5 py-5 mx-5 my-5 border-rounded2">
           <div className="text-header fs-3 fw-bold text-center">Proof of Payment</div>
-          {data && <ComponentToPrint data={data} ref={componentRef} />}
+          {data && <ComponentToPrint user={props.user} data={data} ref={componentRef} />}
           <div className="d-flex justify-content-center">
             <ComponentToSave ref={componentRef} />
             <div
@@ -147,8 +148,14 @@ const Ticket = (props) => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default Ticket;
+const StateProps = (state) => {
+  return {
+    user: state.user.user,
+  };
+};
+
+export default connect(StateProps)(Ticket);

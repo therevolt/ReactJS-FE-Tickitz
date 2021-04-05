@@ -67,7 +67,7 @@ const HeaderNew = (props) => {
       if (result.isConfirmed) {
         localStorage.removeItem("user");
         dispatch({ type: "LOGIN_USER", payload: null });
-        history.push("/");
+        history.push("/signin");
         window.scrollTo(0, 0);
       }
     });
@@ -191,7 +191,7 @@ const HeaderNew = (props) => {
           </div>
 
           {log ? (
-            <button className="nav-item dropdown no-bg no-border">
+            <button className="nav-item dropdown no-bg no-border showInAnimation">
               <span
                 className="nav-link"
                 id="navbarDropdown"

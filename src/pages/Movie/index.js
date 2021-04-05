@@ -19,7 +19,7 @@ const Payment = () => {
   }, [filter]);
 
   return (
-    <>
+    <div className="showInAnimation">
       <Header />
       <div className="absolute-container">
         <ContainerTop id={id} />
@@ -29,7 +29,7 @@ const Payment = () => {
           <Footer />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
