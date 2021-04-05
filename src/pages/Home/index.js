@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import "../../assets/css/Main.css";
 import { getMovies, getMoviesHome } from "../../configs/redux/action/movies";
+import HelmetTitle from "../../components/base/Helmet";
 
 class Home extends Component {
   componentDidMount() {
@@ -20,6 +21,7 @@ class Home extends Component {
     return (
       <div className="showInAnimation">
         <Header />
+        <HelmetTitle title="Home - Tickitz Web" />
         <div className="absolute-container">
           {this.props.load ? (
             <Skeleton height={500} />

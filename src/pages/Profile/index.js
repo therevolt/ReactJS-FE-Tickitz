@@ -12,6 +12,7 @@ import FormData from "form-data";
 import axiosApiInstance from "../../helper/axiosInstance";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const Profile = () => {
@@ -143,6 +144,7 @@ const Profile = () => {
   return (
     <div className="showInAnimation">
       <HeaderNew />
+      <HelmetTitle title="Profile - Tickitz Web" />
       <div className="absolute-container bg-grey">
         {data && (
           <div className="container mb-3">

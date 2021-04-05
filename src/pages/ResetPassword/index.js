@@ -3,6 +3,7 @@ import "./signup.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const ResetPassword = () => {
@@ -48,6 +49,7 @@ const ResetPassword = () => {
 
   return (
     <div className="custom showInAnimation">
+      <HelmetTitle title="Reset Password - Tickitz Web" />
       <div className="row">
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">

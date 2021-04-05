@@ -6,6 +6,7 @@ import ContainerTop from "./component/ContainerTop/index.js";
 import ContainerBottom from "./component/ContainerBottom/index.js";
 import { useParams } from "react-router";
 import axios from "axios";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const Order = () => {
@@ -28,6 +29,7 @@ const Order = () => {
   return (
     <div className="showInAnimation">
       <Header />
+      <HelmetTitle title="Order Page - Tickitz Web" />
       <div className="absolute-container">
         {data && <ContainerTop title={data.replace(/\(\d*\)/gi, "")} id={id} />}
         {data && <ContainerBottom id={id} />}

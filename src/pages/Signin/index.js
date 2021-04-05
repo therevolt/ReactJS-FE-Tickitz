@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const Signin = () => {
@@ -64,6 +65,7 @@ const Signin = () => {
 
   return (
     <div className="custom showInAnimation">
+      <HelmetTitle title="Sign In - Tickitz Web" />
       <div className="row">
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">

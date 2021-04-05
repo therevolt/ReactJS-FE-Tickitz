@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import FormData from "form-data";
 import { setHours, setMinutes } from "date-fns";
 import { cvTime } from "../../../helper/convertTime";
+import HelmetTitle from "../../../components/base/Helmet";
 
 export default function PageEditMovie() {
   const [startDate, setStartDate] = useState(new Date());
@@ -168,6 +169,7 @@ export default function PageEditMovie() {
   return (
     <div className="showInAnimation">
       <Header />
+      <HelmetTitle title="Edit Movies - Tickitz Web" />
       <div className="bg-grey">
         <div className="container py-5">
           <div className="row">

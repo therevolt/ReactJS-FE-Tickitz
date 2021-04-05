@@ -7,6 +7,7 @@ import ContainerTop from "./component/ContainerTop";
 import ContainerSelect from "./component/ContainerSelect";
 import ContainerContent from "./component/ContainerContent";
 import { useParams } from "react-router";
+import HelmetTitle from "../../components/base/Helmet";
 
 const Payment = () => {
   const [filter, setFilter] = useState(null);
@@ -21,6 +22,7 @@ const Payment = () => {
   return (
     <div className="showInAnimation">
       <Header />
+      <HelmetTitle title="Details Movie - Tickitz Web" />
       <div className="absolute-container">
         <ContainerTop id={id} />
         <ContainerSelect fireState={setFilter} />

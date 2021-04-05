@@ -10,6 +10,7 @@ import ComponentToPrint from "./components/ticketPrint";
 import "./style.css";
 import { exportComponentAsJPEG } from "react-component-export-image";
 import { connect } from "react-redux";
+import HelmetTitle from "../../components/base/Helmet";
 
 const ComponentToSave = React.forwardRef((props, ref) => (
   <ComponentToPrint data={props.data} ref={ref} />
@@ -59,6 +60,7 @@ const Ticket = (props) => {
   return (
     <div className="showInAnimation">
       <Header />
+      <HelmetTitle title="Ticket Details - Tickitz Web" />
       <div className="bg-primary px-5 py-5">
         <div className="bg-grey px-5 py-5 mx-5 my-5 border-rounded2">
           <div className="text-header fs-3 fw-bold text-center">Proof of Payment</div>

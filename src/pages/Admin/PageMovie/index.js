@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useLocation } from "react-router";
 import Swal from "sweetalert2";
+import HelmetTitle from "../../../components/base/Helmet";
 import Footer from "../../../components/module/Footer";
 import HeaderNew from "../../../components/module/Header";
 import CardMovie from "../components/CardMovie";
@@ -124,6 +125,7 @@ export default function DeleteMovie() {
 
   return (
     <div className="showInAnimation">
+      <HelmetTitle title="Movies - Tickitz Web" />
       <HeaderNew fireEvent={[setData, dataAPI, handleSearchTitle]} />
       <div className="bg-grey sm-transform-content">
         <div className="border-rounded2">

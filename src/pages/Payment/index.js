@@ -5,6 +5,7 @@ import "../../assets/css/Main.css";
 import Content from "./components/Content";
 import axios from "axios";
 import { useParams } from "react-router";
+import HelmetTitle from "../../components/base/Helmet";
 
 const Payment = () => {
   const [data, setData] = useState(null);
@@ -28,6 +29,7 @@ const Payment = () => {
   return (
     <>
       <Header />
+      <HelmetTitle title="Payment Page - Tickitz Web" />
       <div className="absolute-container">
         {user && data && <Content data={data} user={JSON.parse(user)} />}
         <div className="margin-y-3 sm-container">

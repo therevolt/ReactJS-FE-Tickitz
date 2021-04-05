@@ -5,6 +5,7 @@ import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosApiInstance from "../../helper/axiosInstance";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const ConfirmReset = () => {
@@ -65,6 +66,7 @@ const ConfirmReset = () => {
 
   return (
     <div className="custom">
+      <HelmetTitle title="Reset Password - Tickitz Web" />
       <div className="row">
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">

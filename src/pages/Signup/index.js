@@ -6,6 +6,7 @@ import CardLogWith from "./components/CardLogWith";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import HelmetTitle from "../../components/base/Helmet";
 require("dotenv").config();
 
 const Signup = () => {
@@ -60,6 +61,7 @@ const Signup = () => {
 
   return (
     <div className="custom showInAnimation">
+      <HelmetTitle title="Sign Up - Tickitz Web" />
       <div className="row">
         <div className="col-md-7 d-none d-md-block left">
           <div className="overlay">
