@@ -34,7 +34,6 @@ const SeatMobile = () => {
   };
 
   const handleSelectSeat = (val, newseat = "", type) => {
-    console.log("newset", newseat);
     if (newseat !== "null") {
       if (selectedSeat.includes(val)) {
         let index = selectedSeat.indexOf(val);

@@ -12,7 +12,6 @@ export class NowShowing extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     if (this.props.movie.movie) {
       this.setState({
         ...this.state,

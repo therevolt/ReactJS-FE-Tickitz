@@ -141,8 +141,6 @@ export default function PageEditMovie() {
             }
           })
           .catch((err) => {
-            console.log("here");
-            console.log(err.message);
             Swal.fire("UGH!", err.response.message, "error");
           });
       });

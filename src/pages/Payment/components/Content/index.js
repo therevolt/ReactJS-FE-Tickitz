@@ -19,13 +19,13 @@ const Content = (props) => {
           headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}` },
         })
         .then((result) => {
-          console.log(result);
           if (result.data.status) {
             setProfile(result.data.data[0]);
           }
         })
         .catch((err) => {
-          console.log(err);
+          Swal.fire("ERROR!", err, "warning");
+          history.push("/");
         });
     } else {
       Swal.fire("YUHU!", "Select Movie First!", "warning");
@@ -93,7 +93,7 @@ const Content = (props) => {
                 }
               })
               .catch((err) => {
-                console.log(err.message);
+                Swal.fire("Error!", err.message, "error");
               });
           });
         }
