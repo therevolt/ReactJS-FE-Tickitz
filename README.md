@@ -47,4 +47,4 @@ cd ReactJS-FE-Tickitz
 [Netlify](https://tickitz-web.netlify.app)
 
 ## Repository Backend
-https://github.com/therevolt/BE-Ticktiz
+Repo Backend : https://github.com/therevolt/BE-Ticktiz
