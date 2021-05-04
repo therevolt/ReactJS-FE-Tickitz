@@ -39,8 +39,6 @@ cd ReactJS-FE-Tickitz
 ![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/movies.PNG)
 - <b>Order Page</b>
 ![Preview](https://i.ibb.co/yfzNCGJ/Order-Page-Tickitz-Web.png)
-- <b>Payment Page</b>
-![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/payment.PNG)
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 
