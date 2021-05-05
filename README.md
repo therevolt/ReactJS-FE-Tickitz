@@ -42,7 +42,7 @@ cd ReactJS-FE-Tickitz
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 
-[Netlify](https://tickitz-web.netlify.app)
+[Visit Project](https://tickitz-web.netlify.app)
 
 ## Repository Backend
 Repo Backend : https://github.com/therevolt/BE-Ticktiz
