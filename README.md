@@ -38,10 +38,11 @@ cd ReactJS-FE-Tickitz
 - <b>Movie Detail Page</b>
 ![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/movies.PNG)
 - <b>Order Page</b>
-![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/order.PNG)
-- <b>Payment Page</b>
-![Preview](https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/payment.PNG)
+![Preview](https://i.ibb.co/yfzNCGJ/Order-Page-Tickitz-Web.png)
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 
-[Netlify](https://tickitz-web.netlify.app)
+[Visit Project](https://tickitz-web.netlify.app)
+
+## Repository Backend
+Repo Backend : https://github.com/therevolt/BE-Ticktiz
