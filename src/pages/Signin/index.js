@@ -84,6 +84,7 @@ const Signin = () => {
               alt="logo"
               width="78"
               height="20"
+              onClick={() => history.push("/")}
             />
             <h1 className="font-weight-bold mb-3 d-block d-md-none">Sign In</h1>
             <p className="text-placeholder">
@@ -133,7 +134,7 @@ const Signin = () => {
               Forgot your password?
               <Link to="/reset" className="font-weight-bold link text-decoration-none">
                 {" "}
-                Reset now
+                Reset Here
               </Link>
               <br />
               Not Have Account?

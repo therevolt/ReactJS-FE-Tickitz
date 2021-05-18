@@ -13,6 +13,7 @@ import Verify from "./pages/Verify";
 import Ticket from "./pages/Ticket";
 import ResetPassword from "./pages/ResetPassword";
 import ConfirmReset from "./pages/ConfirmReset";
+import PageAddMovie from "./pages/Admin/PageAddMovie";
 
 function App() {
   return (
@@ -26,9 +27,11 @@ function App() {
         <PublicRoute restricted={false} path="/verify" component={Verify} />
         <PublicRoute restricted={false} exact path="/movie/:id" component={Movie} />
         <PublicRoute restricted={false} path="/movies" component={PageMovie} />
+        <PublicRoute restricted={false} path="/ticket/:id" component={Ticket} />
         <PublicRoute restricted={false} path="/ticket" component={Ticket} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/movie/edit/:id" component={PageEditMovie} />
+        <PrivateRoute path="/admin/movie/add" component={PageAddMovie} />
         <PrivateRoute path="/order/:id" component={Order} />
         <PrivateRoute path="/payment/:id" component={Payment} />
       </Switch>

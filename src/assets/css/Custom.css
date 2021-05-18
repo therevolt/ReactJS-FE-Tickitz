@@ -18,6 +18,10 @@
   box-shadow: -1px -1px 34px -5px rgba(0, 0, 0, 0.55);
 }
 
+.page-link {
+  cursor: pointer !important;
+}
+
 #pills-tab {
   margin-bottom: 0px !important;
 }
@@ -76,6 +80,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light {
 
 select#loc {
   width: fit-content;
+  border-radius: 1px;
 }
 
 .text-decoration-none {
@@ -634,6 +639,13 @@ textarea:hover {
   min-height: 9rem !important;
 }
 
+.card-cinema span {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .img-profile {
   opacity: 1;
   display: block;
@@ -642,12 +654,12 @@ textarea:hover {
   border-radius: 50%;
   transition: 0.5s ease;
   backface-visibility: hidden;
+  object-fit: cover;
 }
 
-/* .img-profile:hover,
-.imgMovie:hover {
-  filter: grayscale(100%);
-} */
+.img-cover {
+  object-fit: cover;
+}
 
 .imgMovie {
   opacity: 1;
@@ -713,10 +725,84 @@ textarea:hover {
   border-radius: 50%;
 }
 
+.grid button:disabled {
+  color: #a0a3bd !important;
+}
+
 @media only screen and (max-width: 768px) {
+  .ticket-page {
+    width: 75vw;
+  }
+
+  .row.row.header {
+    height: 65px;
+  }
+
+  .bg-primary.px-5.py-5 {
+    padding-left: 20px !important;
+  }
+
+  .col-4.circle {
+    margin: 0px auto;
+    border-left: none !important;
+  }
+
+  .tiket-wrapper {
+    width: 70vw !important;
+    padding: 30px 0px !important;
+  }
+
+  .row.content > .col-8,
+  .row.header > .col-8,
+  .col-4.circle::before,
+  .col-4.right::before {
+    display: none;
+  }
+
+  .bg-grey.px-5.py-5.mx-5.my-5.border-rounded2 {
+    width: 90vw;
+    margin-left: 0px !important;
+  }
+
+  .row.content .col-4.right {
+    width: 70vw;
+    height: 40vh;
+  }
+
+  div.bg-primary.px-5.py-5 > div > div.d-flex.justify-content-center {
+    padding-bottom: 30px;
+  }
+
+  .ticket-page img {
+    display: none;
+  }
+
+  .ticket-page > .card.history {
+    width: 70vw;
+  }
+
+  .ticket-page .btn {
+    width: 100px;
+  }
+
+  .col-lg-3.d-flex.flex-column.bg-white.me-5.border-rounded2,
+  .col-8.bg-white.border-rounded2 {
+    width: 90vw;
+    margin: 0px 20px;
+  }
+
+  .col-8.bg-white.border-rounded2 {
+    margin-top: 50px;
+  }
+
   nav.navbar.navbar-expand-lg.navbar-light.bg-light {
     position: absolute;
     z-index: 2;
+  }
+
+  .card-cinema span {
+    width: 300px;
+    white-space: pre-wrap;
   }
 
   .navbar-light .navbar-toggler-icon {
@@ -923,7 +1009,7 @@ textarea:hover {
   }
 
   .tel {
-    width: 75vw !important;
+    width: 34vw !important;
   }
 
   .sm-border-none {

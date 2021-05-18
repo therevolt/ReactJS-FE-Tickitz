@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
+import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import Footer from "../../components/module/Footer";
 import Header from "../../components/module/Header";
@@ -11,6 +12,7 @@ import "./style.css";
 import { exportComponentAsJPEG } from "react-component-export-image";
 import { connect } from "react-redux";
 import HelmetTitle from "../../components/base/Helmet";
+import Skeleton from "react-loading-skeleton";
 
 const ComponentToSave = React.forwardRef((props, ref) => (
   <ComponentToPrint data={props.data} ref={ref} />
@@ -20,40 +22,55 @@ const Ticket = (props) => {
   const [data, setData] = useState(null);
   const componentRef = useRef();
   const history = useHistory();
+  const { id } = useParams();
+  const user = useSelector((state) => state.user.user);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
   useEffect(() => {
-    if (!data && props.history) {
-      axios
-        .post(`${process.env.REACT_APP_URL_API}/v1/tickets/details`, props.history.location.state, {
-          headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
-          },
-        })
-        .then((result) => {
-          if (result.data.status) {
-            setData({
-              movie: result.data.data[0].name,
-              date: `${new Date(result.data.data[0].playing_time).getDate()} ${getMonth(
-                new Date(result.data.data[0].playing_time).getMonth()
-              )}`,
-              time: cvTime(
-                `${new Date(result.data.data[0].playing_time).getHours()}:${new Date(
-                  result.data.data[0].playing_time
-                ).getMinutes()}`
-              ),
-              category: result.data.data[0].category,
-              count: result.data.data[0].seat.length,
-              seats: result.data.data[0].seat.join(", "),
-              price: result.data.data[0].total_price,
-            });
-          }
-        })
-        .catch(() => {
-          history.push("/");
-        });
+    window.scrollTo(0, 0);
+    if (!data) {
+      if (!id) {
+        axios
+          .post(
+            `${process.env.REACT_APP_URL_API}/v1/tickets/details`,
+            props.history.location.state,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          )
+          .then((result) => {
+            if (result.data.status) {
+              setData({
+                movie: result.data.data[0].name,
+                date: `${new Date(result.data.data[0].playing_time).getDate()} ${getMonth(
+                  new Date(result.data.data[0].playing_time).getMonth()
+                )}`,
+                time: cvTime(result.data.data[0].playing_time),
+                category: result.data.data[0].category,
+                count: result.data.data[0].seat.length,
+                seats: result.data.data[0].seat.join(", "),
+                price: result.data.data[0].total_price,
+              });
+            }
+          })
+          .catch(() => {
+            history.push("/");
+          });
+      } else {
+        axios
+          .get(`${process.env.REACT_APP_URL_API}/v1/tickets/details?trxId=${id}`, {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          })
+          .then((result) => {
+            setData(result.data.data);
+          });
+      }
     } // eslint-disable-next-line
   }, []);
 
@@ -64,7 +81,11 @@ const Ticket = (props) => {
       <div className="bg-primary px-5 py-5">
         <div className="bg-grey px-5 py-5 mx-5 my-5 border-rounded2">
           <div className="text-header fs-3 fw-bold text-center">Proof of Payment</div>
-          {data && <ComponentToPrint user={props.user} data={data} ref={componentRef} />}
+          {data ? (
+            <ComponentToPrint user={props.user} data={data} ref={componentRef} />
+          ) : (
+            <Skeleton height={300} />
+          )}
           <div className="d-flex justify-content-center">
             <ComponentToSave ref={componentRef} />
             <div

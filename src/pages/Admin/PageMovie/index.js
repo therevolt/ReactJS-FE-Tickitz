@@ -19,6 +19,7 @@ export default function DeleteMovie() {
   const [genre, setGenre] = useState("");
   const [menu, setMenu] = useState(null);
   const [load, setLoad] = useState(false);
+  const [trigger, setTrigger] = useState(false);
   let query = useQuery();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function DeleteMovie() {
       window.scrollTo(0, 0);
       axios
         .get(`${process.env.REACT_APP_URL_API}/v1/movies?page=${page.num}&limit=${page.limit}`)
-        .then((result) => {
+        .then(async (result) => {
           setLoad(false);
           if (result.data.status) {
             if (query.get("title")) {
@@ -48,6 +49,37 @@ export default function DeleteMovie() {
                 setData(filteredData);
                 setDataAPI(result.data.data.result);
               }
+            } else if (query.get("type")) {
+              const filteredData = [];
+              if (query.get("type") === "upcoming") {
+                filteredData.push(
+                  result.data.data.result.filter((item) => {
+                    return !item.showing;
+                  })
+                );
+                let i = 1;
+                let arrMenu = [];
+                while (i <= result.data.data.max_page) {
+                  arrMenu.push(i);
+                  i++;
+                }
+                setMenu(arrMenu);
+              } else if (query.get("type") === "now_showing") {
+                filteredData.push(
+                  await axios
+                    .get(`${process.env.REACT_APP_URL_API}/v1/movies`)
+                    .then(async (resultNowShowimg) =>
+                      resultNowShowimg.data.data.filter((item) => item.showing)
+                    )
+                );
+                setMenu(null);
+              }
+              if (filteredData.length === 0) {
+                Swal.fire("Data Not Found", "Try With Other Genre");
+              } else {
+                setData(filteredData[0]);
+                setDataAPI(result.data.data.result);
+              }
             } else {
               let i = 1;
               let arrMenu = [];
@@ -65,7 +97,7 @@ export default function DeleteMovie() {
         });
     }
     // eslint-disable-next-line
-  }, [page]);
+  }, [trigger, data]);
 
   const handleRefreshData = () => setData(dataAPI);
 
@@ -119,8 +151,12 @@ export default function DeleteMovie() {
   };
 
   const handlePagination = (e) => {
-    setPage(e.target.id);
     setData(null);
+    setPage({
+      num: e.target.id,
+      limit: query.get("limit") ? query.get("limit") : 12,
+    });
+    setTrigger(!trigger);
   };
 
   return (
@@ -131,14 +167,16 @@ export default function DeleteMovie() {
         <div className="border-rounded2">
           <div className="px-md-5 py-md-5 mx-md-5 px-3 py-3 mx-0">
             <div className="dropdown my-3">
-              <button
-                className="btn btn-primary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                onClick={handleRefreshData}
-              >
-                Filter By Genre
-              </button>
+              {!query.get("type") && (
+                <button
+                  className="btn btn-primary dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  onClick={handleRefreshData}
+                >
+                  Filter By Genre
+                </button>
+              )}
               <ul className="dropdown-menu">
                 <input
                   className="form-control mx-2 my-2 w-90"
@@ -204,44 +242,56 @@ export default function DeleteMovie() {
             )}
             <nav aria-label="Page navigation">
               <ul className="pagination justify-content-center my-4">
-                <li className={page.num > 1 ? "page-item" : "page-item disabled"}>
-                  <span
-                    className="page-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      page.num > 1 &&
-                        setPage({
-                          num: page.num - 1,
-                          limit: query.get("limit") ? query.get("limit") : 12,
-                        });
-                      setData(null);
-                    }}
-                  >
-                    Previous
-                  </span>
-                </li>
-                {menu &&
-                  menu.map((item, i) => {
-                    return (
-                      <li className={page.num === item ? "page-item active" : "page-item"} key={i}>
-                        <span className="page-link" id={item} onClick={handlePagination}>
-                          {item}
-                        </span>
-                      </li>
-                    );
-                  })}
                 {menu && (
-                  <li className={page.num < menu.length ? "page-item" : "page-item disabled"}>
+                  <>
+                    <li className={parseInt(page.num) > 1 ? "page-item" : "page-item disabled"}>
+                      <span
+                        className="page-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          parseInt(page.num) > 1 &&
+                            setPage({
+                              num: parseInt(page.num) - 1,
+                              limit: query.get("limit") ? query.get("limit") : 12,
+                            });
+                          setTrigger(!trigger);
+                          setData(null);
+                        }}
+                      >
+                        Previous
+                      </span>
+                    </li>
+                    {menu.map((item, i) => {
+                      return (
+                        <li
+                          className={parseInt(page.num) === item ? "page-item active" : "page-item"}
+                          key={i}
+                        >
+                          <span className="page-link" id={item} onClick={handlePagination}>
+                            {item}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </>
+                )}
+                {menu && (
+                  <li
+                    className={
+                      parseInt(page.num) < menu.length ? "page-item" : "page-item disabled"
+                    }
+                  >
                     <span
                       className="page-link"
                       onClick={(e) => {
                         e.preventDefault();
-                        page.num < menu.length &&
+                        parseInt(page.num) < menu.length &&
                           setPage({
-                            num: page.num + 1,
+                            num: parseInt(page.num) + 1,
                             limit: query.get("limit") ? query.get("limit") : 12,
                           });
                         setData(null);
+                        setTrigger(!trigger);
                       }}
                     >
                       Next

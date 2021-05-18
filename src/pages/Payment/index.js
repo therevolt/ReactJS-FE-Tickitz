@@ -13,6 +13,7 @@ const Payment = () => {
   let { id } = useParams();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!data) {
       axios
         .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)

@@ -14,6 +14,11 @@ const ContainerSelect = (props) => {
     iconCal.current.setFocus();
   };
 
+  const handleClick = (e) => {
+    const { value } = e.target;
+    props.fireState2(value);
+  };
+
   return (
     <div className="display-flex padding-x-3 is-vertically-centered flex-content-center flex-direction-col margin-bottom-5">
       <h4 className="font-size-4 margin-bottom-2 text-title sm-text-center">
@@ -58,12 +63,13 @@ const ContainerSelect = (props) => {
               name="location"
               id="loc"
               style={{ color: "#4e4b66" }}
+              onChange={handleClick}
             >
-              <option value="pwkt">Purwokerto</option>
-              <option value="jkt">Jakarta</option>
-              <option value="bdg">Bandung</option>
-              <option value="tng">Tangerang</option>
-              <option value="smi">Sukabumi</option>
+              <option value="Purwokerto">Purwokerto</option>
+              <option value="Jakarta">Jakarta</option>
+              <option value="Bandung">Bandung</option>
+              <option value="Tangerang">Tangerang</option>
+              <option value="Sukabumi">Sukabumi</option>
             </select>
           </div>
         </div>

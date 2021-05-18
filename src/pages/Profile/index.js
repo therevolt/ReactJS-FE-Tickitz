@@ -122,7 +122,7 @@ const Profile = () => {
             Swal.fire("Success", "Updated Data Successfuly", "success");
             dispatch({ type: "LOGIN_USER", payload: result.data.data[0] });
             setData({ ...data, password: "", confirmPassword: "" });
-            window.location.reload();
+            // window.location.reload();
           } else {
             Swal.fire("ERROR!", result.data.message, "error");
           }
@@ -146,7 +146,7 @@ const Profile = () => {
       <HeaderNew />
       <HelmetTitle title="Profile - Tickitz Web" />
       <div className="absolute-container bg-grey">
-        {data && (
+        {data ? (
           <div className="container mb-3">
             <div className="row pt-5 d-flex">
               <div
@@ -385,6 +385,7 @@ const Profile = () => {
                         <div className="ticket-page mt-5">
                           {ticket &&
                             ticket.map((item, i) => {
+                              console.log(item);
                               return (
                                 <div
                                   className={
@@ -407,21 +408,29 @@ const Profile = () => {
                                   <div className="card-body">
                                     <div className="d-flex justify-content-between px-2">
                                       <span
-                                        className="btn btn-success"
-                                        style={{ backgroundColor: "#00BA88", border: "none" }}
+                                        className={
+                                          moment(item.playing_time).fromNow().match(/ago/) &&
+                                          item.status === "active"
+                                            ? "btn btn-danger"
+                                            : item.status === "active"
+                                            ? "btn btn-success"
+                                            : "btn btn-secondary"
+                                        }
                                       >
-                                        {item.status === "active"
-                                          ? "Ticket in active"
-                                          : "Ticket used"}
+                                        {moment(item.playing_time).fromNow().match(/ago/) &&
+                                        item.status === "active"
+                                          ? "Ticket Expired"
+                                          : item.status === "active"
+                                          ? "Ticket Active"
+                                          : "Ticket Used"}
                                       </span>
                                       <div className="d-flex flex-nowrap align-self-center">
-                                        <span className="text-placeholder flex-nowrap show-details">
+                                        <span
+                                          className="text-placeholder flex-nowrap show-details cursor-pointer"
+                                          onClick={() => history.push(`/ticket/${item.id}`)}
+                                        >
                                           Show Details
                                         </span>
-                                        <img
-                                          src="/assets/images/ic_round-navigate-next.png"
-                                          alt=""
-                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -436,6 +445,8 @@ const Profile = () => {
               </div>
             </div>
           </div>
+        ) : (
+          <Skeleton height={500} />
         )}
 
         <div className="margin-y-3 sm-container bg-white">

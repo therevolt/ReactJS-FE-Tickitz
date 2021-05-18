@@ -11,6 +11,7 @@ import HelmetTitle from "../../components/base/Helmet";
 
 const Payment = () => {
   const [filter, setFilter] = useState(null);
+  const [city, setCity] = useState("");
   let { id } = useParams();
 
   useEffect(() => {
@@ -25,8 +26,8 @@ const Payment = () => {
       <HelmetTitle title="Details Movie - Tickitz Web" />
       <div className="absolute-container">
         <ContainerTop id={id} />
-        <ContainerSelect fireState={setFilter} />
-        <ContainerContent id={id} fireState={filter} />
+        <ContainerSelect fireState={setFilter} fireState2={setCity} />
+        <ContainerContent id={id} fireState={filter} fireState2={city} />
         <div className="margin-y-3 sm-container">
           <Footer />
         </div>

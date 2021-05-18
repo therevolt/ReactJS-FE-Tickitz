@@ -24,7 +24,7 @@ export class NowShowing extends Component {
 
   render() {
     return (
-      <div className="bg-grey sm-container">
+      <div className="bg-grey sm-container" style={{ maxHeight: "500px" }}>
         <div className="display-flex margin-x-5 flex-direction-col sm-container-1">
           <div className="nav-showing display-flex flex-content-between is-vertically-centered">
             <div>
@@ -32,7 +32,9 @@ export class NowShowing extends Component {
               <hr size="5" />
             </div>
             <div>
-              <span>view all</span>
+              <Link to="/movies?type=now_showing">
+                <span>view all</span>
+              </Link>
             </div>
           </div>
           <div className="element-showing display-flex margin-y-3 flex-content-between sm-overflow">
@@ -49,8 +51,8 @@ export class NowShowing extends Component {
                     <img className="padding-y-1" src={item.image} alt={item.name} />
                     {this.state.show === i && (
                       <>
-                        <span>{item.name}</span>
-                        <span>{item.genre}</span>
+                        <span className="title-movies">{item.name}</span>
+                        <span className="cat-movies">{item.genre}</span>
                         <Link to={`/movie/${item.id}`}>
                           <button className="btn-submit-transparent w-auto border-rounded2 px-4 h-auto py-1">
                             Details

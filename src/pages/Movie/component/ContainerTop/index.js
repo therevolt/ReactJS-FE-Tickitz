@@ -64,7 +64,7 @@ export class ContainerTop extends Component {
             <img className="img-detail" src={image} alt="movie" />
           </div>
         </div>
-        <div className="display-flex-70 flex-direction-col margin-bottom-2">
+        <div className="display-flex-70 flex-direction-col margin-bottom-2 mx-3">
           <div className="margin-bottom-3 sm-text-center">
             <h4 className="font-size-4 margin-bottom-05 text-title">{title}</h4>
             <span>{genre}</span>

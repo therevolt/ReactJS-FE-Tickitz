@@ -5,7 +5,14 @@ export class CardMovieUpcoming extends Component {
   render() {
     return (
       <div className="card-movies border-rounded2 display-flex flex-direction-col is-vertically-centered margin-right-1">
-        <img className="padding-y-1 border-rounded2" src={this.props.image} alt="" />
+        <img
+          className="padding-y-1 border-rounded2"
+          src={
+            this.props.image ||
+            "https://image.freepik.com/free-vector/now-showing-movie-cinema-poster-design-retro-billboard-sign-with-spotlights-theater-curtain-background_7102-186.jpg"
+          }
+          alt=""
+        />
         <span className="title-movies d-inline-block text-truncate">{this.props.title}</span>
         <p className="cat-movies">{this.props.genre}</p>
         <Link to={`/movie/${this.props.id}`}>

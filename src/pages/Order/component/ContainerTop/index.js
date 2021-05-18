@@ -6,6 +6,7 @@ import axios from "axios";
 import SeatDesktop from "../SeatDesktop";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+import { cvTime } from "../../../../helper/convertTime";
 
 const ContainerTop = (props) => {
   const [dataCinema, setDataCinema] = useState(null);
@@ -20,7 +21,7 @@ const ContainerTop = (props) => {
   let cinema = query.get("cinema");
   const day = date.format("dddd");
   const dates = date.format("DD MMMM YYYY");
-  const time = date.format("LT");
+  const time = cvTime(query.get("time"));
   const history = useHistory();
 
   // eslint-disable-next-line

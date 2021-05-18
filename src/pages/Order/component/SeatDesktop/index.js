@@ -1,10 +1,42 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 import "./style.css";
 
 const SeatDesktop = (props) => {
   const [selectedSeat, setSelectedSeat] = useState([]);
   const rows = ["A", "B", "C", "D", "E", "F", "G", ""];
-  const ordered = ["F1", "A2", "B3", "F13"];
+  const [ordered, setOrdered] = useState([]);
+  const { order } = useSelector((state) => state.order);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/v1/order?playlist_id=${order.playlist_id}`, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+        },
+      })
+      .then((result) => {
+        if (result.data.status) {
+          setOrdered(
+            result.data.data.map((item) => {
+              return `${item.seat_row}${item.seat_col}`;
+            })
+          );
+        }
+      })
+      .catch((err) => {
+        Swal.fire("Error!", err.response.data.message, "error");
+        localStorage.removeItem("user");
+        dispatch({ type: "LOGIN_USER", payload: "" });
+        history.push("/signin");
+        window.scrollTo(0, 0);
+      });
+  }, []);
 
   const checkSeatStatus = (val) => {
     if (checkIsChecked(val)) {

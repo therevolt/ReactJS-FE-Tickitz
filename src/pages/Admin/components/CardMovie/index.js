@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
+import { getMovies } from "../../../../configs/redux/action/movies";
 
 export class CardMovie extends Component {
   constructor(props) {
@@ -17,12 +18,19 @@ export class CardMovie extends Component {
   }
 
   handleDelete = (setData) => {
-    axios.delete(`${process.env.REACT_APP_URL_API}/v1/movies/${this.props.id}`).then((result) => {
-      if (result.data.status) {
-        Swal.fire("SUCCESS", result.data.message, "success");
-        setData(null);
-      }
-    });
+    axios
+      .delete(`${process.env.REACT_APP_URL_API}/v1/movies/${this.props.id}`, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+        },
+      })
+      .then((result) => {
+        if (result.data.status) {
+          this.props.getMovie();
+          Swal.fire("SUCCESS", result.data.message, "success");
+          setData(null);
+        }
+      });
   };
 
   render() {
@@ -85,4 +93,10 @@ const StateProps = (state) => {
   };
 };
 
-export default connect(StateProps)(CardMovie);
+const DispatchProps = (dispatch) => ({
+  getMovie: () => {
+    dispatch(getMovies());
+  },
+});
+
+export default connect(StateProps, DispatchProps)(CardMovie);

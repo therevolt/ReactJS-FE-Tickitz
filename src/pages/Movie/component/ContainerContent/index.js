@@ -13,8 +13,9 @@ export class ContainerContent extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.movie.movie[parseInt(this.props.id) - 1]) {
-      if (this.props.movie.movie[parseInt(this.props.id) - 1].showing.toString() === "1") {
+    await axios
+      .get(`${process.env.REACT_APP_URL_API}/v1/movies/${this.props.id}`)
+      .then(async () => {
         const resDataPlaylist = await axios.get(
           `${process.env.REACT_APP_URL_API}/v1/cinemas/playlist/${this.props.id}`
         );
@@ -30,27 +31,28 @@ export class ContainerContent extends Component {
             this.setState({ ...this.state, data: [...this.state.data, resultGetData] });
           });
         }
-      }
-    }
+      });
   }
 
   render() {
     return (
       <div className="grid margin-x-3 grid-template-columns-3 margin-bottom-05 sm-grid-template-columns-1 sm-margin-x-05">
         {this.state.data.length > 0 &&
-          this.state.data.map((item, i) => {
-            return (
-              <CardCinemas
-                cinema={item.name}
-                location={item.address}
-                image={item.logo}
-                cinema_id={item.id}
-                id={this.props.id}
-                fireState={this.props.fireState}
-                key={i}
-              />
-            );
-          })}
+          this.state.data
+            .filter((item) => item.city === this.props.fireState2)
+            .map((item, i) => {
+              return (
+                <CardCinemas
+                  cinema={item.name}
+                  location={item.address}
+                  image={item.logo}
+                  cinema_id={item.id}
+                  id={this.props.id}
+                  fireState={this.props.fireState}
+                  key={i}
+                />
+              );
+            })}
       </div>
     );
   }

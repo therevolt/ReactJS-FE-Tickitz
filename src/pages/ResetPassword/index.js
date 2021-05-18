@@ -82,7 +82,11 @@ const ResetPassword = () => {
               alt="logo"
               width="78"
               height="20"
+              onClick={() => history.push("/")}
             />
+            <div className="d-md-none link fw-bold" onClick={() => history.goBack()}>
+              {"<< Back"}
+            </div>
             <h4 className="font-weight-bold d-block d-md-none pt-4">Forgot password</h4>
             <span className="text-placeholder">we'll send a link to your email shortly</span>
             <div className="form-group mt-4">

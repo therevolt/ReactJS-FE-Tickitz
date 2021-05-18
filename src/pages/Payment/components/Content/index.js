@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Hr from "../../../../components/base/Hr";
 import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ const Content = (props) => {
   const [data, setData] = useState(null);
   const [profile, setProfile] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { order } = useSelector((state) => state.order);
   // eslint-disable-next-line
   useEffect(async () => {
@@ -24,8 +25,14 @@ const Content = (props) => {
           }
         })
         .catch((err) => {
-          Swal.fire("ERROR!", err, "warning");
-          history.push("/");
+          Swal.fire("ERROR!", err.response.data.message, "warning");
+          if (err.response.data.message === "Token Expired") {
+            history.push("/signin");
+            localStorage.removeItem("user");
+            dispatch({ type: "LOGIN_USER", payload: null });
+          } else {
+            history.push("/");
+          }
         });
     } else {
       Swal.fire("YUHU!", "Select Movie First!", "warning");
@@ -88,7 +95,8 @@ const Content = (props) => {
                       }
                     })
                     .catch((err2) => {
-                      Swal.fire("ERROR!", err2.response, "error");
+                      console.log(err2);
+                      Swal.fire("ERROR!", err2.response.data.message, "error");
                     });
                 }
               })

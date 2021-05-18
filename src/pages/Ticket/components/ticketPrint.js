@@ -125,7 +125,7 @@ class ComponentToPrint extends React.PureComponent {
                     <div className="col-4">
                       <div className="item-wrap">
                         <p className="title">Price</p>
-                        <h3 className="desc">${this.state.data.price}.00</h3>
+                        <h3 className="desc">Rp {parseInt(this.state.data.price) * 14000}</h3>
                       </div>
                     </div>
                   </div>

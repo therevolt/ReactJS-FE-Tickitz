@@ -1,15 +1,9 @@
 export const cvTime = (value) => {
-  const dataTime = value.split(":");
-  let hours = dataTime[0];
-  let minutes = dataTime[1];
-  let formatTime = "";
-  if (parseInt(dataTime[0]) < 12) {
-    formatTime = "am";
-  } else {
-    formatTime = "pm";
-    hours -= 12;
-  }
-  return `${hours.toString().length > 1 ? hours : `0${hours}`}:${
-    minutes.toString().length > 1 ? minutes : `0${minutes}`
-  } ${formatTime}`;
+  const date = new Date(value);
+  let hour = date.getHours();
+  hour = hour < 10 ? `0${hour}` : hour;
+  let minutes = date.getMinutes();
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  const format = hour < 12 ? "am" : "pm";
+  return `${hour}:${minutes}${format}`;
 };

@@ -96,6 +96,7 @@ const Signup = () => {
               alt="logo"
               width="78"
               height="20"
+              onClick={() => history.push("/")}
             />
             <h4 className="font-weight-bold d-block d-md-none">Sign Up</h4>
             <div className="form-group">

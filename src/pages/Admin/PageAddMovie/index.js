@@ -4,28 +4,43 @@ import Header from "../../../components/module/Header";
 import DatePicker from "react-datepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import axios from "axios";
 import moment from "moment";
 import Swal from "sweetalert2";
 import FormData from "form-data";
 import { setHours, setMinutes } from "date-fns";
 import { cvTime } from "../../../helper/convertTime";
+import { useDispatch } from "react-redux";
 import HelmetTitle from "../../../components/base/Helmet";
+import { getMovies } from "../../../configs/redux/action/movies";
 
-export default function PageEditMovie() {
+export default function PageAddMovie() {
   const [startDate, setStartDate] = useState(new Date());
-  const [data, setData] = useState(null);
+  const defaultData = {
+    name: "",
+    image: "",
+    description: "",
+    rating: 0,
+    duration_hours: 0,
+    duration_minutes: 0,
+    release_date: new Date().toString(),
+    director: "",
+    genre: "",
+    casts: "",
+    category: "",
+  };
+  const [data, setData] = useState(defaultData);
   const [profileTemp, setProfileTemp] = useState(null);
   const [showTime, setShowTime] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [listShowTime, setListsShowTime] = useState([]);
   const [listShowTime2, setListsShowTime2] = useState([]);
   const [cinema, setCinema] = useState([]);
-  const [dataPlaylist, setDataPlaylist] = useState(null);
+  const [dataPlaylist, setDataPlaylist] = useState({ cinema_id: 1 });
   const imgRef = useRef(null);
   const dateRef = useRef(null);
-  const { id } = useParams();
   const history = useHistory();
+  const dispatch = useDispatch();
   const form = new FormData();
 
   const changeDates = (value) => {
@@ -33,10 +48,11 @@ export default function PageEditMovie() {
   };
 
   const handleClickCinema = (e) => {
+    console.log(e.target.alt);
     if (e.target.id === "cinema") {
-      setDataPlaylist({ movie_id: id, cinema_id: e.target.value });
+      setDataPlaylist({ cinema_id: e.target.value });
     } else {
-      setDataPlaylist({ movie_id: id, cinema_id: e.target.alt });
+      setDataPlaylist({ cinema_id: e.target.alt });
     }
   };
 
@@ -62,35 +78,19 @@ export default function PageEditMovie() {
   };
 
   useEffect(() => {
-    if (!data) {
-      axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`)
-        .then((result) => {
-          if (result.data.status) {
-            setListsShowTime(result.data.data[0].playlists.map((item) => item.time));
-            let data = result.data.data[0];
-            data.casts = JSON.parse(data.casts).join(", ");
-            setData(data);
-          }
-        })
-        .catch(() => {
-          history.push("/movies");
-        });
-      axios
-        .get(`${process.env.REACT_APP_URL_API}/v1/cinemas`)
-        .then((result) => {
-          if (result.data.status) {
-            setCinema(result.data.data);
-          }
-        })
-        .catch(() => {
-          Swal.fire("CINEMA API ERROR", "Please Contact BackEnd Developer", "error");
-        });
-    }
-    // eslint-disable-next-line
-  }, [data]);
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/v1/cinemas`)
+      .then((result) => {
+        if (result.data.status) {
+          setCinema(result.data.data);
+        }
+      })
+      .catch(() => {
+        Swal.fire("CINEMA API ERROR", "Please Contact BackEnd Developer", "error");
+      });
+  }, []);
 
-  const handleUpdate = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
     let tempData = data;
     tempData.casts = JSON.stringify(tempData.casts.split(", "));
@@ -107,65 +107,62 @@ export default function PageEditMovie() {
       }
     });
     axios
-      .put(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`, form, {
+      .post(`${process.env.REACT_APP_URL_API}/v1/movies`, form, {
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
         },
       })
       .then((result) => {
         if (result.data.status) {
-          Swal.fire("SUCCESS", result.data.message, "success");
-          setData(null);
+          // Swal.fire("SUCCESS", result.data.message, "success");
+          if (dataPlaylist && listShowTime2.length > 0) {
+            listShowTime2.map(async (item) => {
+              const date = new Date(item);
+              const data = {
+                movie_id: result.data.data.id,
+                cinema_id: dataPlaylist.cinema_id,
+                playing_time: date,
+                price: 10,
+              };
+              console.log(date);
+              await axios
+                .post(`${process.env.REACT_APP_URL_API}/v1/cinemas/playlist`, data, {
+                  headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+                  },
+                })
+                .catch((err) => {
+                  Swal.fire("UGH!", err.response.data.message, "error");
+                });
+            });
+            Swal.fire("YEAY!", "Success Input", "success");
+            setData(defaultData);
+            dispatch(getMovies());
+          }
         } else {
           Swal.fire("HMMMMM...!", result.data.message, "warning");
         }
       })
       .catch((err) => {
-        Swal.fire("ERROR!", err, "error");
+        if (err.response.data.message === "Token Expired") {
+          localStorage.removeItem("user");
+          dispatch({ type: "LOGIN_USER", payload: null });
+          history.push("/signin");
+        }
+        Swal.fire("ERROR!", err.response.data.message, "error");
       });
-    if (dataPlaylist && listShowTime2.length > 0) {
-      listShowTime2.map(async (item) => {
-        const date = new Date(item);
-        const data = {
-          movie_id: dataPlaylist.movie_id,
-          cinema_id: dataPlaylist.cinema_id,
-          playing_time: date,
-          price: 10,
-        };
-        await axios
-          .post(`${process.env.REACT_APP_URL_API}/v1/cinemas/playlist`, data, {
-            headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem("user")).token}`,
-            },
-          })
-          .then((result) => {
-            if (result.data.status) {
-              Swal.fire("YEAY!", "Success Input", "success");
-            } else {
-              Swal.fire("HMMM", result.data.message, "warning");
-            }
-          })
-          .catch((err) => {
-            Swal.fire("UGH!", err.response.message, "error");
-          });
-      });
-    }
   };
 
   const handleDelete = (e) => {
-    e.preventDefault();
-    axios.delete(`${process.env.REACT_APP_URL_API}/v1/movies/${id}`).then((result) => {
-      if (result.data.status) {
-        Swal.fire("SUCCESS", "Movie Has Been Deleted", "success");
-        history.push("/movies");
-      }
-    });
+    setData(defaultData);
   };
 
   const handleAddPlaytime = () => {
     if (listShowTime.length > 0 && listShowTime.includes(showTime.toString())) {
       return null;
     } else {
+      console.log(showTime.toString());
+      console.log(showTime.toLocaleString());
       setListsShowTime([...listShowTime, showTime.toString()]);
       setListsShowTime2([...listShowTime2, showTime.toString()]);
     }
@@ -319,11 +316,11 @@ export default function PageEditMovie() {
                     </div>
                   </div>
                   <div className="px-4 pt-4">
-                    <button className="btn btn-primary me-2" onClick={handleUpdate}>
-                      Update Data
+                    <button className="btn btn-primary me-2" onClick={handleAdd}>
+                      Submit Data
                     </button>
                     <button className="btn btn-danger" onClick={handleDelete}>
-                      Delete Data
+                      Clear Data
                     </button>
                   </div>
                 </div>

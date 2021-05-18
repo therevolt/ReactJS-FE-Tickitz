@@ -91,6 +91,7 @@ export class CardCinemas extends Component {
                       }
                       key={i}
                       onClick={() => handleClickTimes(i, item.playing_time, item.id)}
+                      disabled={new Date(item.playing_time) - new Date() < 0}
                     >
                       {this.getTimes(item.playing_time)}
                     </button>

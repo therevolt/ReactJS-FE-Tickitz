@@ -31,7 +31,7 @@ const HeaderNew = (props) => {
       props.fireEvent[2](data.title);
     }
     // eslint-disable-next-line
-  }, [data]);
+  }, [data, user]);
 
   const handleSearch = () => {
     setData({ ...data, search: !data.search, title: "" });
@@ -112,6 +112,21 @@ const HeaderNew = (props) => {
                 <input className="input-form no-border" type="text" placeholder="Search . . ." />
               </div>
             </li>
+            {log && (
+              <>
+                <li className="nav-item lg-display-none">
+                  <Hr />
+                </li>
+                <li className="nav-item">
+                  <Link
+                    to="/profile"
+                    className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
+                  >
+                    Profile
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="nav-item lg-display-none">
               <Hr />
             </li>
@@ -139,6 +154,28 @@ const HeaderNew = (props) => {
                 Buy Ticket
               </span>
             </li>
+            <li className="nav-item lg-display-none">
+              <Hr />
+            </li>
+            {!log ? (
+              <li className="nav-item">
+                <Link
+                  to="/signin"
+                  className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
+                >
+                  Sign In
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <span
+                  className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </span>
+              </li>
+            )}
             <li className="nav-item lg-display-none sm-margin-y-05">
               <Hr />
             </li>
@@ -208,6 +245,7 @@ const HeaderNew = (props) => {
                     height="56px"
                     width="56px"
                     alt="Profile"
+                    className="img-cover"
                   />
                 </div>
               </span>
