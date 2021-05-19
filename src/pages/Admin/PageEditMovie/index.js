@@ -98,12 +98,14 @@ export default function PageEditMovie() {
     Object.keys(tempData).map((keys) => {
       if (keys !== "playlists" && keys !== "updated_at" && keys !== "created_at") {
         if (keys !== "image") {
-          form.append(keys, data[keys]);
+          if (keys === "release_date") {
+            form.append("release_date", new Date(data[keys]));
+          } else {
+            form.append(keys, data[keys]);
+          }
         } else {
           if (profileTemp) {
             form.append("image", profileTemp, profileTemp.name);
-          } else if (keys === "release_date") {
-            form.append("release_date", new Date(data[keys]));
           }
         }
       }
