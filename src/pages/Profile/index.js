@@ -385,7 +385,6 @@ const Profile = () => {
                         <div className="ticket-page mt-5">
                           {ticket &&
                             ticket.map((item, i) => {
-                              console.log(item);
                               return (
                                 <div
                                   className={

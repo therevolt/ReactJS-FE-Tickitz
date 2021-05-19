@@ -117,7 +117,7 @@ const HeaderNew = (props) => {
                 <li className="nav-item lg-display-none">
                   <Hr />
                 </li>
-                <li className="nav-item">
+                <li className="nav-item lg-display-none">
                   <Link
                     to="/profile"
                     className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
@@ -158,7 +158,7 @@ const HeaderNew = (props) => {
               <Hr />
             </li>
             {!log ? (
-              <li className="nav-item">
+              <li className="nav-item lg-display-none">
                 <Link
                   to="/signin"
                   className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
@@ -167,7 +167,7 @@ const HeaderNew = (props) => {
                 </Link>
               </li>
             ) : (
-              <li className="nav-item">
+              <li className="nav-item lg-display-none">
                 <span
                   className="nav-link sm-text-center sm-margin-y-05 text-bold text-title"
                   onClick={handleLogout}
@@ -226,7 +226,6 @@ const HeaderNew = (props) => {
               />
             )}
           </div>
-
           {log ? (
             <button className="nav-item dropdown no-bg no-border showInAnimation">
               <span

@@ -102,6 +102,8 @@ export default function PageEditMovie() {
         } else {
           if (profileTemp) {
             form.append("image", profileTemp, profileTemp.name);
+          } else if (keys === "release_date") {
+            form.append("release_date", new Date(data[keys]));
           }
         }
       }
