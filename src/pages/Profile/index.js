@@ -371,6 +371,12 @@ const Profile = () => {
                         >
                           Update changes
                         </button>
+                        <button
+                          className="btn-submit-solid border-rounded2 mt-5"
+                          onClick={() => history.push("/admin/movie/add")}
+                        >
+                          Add Movies
+                        </button>
                       </div>
                     </div>
                     <div

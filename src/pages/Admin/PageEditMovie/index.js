@@ -99,7 +99,12 @@ export default function PageEditMovie() {
       if (keys !== "playlists" && keys !== "updated_at" && keys !== "created_at") {
         if (keys !== "image") {
           if (keys === "release_date") {
-            form.append("release_date", new Date(data[keys]));
+            form.append(
+              "release_date",
+              `${new Date(data[keys]).getFullYear()}-${
+                new Date(data[keys]).getMonth() + 1
+              }-${new Date(data[keys]).getDate()} 00:00:00`
+            );
           } else {
             form.append(keys, data[keys]);
           }
