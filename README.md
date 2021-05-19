@@ -27,7 +27,10 @@ git clone https://github.com/therevolt/ReactJS-FE-Tickitz
 ```
 cd ReactJS-FE-Tickitz
 ```
-- Open Command/Terminal
+- Install Module
+```
+npm install
+```
 - Type ``` npm start ``` To Start The Script
 
 ## 🔎 Preview Design <a name = "preview"></a>
