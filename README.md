@@ -36,12 +36,12 @@ npm install
 ## 🔎 Preview Design <a name = "preview"></a>
 <p align="center">
   <span>
-    <img width="430" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/signin.PNG">   
-    <img width="430" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/home.PNG">   
-    <img width="430" height="400" src="https://i.ibb.co/0Cx3kqX/Details-Movie-Tickitz-Web.png">   
-    <img width="430" height="400" src="https://i.ibb.co/HXC60wd/Order-Page-Tickitz-Web-2.png">
-    <img width="430" height="400" src="https://i.ibb.co/R2HDf2v/Payment-Page-Tickitz-Web.png">
-    <img width="430" height="400" src="https://i.ibb.co/F8B6Hm3/Ticket-Details-Tickitz-Web.png">
+    <img width="400" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/signin.PNG">   
+    <img width="400" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/home.PNG">   
+    <img width="400" height="400" src="https://i.ibb.co/0Cx3kqX/Details-Movie-Tickitz-Web.png">   
+    <img width="400" height="400" src="https://i.ibb.co/HXC60wd/Order-Page-Tickitz-Web-2.png">
+    <img width="400" height="400" src="https://i.ibb.co/R2HDf2v/Payment-Page-Tickitz-Web.png">
+    <img width="400" height="400" src="https://i.ibb.co/F8B6Hm3/Ticket-Details-Tickitz-Web.png">
   </span>
 </p>
 
