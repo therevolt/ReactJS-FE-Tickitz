@@ -1,18 +1,17 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=400px height=200px src="https://dev-to-uploads.s3.amazonaws.com/i/v4y43jjfj7u5r8to8qdu.png" alt="logo"></a>
+ <img width=400px src="https://i.ibb.co/qdvgs8Y/Untitled-design-25.png" alt="logo"></a>
 </p>
 <div align="center">
   
 [![Status](https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Ftickitz.xyz)](https://tickitz.xyz)
 
 </div>
-<h3 align="center">FrontEnd Tickitz - Arkademy</h3>
 
 ---
 
 ## 🧐 About
-Slicing From Repo [FE Tickitz](https://github.com/therevolt/FE-Tickitz)
+Online cinema ticket booking website with various features that make it easy for users. Created with ReactJS so that this website becomes a SPA (Single-Page Application) which means that it will be very light when accessed by the user.
 
 ## 🔖Build With
 - ReactJS
