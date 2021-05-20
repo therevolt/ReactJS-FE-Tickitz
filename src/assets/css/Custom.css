@@ -729,6 +729,10 @@ textarea:hover {
   color: #a0a3bd !important;
 }
 
+.nav-link.disabled {
+  cursor: not-allowed;
+}
+
 @media only screen and (max-width: 768px) {
   .ticket-page {
     width: 75vw;

@@ -371,12 +371,14 @@ const Profile = () => {
                         >
                           Update changes
                         </button>
-                        <button
-                          className="btn-submit-solid border-rounded2 mt-5 mx-4"
-                          onClick={() => history.push("/admin/movie/add")}
-                        >
-                          Add Movies
-                        </button>
+                        {data.role === "admin" && (
+                          <button
+                            className="btn-submit-solid border-rounded2 mt-5 mx-4"
+                            onClick={() => history.push("/admin/movie/add")}
+                          >
+                            Add Movies
+                          </button>
+                        )}
                       </div>
                     </div>
                     <div

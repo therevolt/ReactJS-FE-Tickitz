@@ -142,7 +142,7 @@ const HeaderNew = (props) => {
               <Hr />
             </li>
             <li className="nav-item">
-              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
+              <span className="nav-link disabled sm-text-center sm-margin-y-05 text-bold text-title">
                 Cinemas
               </span>
             </li>
@@ -150,7 +150,7 @@ const HeaderNew = (props) => {
               <Hr />
             </li>
             <li className="nav-item">
-              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
+              <span className="nav-link disabled sm-text-center sm-margin-y-05 text-bold text-title">
                 Buy Ticket
               </span>
             </li>
