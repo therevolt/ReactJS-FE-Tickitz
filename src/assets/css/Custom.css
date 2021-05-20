@@ -729,7 +729,7 @@ textarea:hover {
   color: #a0a3bd !important;
 }
 
-.nav-link.disabled {
+.nav-item.disabled {
   cursor: not-allowed;
 }
 

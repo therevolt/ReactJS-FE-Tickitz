@@ -141,16 +141,16 @@ const HeaderNew = (props) => {
             <li className="nav-item lg-display-none sm-margin-y-05">
               <Hr />
             </li>
-            <li className="nav-item">
-              <span className="nav-link disabled sm-text-center sm-margin-y-05 text-bold text-title">
+            <li className="nav-item disabled">
+              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
                 Cinemas
               </span>
             </li>
             <li className="nav-item lg-display-none sm-margin-y-05">
               <Hr />
             </li>
-            <li className="nav-item">
-              <span className="nav-link disabled sm-text-center sm-margin-y-05 text-bold text-title">
+            <li className="nav-item disabled">
+              <span className="nav-link sm-text-center sm-margin-y-05 text-bold text-title">
                 Buy Ticket
               </span>
             </li>
