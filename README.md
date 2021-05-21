@@ -33,16 +33,14 @@ npm install
 - Type ``` npm start ``` To Start The Script
 
 ## 🔎 Preview Design <a name = "preview"></a>
-<p align="center">
   <span>
-    <img width="400" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/signin.PNG">   
-    <img width="400" height="400" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/home.PNG">   
-    <img width="400" height="400" src="https://i.ibb.co/0Cx3kqX/Details-Movie-Tickitz-Web.png">   
-    <img width="400" height="400" src="https://i.ibb.co/HXC60wd/Order-Page-Tickitz-Web-2.png">
-    <img width="400" height="400" src="https://i.ibb.co/R2HDf2v/Payment-Page-Tickitz-Web.png">
-    <img width="400" height="400" src="https://i.ibb.co/F8B6Hm3/Ticket-Details-Tickitz-Web.png">
+    <img width="415" height="265" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/signin.PNG">   
+    <img width="415" height="265" src="https://raw.githubusercontent.com/therevolt/FE-Tickitz/master/assets/img/home.PNG">   
+    <img width="415" src="https://i.ibb.co/0Cx3kqX/Details-Movie-Tickitz-Web.png">   
+    <img width="415" height="289" src="https://i.ibb.co/HXC60wd/Order-Page-Tickitz-Web-2.png">
+    <img width="415" src="https://i.ibb.co/R2HDf2v/Payment-Page-Tickitz-Web.png">
+    <img width="415" height="322" src="https://i.ibb.co/F8B6Hm3/Ticket-Details-Tickitz-Web.png">
   </span>
-</p>
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 
